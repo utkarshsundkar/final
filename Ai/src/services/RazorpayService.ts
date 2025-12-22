@@ -4,9 +4,8 @@ import { Platform, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AuthService from './AuthService';
 
-const BASE_URL = Platform.OS === 'android'
-    ? 'http://10.195.233.47:3000/api/v2'  // Mac's local IP
-    : 'http://10.195.233.47:3000/api/v2'; // Mac's local IP
+// Production Render URL
+const BASE_URL = 'https://final-z80k.onrender.com/api/v2';
 
 export const RazorpayService = {
     startPayment: async ({
@@ -94,7 +93,7 @@ export const RazorpayService = {
                 description: productInfo,
                 image: 'https://i.imgur.com/3g7nmJC.png',
                 currency: 'INR',
-                key: razorpayKey,
+                key: razorpayKey, // This MUST be the key_id
                 amount: order_amount,
                 name: 'Arthlete',
                 order_id: order_id,
@@ -106,8 +105,12 @@ export const RazorpayService = {
                 theme: { color: '#FF6B35' }
             };
 
-            console.log("🎨 Opening Razorpay checkout...");
-            // Alert.alert("Debug", "Order created! Opening Razorpay..."); // Removed to prevent UI conflict
+            console.log("🎨 Opening Razorpay checkout with options:", JSON.stringify({ ...options, key: '***FAILED_TO_MASK***' })); // Don't log full key in prod usually, but for debug:
+
+            if (!razorpayKey || razorpayKey.trim() === '') {
+                Alert.alert("Configuration Error", "Razorpay Key is missing. Please check server configuration.");
+                throw new Error("Razorpay Key is missing");
+            }
 
             // Small delay to ensure UI is ready
             await new Promise(resolve => setTimeout(resolve, 500));

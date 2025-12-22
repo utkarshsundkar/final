@@ -10,9 +10,8 @@ const isAndroid = Platform.OS === 'android';
 
 // Production: 'https://v2-jell.onrender.com/api/v2/users'
 // Using Mac's local IP for physical device testing
-const BACKEND_URL = isAndroid
-    ? 'http://10.195.233.47:3000/api/v2/users'  // Android - Mac's local IP
-    : 'http://10.195.233.47:3000/api/v2/users'; // iOS - Mac's local IP
+// Production Render URL
+const BACKEND_URL = 'https://final-z80k.onrender.com/api/v2/users';
 
 export interface User {
     id: string;

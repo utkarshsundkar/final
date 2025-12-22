@@ -7,9 +7,8 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AuthService from '../services/AuthService';
 
-const BASE_URL = Platform.OS === 'android'
-    ? 'http://10.195.233.47:3000/api/v2'  // Mac's local IP
-    : 'http://10.195.233.47:3000/api/v2'; // Mac's local IP
+// Production Render URL
+const BASE_URL = 'https://final-z80k.onrender.com/api/v2';
 
 interface PremiumModalProps {
     visible: boolean;

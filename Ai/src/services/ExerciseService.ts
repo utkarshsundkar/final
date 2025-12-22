@@ -5,9 +5,8 @@ import AuthService from './AuthService';
 const isAndroid = Platform.OS === 'android';
 
 // Base URL matching AuthService logic
-const BASE_URL = isAndroid
-    ? 'http://10.195.233.47:3000/api/v2'  // Mac's local IP
-    : 'http://10.195.233.47:3000/api/v2'; // Mac's local IP
+// Production Render URL
+const BASE_URL = 'https://final-z80k.onrender.com/api/v2';
 
 const EXERCISE_URL = `${BASE_URL}/exercise`;
 
