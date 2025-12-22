@@ -1,0 +1,10 @@
+Arthlete backend
+
+MONGODB_URL=MONo uri
+PORT=8000
+ACCESS_TOKEN_SECRET=your_access_token_secret_placeholder
+ACCESS_TOKEN_EXPIRY=1d
+REFRESH_TOKEN_SECRET=your_refresh_token_secret_placeholder
+REFRESH_TOKEN_EXPIRY=10d
+RAZORPAY_KEY_ID=your_razorpay_key_id_placeholder
+RAZORPAY_KEY_SECRET=your_razorpay_key_secret_placeholder

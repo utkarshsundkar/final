@@ -1,0 +1,33 @@
+buildscript {
+    ext {
+        buildToolsVersion = "35.0.0"
+        minSdkVersion = 26
+        compileSdkVersion = 35
+        targetSdkVersion = 35
+        ndkVersion = "26.1.10909125"
+        kotlinVersion = "1.9.22"
+    }
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("com.android.tools.build:gradle:8.6.0")
+        classpath("com.facebook.react:react-native-gradle-plugin")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
+    }
+}
+allprojects {
+  repositories {
+    google()
+    jcenter()
+    maven {
+      url "${artifactory_contentUrl}"
+    }
+    maven {
+        url 'https://www.jitpack.io'
+    }
+  }
+}
+
+apply plugin: "com.facebook.react.rootproject"

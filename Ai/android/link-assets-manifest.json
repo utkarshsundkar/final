@@ -1,0 +1,17 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/Fonts/Bungee.ttf",
+      "sha1": "a3164074d741797f169cddcf7097683556b3df87"
+    },
+    {
+      "path": "assets/Fonts/Lexend.ttf",
+      "sha1": "4724fd6808ce1abb720d4fc60c0ce0a894900f7b"
+    },
+    {
+      "path": "assets/Fonts/Nunito.ttf",
+      "sha1": "21dd5ae8c31a1825d210234af3b0c04a882de724"
+    }
+  ]
+}

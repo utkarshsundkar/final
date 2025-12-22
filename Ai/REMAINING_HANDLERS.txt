@@ -1,0 +1,41 @@
+// This file contains the remaining workout handlers that need to be added to App.tsx
+// Add these before line 3455 (before the closing brace of startChallenge function)
+
+// Core Workouts
+} else if (type === 'CoreCrusher') {
+  const coreExercises = [];
+  for (let set = 1; set <= 3; set++) {
+    coreExercises.push(
+      new SMWorkoutLibrary.SMExercise(`Crunches - Set ${set}`, 60, 'Crunches', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'Crunches', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
+      new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
+      new SMWorkoutLibrary.SMExercise(`Oblique Crunches - Set ${set}`, 60, 'ObliqueCrunches', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'ObliqueCrunches', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
+      new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
+      new SMWorkoutLibrary.SMExercise(`High Plank - Set ${set}`, 60, 'PlankHigh', null, [SMWorkoutLibrary.UIElement.Timer], 'PlankHigh', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
+      new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
+      new SMWorkoutLibrary.SMExercise(`Side Plank - Set ${set}`, 60, 'PlankSide', null, [SMWorkoutLibrary.UIElement.Timer], 'PlankSide', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null))
+    );
+    if (set < 3) coreExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
+  }
+  const coreWorkout = new SMWorkoutLibrary.SMWorkout('CoreCrusher', 'Core Crusher', 'Crush your core', SMWorkoutLibrary.BodyZone.Core, coreExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
+  try { await exitWorkout(); } catch (e) {}
+  try { const result = await startCustomWorkout(coreWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
+
+} else if (type === 'AbsReloaded') {
+  const absExercises = [];
+  for (let set = 1; set <= 3; set++) {
+    absExercises.push(
+      new SMWorkoutLibrary.SMExercise(`Crunches - Set ${set}`, 60, 'Crunches', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'Crunches', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
+      new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
+      new SMWorkoutLibrary.SMExercise(`Tuck Hold - Set ${set}`, 60, 'TuckHold', null, [SMWorkoutLibrary.UIElement.Timer], 'TuckHold', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
+      new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
+      new SMWorkoutLibrary.SMExercise(`Oblique Crunches - Set ${set}`, 60, 'ObliqueCrunches', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'ObliqueCrunches', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
+      new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
+      new SMWorkoutLibrary.SMExercise(`Side Plank - Set ${set}`, 60, 'PlankSide', null, [SMWorkoutLibrary.UIElement.Timer], 'PlankSide', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null))
+    );
+    if (set < 3) absExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
+  }
+  const absWorkout = new SMWorkoutLibrary.SMWorkout('AbsReloaded', 'Abs Reloaded', 'Core focused routine', SMWorkoutLibrary.BodyZone.Core, absExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
+  try { await exitWorkout(); } catch (e) {}
+  try { const result = await startCustomWorkout(absWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
+
+// Continue with Mobility and Lower in next file...
