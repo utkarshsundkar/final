@@ -903,14 +903,16 @@ const handleDodoWebhook = asyncHandler(async (req, res) => {
         await payment.save();
       }
 
-      // Update User
-      await User.findByIdAndUpdate(user._id, {
-        isPremium: true,
-        isPaid: true
-      });
+      // Update User forcefully
+      user.isPremium = true;
+      user.isPaid = true;
+      user.premiumType = 'paid';
+      await user.save({ validateBeforeSave: false });
 
       // Update Premium Model
       const existingPlan = await Premium.findOne({ user: user._id });
+      let finalPremiumId = null;
+
       if (existingPlan) {
         existingPlan.active = true;
         existingPlan.planType = planType;
@@ -918,6 +920,7 @@ const handleDodoWebhook = asyncHandler(async (req, res) => {
         existingPlan.endDate = expiryDate;
         existingPlan.lastPayment = payment._id;
         await existingPlan.save();
+        finalPremiumId = existingPlan._id;
       } else {
         const newPremium = await Premium.create({
           user: user._id,
@@ -927,7 +930,13 @@ const handleDodoWebhook = asyncHandler(async (req, res) => {
           endDate: expiryDate,
           lastPayment: payment._id
         });
-        await User.findByIdAndUpdate(user._id, { premium: newPremium._id });
+        finalPremiumId = newPremium._id;
+      }
+
+      // Ensure the user ref is also updated
+      if (finalPremiumId) {
+        user.premium = finalPremiumId;
+        await user.save({ validateBeforeSave: false });
       }
 
       console.log(`🎉 Premium activated for ${user.email} via Webhook`);
