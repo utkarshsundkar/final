@@ -35,13 +35,13 @@ export const MOJOAUTH_CONFIG = {
 
 export const AUTH_ENDPOINTS = {
     // Direct API for Native UI (Manual Entry)
-    sendOTP: 'https://api.mojoauth.com/users/emailotp?env=test',
-    verifyOTP: 'https://api.mojoauth.com/users/emailotp/verify?env=test',
+    sendOTP: 'https://api.mojoauth.com/users/emailotp',
+    verifyOTP: 'https://api.mojoauth.com/users/emailotp/verify',
 
     // OIDC Endpoints (for WebView/Social)
-    authorize: 'https://arthlete-f806b1.auth.mojoauth.com/oauth/authorize?env=test',
-    token: 'https://arthlete-f806b1.auth.mojoauth.com/oauth2/token?env=test',
-    userInfo: 'https://arthlete-f806b1.auth.mojoauth.com/oauth/userinfo?env=test',
-    jwks: 'https://arthlete-f806b1.auth.mojoauth.com/.well-known/jwks.json?env=test',
-    logout: 'https://arthlete-f806b1.auth.mojoauth.com/oauth/logout?env=test',
+    authorize: 'https://arthlete-f806b1.auth.mojoauth.com/oauth/authorize',
+    token: 'https://arthlete-f806b1.auth.mojoauth.com/oauth2/token',
+    userInfo: 'https://arthlete-f806b1.auth.mojoauth.com/oauth/userinfo',
+    jwks: 'https://arthlete-f806b1.auth.mojoauth.com/.well-known/jwks.json',
+    logout: 'https://arthlete-f806b1.auth.mojoauth.com/oauth/logout',
 };
