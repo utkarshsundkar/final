@@ -130,9 +130,9 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
         }
     };
 
-    const checkPaymentStatusAndActivate = async () => {
+    const checkPaymentStatusAndActivate = async (retryCount = 0) => {
         try {
-            console.log('🔍 Checking payment status...');
+            console.log(`🔍 Checking payment status (Attempt ${retryCount + 1}/5)...`);
 
             // Refresh user profile to get latest premium status
             await AuthService.refreshUserProfile();
@@ -166,16 +166,26 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
                         }
                     ]
                 );
+                return true;
             } else {
-                console.log(`⏳ Premium not yet activated for ${user.email}. Payment may still be processing...`);
-                Alert.alert(
-                    'Still Processing',
-                    `We haven't received the payment confirmation for ${user.email} yet. If you just paid, please wait a few seconds and try again.`,
-                    [{ text: 'OK' }]
-                );
+                console.log(`⏳ Premium not yet activated for ${user.email}.`);
+
+                // If we haven't reached max retries, try again after a delay
+                if (retryCount < 4) {
+                    setTimeout(() => checkPaymentStatusAndActivate(retryCount + 1), 2000);
+                } else if (retryCount === 4) {
+                    // Only show alert on the FINAL failed attempt
+                    Alert.alert(
+                        'Still Processing',
+                        `We haven't received the payment confirmation for ${user.email} yet. If you just paid, please wait a few seconds and try again.`,
+                        [{ text: 'OK' }]
+                    );
+                }
+                return false;
             }
         } catch (error) {
             console.error('❌ Error checking payment status:', error);
+            return false;
         }
     };
 
@@ -529,7 +539,7 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
                     {pricing.currency === 'USD' && (
                         <TouchableOpacity
                             style={{ padding: 16, marginTop: 8, alignItems: 'center' }}
-                            onPress={checkPaymentStatusAndActivate}
+                            onPress={() => checkPaymentStatusAndActivate()}
                         >
                             <Text style={{
                                 color: '#666',
