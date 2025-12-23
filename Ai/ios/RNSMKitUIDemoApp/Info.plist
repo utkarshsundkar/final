@@ -81,6 +81,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.912055738866-i5c8hvqf6aabbshbjdigcahftd2ogok0</string>
+				<string>arthlete</string>
 			</array>
 		</dict>
 	</array>
