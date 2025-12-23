@@ -9,9 +9,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // 🔗 Backend URL
-const BASE_URL = Platform.OS === 'android'
-    ? 'http://10.0.2.2:3000/api/v2/payment'
-    : 'http://192.168.1.5:3000/api/v2/payment';
+const BASE_URL = 'https://final-z80k.onrender.com/api/v2/payment';
 
 // ✅ Correct Native Module (Check both just in case)
 // ✅ Correct Native Module (Check both just in case)

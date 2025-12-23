@@ -215,9 +215,31 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
         const productInfo = `${plan.charAt(0).toUpperCase() + plan.slice(1)} Subscription`;
 
         // Use fetched user data if available, otherwise fallback to props
-        const email = userData?.email || userEmail || 'user@example.com';
-        const name = userData?.firstName || userName || 'User';
+        let email = userData?.email || userEmail;
+        let name = userData?.firstName || userName;
         const phone = userData?.phone || '9999999999';
+
+        // Critical: Ensure we have a valid email to avoid 'ghost' payments
+        // If email is missing or generic default, fetch fresh from AuthService
+        if (!email || email === 'user@example.com' || email === 'test@example.com') {
+            console.log('⚠️ No valid email found in props/state. Fetching fresh from AuthService...');
+            try {
+                const freshUser = await AuthService.getCurrentUser();
+                if (freshUser?.email) {
+                    email = freshUser.email;
+                    name = freshUser.name || freshUser.firstName || name || 'User';
+                    console.log('✅ Fetched fresh user email:', email);
+                } else {
+                    throw new Error('No user found');
+                }
+            } catch (e) {
+                console.error('Failed to fetch user for payment:', e);
+                Alert.alert('Authentication Error', 'Could not identify user. Please log in again.');
+                return;
+            }
+        }
+
+        name = name || 'User';
 
         console.log('🛒 Initiating purchase for:', { email, name, currency: pricing.currency });
 

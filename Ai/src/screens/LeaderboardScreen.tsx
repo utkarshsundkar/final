@@ -14,9 +14,7 @@ const LeaderboardScreen = () => {
     const [loading, setLoading] = useState(true);
 
     const isAndroid = Platform.OS === 'android';
-    const BACKEND_URL = isAndroid
-        ? 'http://192.168.1.5:3000/api/v2/users'
-        : 'http://192.168.1.5:3000/api/v2/users';
+    const BACKEND_URL = 'https://final-z80k.onrender.com/api/v2/users';
 
     useEffect(() => {
         fetchLeaderboard();

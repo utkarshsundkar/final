@@ -844,8 +844,8 @@ const handleDodoWebhook = asyncHandler(async (req, res) => {
       return res.status(200).send('No email found');
     }
 
-    // Find user
-    const user = await User.findOne({ email: customerEmail });
+    // Find user (Case Insensitive)
+    const user = await User.findOne({ email: { $regex: new RegExp(`^${customerEmail}$`, 'i') } });
     if (!user) {
       console.error(`❌ User not found for email: ${customerEmail}`);
       // Return 200 to acknowledge webhook even if user not found to stop retries
