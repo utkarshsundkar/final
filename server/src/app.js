@@ -57,6 +57,7 @@ import lifestyleRouter from "./routes/lifeStyle.routes.js"
 import focusRouter from "./routes/focusMode.routes.js"
 import paymentRouter from "./routes/payment.routes.js"
 import challengeRouter from "./routes/challenge.routes.js"
+import healthRouter from "./routes/health.routes.js"
 
 //routes declaration
 app.get("/", (req, res) => {
@@ -75,5 +76,6 @@ app.use("/api/v2/credit", creditRouter)
 app.use("/api/v2/focus", focusRouter)
 app.use("/api/v2/payment", paymentRouter)
 app.use("/api/v2/challenges", challengeRouter)
+app.use("/health", healthRouter)
 
 export { app }
