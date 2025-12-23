@@ -79,9 +79,10 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
 
         // AppState listener to check when user returns to app
         const appStateSubscription = AppState.addEventListener('change', (nextAppState) => {
-            if (nextAppState === 'active' && visible && pricing?.currency === 'USD') {
+            if (nextAppState === 'active' && visible) {
                 console.log('📱 App became active, checking payment status...');
-                checkPaymentStatusAndActivate();
+                // Small delay to allow webhook to arrive
+                setTimeout(() => checkPaymentStatusAndActivate(), 1500);
             }
         });
 
@@ -134,7 +135,7 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
     const checkPaymentStatusAndActivate = async (retryCount = 0) => {
         if (retryCount === 0) setIsCheckingStatus(true);
         try {
-            console.log(`🔍 Checking payment status (Attempt ${retryCount + 1}/5)...`);
+            console.log(`🔍 Checking payment status (Attempt ${retryCount + 1}/10)...`);
 
             // Refresh user profile to get latest premium status
             await AuthService.refreshUserProfile();
@@ -174,9 +175,9 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
                 console.log(`⏳ Premium not yet activated for ${user.email}.`);
 
                 // If we haven't reached max retries, try again after a delay
-                if (retryCount < 4) {
+                if (retryCount < 9) {
                     setTimeout(() => checkPaymentStatusAndActivate(retryCount + 1), 2000);
-                } else if (retryCount === 4) {
+                } else if (retryCount === 9) {
                     setIsCheckingStatus(false);
                     // Only show alert on the FINAL failed attempt
                     Alert.alert(
