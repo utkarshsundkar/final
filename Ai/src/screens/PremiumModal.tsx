@@ -167,7 +167,12 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
                     ]
                 );
             } else {
-                console.log('⏳ Premium not yet activated, payment may still be processing...');
+                console.log(`⏳ Premium not yet activated for ${user.email}. Payment may still be processing...`);
+                Alert.alert(
+                    'Still Processing',
+                    `We haven't received the payment confirmation for ${user.email} yet. If you just paid, please wait a few seconds and try again.`,
+                    [{ text: 'OK' }]
+                );
             }
         } catch (error) {
             console.error('❌ Error checking payment status:', error);

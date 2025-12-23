@@ -840,7 +840,9 @@ const handleDodoWebhook = asyncHandler(async (req, res) => {
       data.customer?.email ||
       data.customer_email ||
       data.billing_details?.email ||
-      data.data?.customer?.email;
+      data.customer_details?.email ||
+      data.data?.customer?.email ||
+      data.data?.customer_email;
 
     // Extract amount from all possible locations
     const amount =
@@ -854,13 +856,16 @@ const handleDodoWebhook = asyncHandler(async (req, res) => {
       data.currency_code ||
       'USD';
 
+    console.log(`🦤 PROCESS WEBHOOK: Email=${customerEmail}, Type=${type}, Amount=${amount}`);
+
     if (!customerEmail) {
-      console.error('❌ Webhook missing customer email. Data received:', JSON.stringify(data));
+      console.error('❌ Webhook missing customer email. Payload:', JSON.stringify(data).substring(0, 500));
       return res.status(200).send('No email found');
     }
 
     // Helper to escape regex characters
     const escapeRegExp = (string) => {
+      if (!string) return '';
       return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     };
 
@@ -870,12 +875,19 @@ const handleDodoWebhook = asyncHandler(async (req, res) => {
       const user = await User.findOne({ email: { $regex: new RegExp(`^${escapedEmail}$`, 'i') } });
 
       if (!user) {
-        console.error(`❌ User not found for email: ${customerEmail}`);
-        // Return 200 to acknowledge webhook even if user not found to stop retries
+        console.error(`❌ USER NOT FOUND in DB for email: ${customerEmail}`);
+        // Log all users nearby to see if it's a casing/formatting issue
+        const similarUser = await User.findOne({ email: customerEmail.toLowerCase() });
+        if (similarUser) {
+          console.log(`💡 Found user with literal lowercase match: ${similarUser.email}`);
+        }
         return res.status(200).send('User not found');
       }
 
-      console.log(`✅ User found for webhook: ${user.email}`);
+      console.log(`✅ USER FOUND: ID=${user._id}, CurrentPremium=${user.isPremium}`);
+
+      // If user is already premium, we still want to record the payment but maybe skip some logic
+      // However, for safety, we just run the activation logic again (it's idempotent)
 
       // Determine plan type based on amount
       // Monthly: ~$5.50 (550), Yearly: ~$40.00 (4000)
