@@ -21,10 +21,6 @@ export interface PricingInfo {
 }
 
 export const detectUserRegion = (): 'IN' | 'INTERNATIONAL' => {
-    // FORCE INTERNATIONAL FOR TESTING (Uncomment original logic for production)
-    console.log('🌍 FORCING REGION: INTERNATIONAL (US)');
-    return 'INTERNATIONAL';
-    /*
     try {
         const locales = Localization.getLocales();
         const countryCode = locales[0]?.countryCode;
@@ -42,7 +38,6 @@ export const detectUserRegion = (): 'IN' | 'INTERNATIONAL' => {
         // Default to international if detection fails
         return 'INTERNATIONAL';
     }
-    */
 };
 
 export const getPricingForRegion = (): PricingInfo => {
