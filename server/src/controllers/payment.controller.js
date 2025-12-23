@@ -844,89 +844,102 @@ const handleDodoWebhook = asyncHandler(async (req, res) => {
       return res.status(200).send('No email found');
     }
 
-    // Find user (Case Insensitive)
-    const user = await User.findOne({ email: { $regex: new RegExp(`^${customerEmail}$`, 'i') } });
-    if (!user) {
-      console.error(`❌ User not found for email: ${customerEmail}`);
-      // Return 200 to acknowledge webhook even if user not found to stop retries
-      return res.status(200).send('User not found');
-    }
+    // Helper to escape regex characters
+    const escapeRegExp = (string) => {
+      return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    };
 
-    console.log(`✅ User found for webhook: ${user.email}`);
+    try {
+      // Find user (Case Insensitive & Safe)
+      const escapedEmail = escapeRegExp(customerEmail);
+      const user = await User.findOne({ email: { $regex: new RegExp(`^${escapedEmail}$`, 'i') } });
 
-    // Determine plan type based on amount
-    // Monthly: ~$5.50 (550), Yearly: ~$40.00 (4000)
-    let planType = 'monthly';
-    if (amount > 1000) {
-      planType = 'yearly';
-    }
+      if (!user) {
+        console.error(`❌ User not found for email: ${customerEmail}`);
+        // Return 200 to acknowledge webhook even if user not found to stop retries
+        return res.status(200).send('User not found');
+      }
 
-    // Update User & Premium
-    const now = new Date();
-    const duration = planType === 'monthly' ? 30 : 365;
-    const expiryDate = new Date(now.getTime() + duration * 24 * 60 * 60 * 1000);
+      console.log(`✅ User found for webhook: ${user.email}`);
 
-    // Create payment record if it doesn't exist (or find pending one)
-    // We try to find a pending one created by recordDodoInitiation
-    let payment = await Payment.findOne({
-      user: user._id,
-      paymentStatus: 'pending',
-      paymentMethod: 'dodo',
-      createdAt: { $gte: new Date(Date.now() - 24 * 60 * 60 * 1000) } // Last 24 hours
-    }).sort({ createdAt: -1 });
+      // Determine plan type based on amount
+      // Monthly: ~$5.50 (550), Yearly: ~$40.00 (4000)
+      let planType = 'monthly';
+      const safeAmount = amount || 0; // fallback
+      if (safeAmount > 1000) {
+        planType = 'yearly';
+      }
 
-    if (!payment) {
-      payment = await Payment.create({
+      // Update User & Premium
+      const now = new Date();
+      const duration = planType === 'monthly' ? 30 : 365;
+      const expiryDate = new Date(now.getTime() + duration * 24 * 60 * 60 * 1000);
+
+      // Create payment record if it doesn't exist (or find pending one)
+      let payment = await Payment.findOne({
         user: user._id,
-        planType: planType,
-        endDate: expiryDate,
-        startDate: now,
-        active: true,
-        currency: currency,
-        amount: amount,
+        paymentStatus: 'pending',
         paymentMethod: 'dodo',
-        paymentStatus: 'success',
-        razorpayPaymentId: data.payment_id || `DODO_WEBHOOK_${Date.now()}`
+        createdAt: { $gte: new Date(Date.now() - 24 * 60 * 60 * 1000) } // Last 24 hours
+      }).sort({ createdAt: -1 });
+
+      if (!payment) {
+        payment = await Payment.create({
+          user: user._id,
+          planType: planType,
+          endDate: expiryDate,
+          startDate: now,
+          active: true,
+          currency: currency || 'USD',
+          amount: safeAmount,
+          paymentMethod: 'dodo',
+          paymentStatus: 'success',
+          razorpayPaymentId: data.payment_id || `DODO_WEBHOOK_${Date.now()}`
+        });
+      } else {
+        payment.paymentStatus = 'success';
+        payment.active = true;
+        payment.razorpayPaymentId = data.payment_id || `DODO_WEBHOOK_${Date.now()}`;
+        await payment.save();
+      }
+
+      // Update User
+      await User.findByIdAndUpdate(user._id, {
+        isPremium: true,
+        isPaid: true
       });
-    } else {
-      payment.paymentStatus = 'success';
-      payment.active = true;
-      payment.razorpayPaymentId = data.payment_id || `DODO_WEBHOOK_${Date.now()}`;
-      await payment.save();
+
+      // Update Premium Model
+      const existingPlan = await Premium.findOne({ user: user._id });
+      if (existingPlan) {
+        existingPlan.active = true;
+        existingPlan.planType = planType;
+        existingPlan.startDate = now;
+        existingPlan.endDate = expiryDate;
+        existingPlan.lastPayment = payment._id;
+        await existingPlan.save();
+      } else {
+        const newPremium = await Premium.create({
+          user: user._id,
+          active: true,
+          planType: planType,
+          startDate: now,
+          endDate: expiryDate,
+          lastPayment: payment._id
+        });
+        await User.findByIdAndUpdate(user._id, { premium: newPremium._id });
+      }
+
+      console.log(`🎉 Premium activated for ${user.email} via Webhook`);
+      return res.status(200).send('Webhook processed');
+
+    } catch (err) {
+      console.error('❌ Error processing Dodo webhook logic:', err);
+      // Return 200 to allow Dodo to stop retrying, but verify logs for fix
+      return res.status(200).send('Error processed');
     }
 
-    // Update User
-    await User.findByIdAndUpdate(user._id, {
-      isPremium: true,
-      isPaid: true
-    });
-
-    // Update Premium Model
-    const existingPlan = await Premium.findOne({ user: user._id });
-    if (existingPlan) {
-      existingPlan.active = true;
-      existingPlan.planType = planType;
-      existingPlan.startDate = now;
-      existingPlan.endDate = expiryDate;
-      existingPlan.lastPayment = payment._id;
-      await existingPlan.save();
-    } else {
-      const newPremium = await Premium.create({
-        user: user._id,
-        active: true,
-        planType: planType,
-        startDate: now,
-        endDate: expiryDate,
-        lastPayment: payment._id
-      });
-      await User.findByIdAndUpdate(user._id, { premium: newPremium._id });
-    }
-
-    console.log(`🎉 Premium activated for ${user.email} via Webhook`);
-  }
-
-  return res.status(200).send('Webhook received');
-});
+  });
 
 export { getPlan, createOrder, verifyPaymentAndActivate, getUserPlanStatus, startFreeTrial, generatePayUHash, generateDynamicPayUHash, verifyPayUPayment, createDodoPayment, verifyDodoPayment, recordDodoInitiation, handleDodoWebhook };
 // End of file
