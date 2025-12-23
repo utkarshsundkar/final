@@ -46,14 +46,13 @@ const PostOnboardingScreen = ({ navigation }: any) => {
     };
 
     const handlePremiumClose = () => {
-        // User clicked X on Premium Modal
-        console.log('📱 User closed Premium Modal - showing Free Trial');
-        setShowPremium(false);
-        setShowFreeTrial(true);
+        // User clicked X on Premium Modal - Just go to Home
+        console.log('📱 User closed Premium Modal - navigating to Home');
+        navigation.replace('Home');
     };
 
     const handlePaymentSuccess = async () => {
-        // User successfully paid for premium OR activated free trial
+        // User successfully paid for premium
         console.log('💳 handlePaymentSuccess called - navigating to Home');
 
         setNavigating(true);
@@ -68,15 +67,8 @@ const PostOnboardingScreen = ({ navigation }: any) => {
     };
 
     const handlePaymentFailed = () => {
-        // Payment failed or cancelled - show free trial
-        console.log('❌ Payment failed/cancelled - showing Free Trial');
-        setShowPremium(false);
-        setShowFreeTrial(true);
-    };
-
-    const handleFreeTrialContinue = () => {
-        // Navigate to Home
-        console.log('🏠 Navigating to Home after Free Trial');
+        // Payment failed or cancelled - Just go to Home
+        console.log('❌ Payment failed/cancelled - navigating to Home');
         navigation.replace('Home');
     };
 
@@ -91,21 +83,14 @@ const PostOnboardingScreen = ({ navigation }: any) => {
     return (
         <View style={styles.container}>
             {!navigating && (
-                <>
-                    <PremiumModal
-                        visible={showPremium}
-                        onClose={handlePremiumClose}
-                        onSuccess={handlePaymentSuccess}
-                        onPaymentFailed={handlePaymentFailed}
-                        userEmail={user?.email || ''}
-                        userName={user?.name || user?.username || ''}
-                    />
-
-                    <FreeTrialModal
-                        visible={showFreeTrial}
-                        onContinue={handleFreeTrialContinue}
-                    />
-                </>
+                <PremiumModal
+                    visible={showPremium}
+                    onClose={handlePremiumClose}
+                    onSuccess={handlePaymentSuccess}
+                    onPaymentFailed={handlePaymentFailed}
+                    userEmail={user?.email || ''}
+                    userName={user?.name || user?.username || ''}
+                />
             )}
         </View>
     );
