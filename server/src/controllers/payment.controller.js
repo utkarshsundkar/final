@@ -938,8 +938,10 @@ const handleDodoWebhook = asyncHandler(async (req, res) => {
       // Return 200 to allow Dodo to stop retrying, but verify logs for fix
       return res.status(200).send('Error processed');
     }
+  }
 
-  });
+  return res.status(200).send('Webhook received');
+});
 
 export { getPlan, createOrder, verifyPaymentAndActivate, getUserPlanStatus, startFreeTrial, generatePayUHash, generateDynamicPayUHash, verifyPayUPayment, createDodoPayment, verifyDodoPayment, recordDodoInitiation, handleDodoWebhook };
 // End of file
