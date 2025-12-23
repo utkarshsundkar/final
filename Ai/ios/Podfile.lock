@@ -35,10 +35,51 @@ PODS:
   - hermes-engine (0.74.2):
     - hermes-engine/Pre-built (= 0.74.2)
   - hermes-engine/Pre-built (0.74.2)
+  - PayUIndia-Analytics (4.0.2):
+    - PayUIndia-NetworkReachability (~> 2.1)
+  - PayUIndia-AssetLibrary (4.0.1)
+  - PayUIndia-CardScanner (2.1.0)
+  - PayUIndia-CheckoutPro (8.11.3):
+    - PayUIndia-AssetLibrary (~> 4.0)
+    - PayUIndia-CardScanner (~> 2.1)
+    - PayUIndia-CheckoutProBase (~> 8.11)
+    - PayUIndia-CommonUI (~> 2.3)
+    - PayUIndia-CrashReporter (~> 4.0)
+    - PayUIndia-Custom-Browser (~> 11.3)
+    - PayUIndia-NativeOtpAssist (~> 4.2)
+    - PayUIndia-NetworkReachability (~> 2.0)
+    - PayUIndia-PayUParams (~> 6.8)
+    - PayUIndia-PG-SDK (~> 11.9)
+    - PayUIndia-UPICore (~> 10.6)
+  - PayUIndia-CheckoutProBase (8.11.2):
+    - PayUIndia-PayUParams (~> 6.8)
+    - PayUIndia-PG-SDK (~> 11.9)
+  - PayUIndia-CommonUI (2.3.2):
+    - PayUIndia-Analytics (~> 4.0)
+    - PayUIndia-CrashReporter (~> 4.0)
+  - PayUIndia-CrashReporter (4.0.2)
+  - PayUIndia-Custom-Browser (11.3.0):
+    - PayUIndia-CommonUI (~> 2.3)
+  - PayUIndia-Logger (5.0.1)
+  - PayUIndia-NativeOtpAssist (4.2.0):
+    - PayUIndia-Analytics (~> 4.0)
+    - PayUIndia-CommonUI (~> 2.2)
+    - PayUIndia-CrashReporter (~> 4.0)
+    - PayUIndia-NetworkReachability (~> 2.1)
+    - PayUIndia-PayUParams (~> 6.6)
+  - PayUIndia-Networking (5.0.1):
+    - PayUIndia-Logger (~> 5.0)
+  - PayUIndia-NetworkReachability (2.1.1)
+  - PayUIndia-PayUParams (6.8.1)
+  - PayUIndia-PG-SDK (11.9.1):
+    - PayUIndia-CrashReporter (~> 4.0)
+    - PayUIndia-NetworkReachability (~> 2.1)
+    - PayUIndia-PayUParams (~> 6.8)
+  - PayUIndia-UPICore (10.6.0):
+    - PayUIndia-CommonUI (~> 2.2)
+    - PayUIndia-Networking (~> 5.0)
+    - PayUIndia-PayUParams (~> 6.8)
   - PromisesObjC (2.4.0)
-  - razorpay-core-pod (1.0.4)
-  - razorpay-pod (1.5.0):
-    - razorpay-core-pod
   - RCT-Folly (2024.01.01.00):
     - boost
     - DoubleConversion
@@ -970,6 +1011,9 @@ PODS:
   - react-native-app-auth (8.1.0):
     - AppAuth (>= 1.7.6)
     - React-Core
+  - react-native-biz-sdk (3.3.5):
+    - PayUIndia-CheckoutPro (~> 8.11)
+    - React
   - react-native-image-picker (8.2.1):
     - DoubleConversion
     - glog
@@ -991,9 +1035,6 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-razorpay (2.3.1):
-    - razorpay-pod (= 1.5.0)
-    - React
   - react-native-safe-area-context (5.6.2):
     - React-Core
   - react-native-smkit-ui (2.0.1):
@@ -1016,8 +1057,6 @@ PODS:
     - React-utils
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - SMBase
-    - SMKit
     - SMKitUI (= 0.3.7)
     - Yoga
   - React-nativeconfig (0.74.2)
@@ -1366,8 +1405,8 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
   - react-native-app-auth (from `../node_modules/react-native-app-auth`)
+  - react-native-biz-sdk (from `../node_modules/payu-non-seam-less-react`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
-  - react-native-razorpay (from `../node_modules/react-native-razorpay`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-smkit-ui (from `../node_modules/@sency/react-native-smkit-ui`)"
   - React-nativeconfig (from `../node_modules/react-native/ReactCommon`)
@@ -1413,9 +1452,22 @@ SPEC REPOS:
     - GoogleUtilities
     - GTMAppAuth
     - GTMSessionFetcher
+    - PayUIndia-Analytics
+    - PayUIndia-AssetLibrary
+    - PayUIndia-CardScanner
+    - PayUIndia-CheckoutPro
+    - PayUIndia-CheckoutProBase
+    - PayUIndia-CommonUI
+    - PayUIndia-CrashReporter
+    - PayUIndia-Custom-Browser
+    - PayUIndia-Logger
+    - PayUIndia-NativeOtpAssist
+    - PayUIndia-Networking
+    - PayUIndia-NetworkReachability
+    - PayUIndia-PayUParams
+    - PayUIndia-PG-SDK
+    - PayUIndia-UPICore
     - PromisesObjC
-    - razorpay-core-pod
-    - razorpay-pod
     - SocketRocket
     - SwiftyJSON
     - ZIPFoundation
@@ -1484,10 +1536,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   react-native-app-auth:
     :path: "../node_modules/react-native-app-auth"
+  react-native-biz-sdk:
+    :path: "../node_modules/payu-non-seam-less-react"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
-  react-native-razorpay:
-    :path: "../node_modules/react-native-razorpay"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-smkit-ui:
@@ -1566,9 +1618,22 @@ SPEC CHECKSUMS:
   GTMAppAuth: 217a876b249c3c585a54fd6f73e6b58c4f5c4238
   GTMSessionFetcher: 5aea5ba6bd522a239e236100971f10cb71b96ab6
   hermes-engine: 01d3e052018c2a13937aca1860fbedbccd4a41b7
+  PayUIndia-Analytics: 90a4c1a9d3f7a79422a4f4b0c3d9f5a8362b89fb
+  PayUIndia-AssetLibrary: e40d7697c37aea55f184e29564e2f8b63a63b472
+  PayUIndia-CardScanner: d6d024645e7fab58326e0d00b22ed42ca0ad5dc1
+  PayUIndia-CheckoutPro: 17f4fa17707513aeed4fff91288092733a5cc146
+  PayUIndia-CheckoutProBase: 8babca07b4408f0dad9142d66843db3cc4e5d11f
+  PayUIndia-CommonUI: 58d7fbf8f64ac5fffccbea98c2dd029d23043704
+  PayUIndia-CrashReporter: 913f79270aef2281e1b01af6b41d8465d8fb1b18
+  PayUIndia-Custom-Browser: cea86601cfea2f1878e2896d37c8ab31215adb45
+  PayUIndia-Logger: 50866e18a275b0726ed59afaea67b6529ab42774
+  PayUIndia-NativeOtpAssist: 4afca30e0c2ecfc132c8e42077c5c4ac22cd5600
+  PayUIndia-Networking: 0709588fd96b6b42c1398d07471cf87ef2c0db71
+  PayUIndia-NetworkReachability: 581c04b9ea3a8aaa78faef179ad819759942f381
+  PayUIndia-PayUParams: b74ebe4f1def26de4998e1ae86deb192cb7cb6fe
+  PayUIndia-PG-SDK: 958e1fa7eee3ef2e9a33ad34fd4fbb8a79f35c27
+  PayUIndia-UPICore: 2b9e0db5403f7cb96bb7467a1fb551e54efe1c3e
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
-  razorpay-core-pod: a5ee92704a114e9468436dcba9d9b6222f6d9899
-  razorpay-pod: f634f1b8397eb54d547f25d35291f679545ddf17
   RCT-Folly: 02617c592a293bd6d418e0a88ff4ee1f88329b47
   RCTDeprecation: b03c35057846b685b3ccadc9bfe43e349989cdb2
   RCTRequired: 194626909cfa8d39ca6663138c417bc6c431648c
@@ -1594,10 +1659,10 @@ SPEC CHECKSUMS:
   React-logger: 29fa3e048f5f67fe396bc08af7606426d9bd7b5d
   React-Mapbuffer: 86703e9e4f6522053568300827b436ccc01e1101
   react-native-app-auth: 9b0a0e3ca279c3426a451e2607c8483808b8ed4a
+  react-native-biz-sdk: def6d61840b7a45d8d1ae5885559c3169170edc0
   react-native-image-picker: 6ccc56d6e61dcc6063474571969866aa23854663
-  react-native-razorpay: 41a407f4367b5b0e1bba89a77f9cab1918860844
   react-native-safe-area-context: e48706fb09fde89f82e12bfb49b140cfdcb761f7
-  react-native-smkit-ui: bf8f9aff0bab66791c32ad2ee0bdf4c41ed6bf93
+  react-native-smkit-ui: f930f48ced33b1c6209ce3e1347a93e069cb3e0b
   React-nativeconfig: 5d452e509d6fbedc1522e21b566451fc673ac6b7
   React-NativeModulesApple: 6560431301ffdab8df6212cc8c8eff779396d8e0
   React-perflogger: 32ed45d9cee02cf6639acae34251590dccd30994

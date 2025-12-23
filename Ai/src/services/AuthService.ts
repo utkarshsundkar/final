@@ -9,7 +9,6 @@ import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-si
 const isAndroid = Platform.OS === 'android';
 
 // Production: 'https://v2-jell.onrender.com/api/v2/users'
-// Using Mac's local IP for physical device testing
 // Production Render URL
 const BACKEND_URL = 'https://final-z80k.onrender.com/api/v2/users';
 

@@ -1,4 +1,4 @@
-import { getPlan, createOrder, verifyPaymentAndActivate, getUserPlanStatus, startFreeTrial } from "../controllers/payment.controller.js";
+import { getPlan, createOrder, verifyPaymentAndActivate, getUserPlanStatus, startFreeTrial, generatePayUHash, generateDynamicPayUHash, verifyPayUPayment, createDodoPayment, verifyDodoPayment, recordDodoInitiation, handleDodoWebhook } from "../controllers/payment.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { Router } from "express";
 
@@ -9,8 +9,15 @@ router.route("/createorder").post(verifyJWT, createOrder);
 router.route("/verifyPayment").post(verifyJWT, verifyPaymentAndActivate);
 router.route("/user-plan-status").get(verifyJWT, getUserPlanStatus);
 router.route("/start-free-trial").post(verifyJWT, startFreeTrial);
-// router.route("/payu-hash").post(verifyJWT, generatePayUHash);
-// router.route("/hash").post(generateDynamicPayUHash); 
+router.route("/payu-hash").post(verifyJWT, generatePayUHash);
+router.route("/hash").post(generateDynamicPayUHash);
+router.route("/verify-payu").post(verifyJWT, verifyPayUPayment);
+
+// Dodo Payments routes
+router.route("/create-dodo-payment").post(verifyJWT, createDodoPayment);
+router.route("/verify-dodo-payment").post(verifyJWT, verifyDodoPayment);
+router.route("/record-dodo-initiation").post(verifyJWT, recordDodoInitiation);
+router.route("/dodo-webhook").post(handleDodoWebhook);
 
 
 export default router;

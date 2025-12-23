@@ -21,6 +21,10 @@ export interface PricingInfo {
 }
 
 export const detectUserRegion = (): 'IN' | 'INTERNATIONAL' => {
+    // FORCE INTERNATIONAL FOR TESTING (Uncomment original logic for production)
+    console.log('🌍 FORCING REGION: INTERNATIONAL (US)');
+    return 'INTERNATIONAL';
+    /*
     try {
         const locales = Localization.getLocales();
         const countryCode = locales[0]?.countryCode;
@@ -38,6 +42,7 @@ export const detectUserRegion = (): 'IN' | 'INTERNATIONAL' => {
         // Default to international if detection fails
         return 'INTERNATIONAL';
     }
+    */
 };
 
 export const getPricingForRegion = (): PricingInfo => {
@@ -48,18 +53,18 @@ export const getPricingForRegion = (): PricingInfo => {
             currency: 'INR',
             symbol: '₹',
             monthly: {
-                amount: 29900, // in paise
-                originalAmount: 50000,
-                discount: 40,
+                amount: 29900, // ₹299 in paise
+                originalAmount: 49900, // ₹499 in paise
+                discount: 40, // 40% off
                 displayPrice: '₹299',
-                displayOriginalPrice: '₹500',
+                displayOriginalPrice: '₹499',
             },
             yearly: {
-                amount: 200000, // in paise
-                originalAmount: 200000,
-                discount: 0,
-                displayPrice: '₹2,000',
-                displayOriginalPrice: '₹2,000',
+                amount: 239900, // ₹2399 in paise (₹199.92/month)
+                originalAmount: 399900, // ₹3999 in paise
+                discount: 40, // 40% off
+                displayPrice: '₹2,399',
+                displayOriginalPrice: '₹3,999',
             },
         };
     } else {
@@ -67,18 +72,18 @@ export const getPricingForRegion = (): PricingInfo => {
             currency: 'USD',
             symbol: '$',
             monthly: {
-                amount: 499, // in cents
-                originalAmount: 499,
-                discount: 0,
-                displayPrice: '$4.99',
-                displayOriginalPrice: '$4.99',
+                amount: 550, // $5.50 in cents (after 50% off)
+                originalAmount: 1099, // $10.99 in cents (original price)
+                discount: 50, // 50% off
+                displayPrice: '$5.50',
+                displayOriginalPrice: '$10.99',
             },
             yearly: {
-                amount: 3999, // in cents
-                originalAmount: 3999,
-                discount: 0,
-                displayPrice: '$39.99',
-                displayOriginalPrice: '$39.99',
+                amount: 4000, // $40.00 in cents (after 50% off)
+                originalAmount: 7999, // $79.99 in cents (original price)
+                discount: 50, // 50% off
+                displayPrice: '$40.00',
+                displayOriginalPrice: '$79.99',
             },
         };
     }

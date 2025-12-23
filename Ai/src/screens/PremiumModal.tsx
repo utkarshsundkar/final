@@ -1,13 +1,15 @@
+// Updated: 2025-12-23 14:38
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Modal, ScrollView, Platform, ActivityIndicator } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { RazorpayService } from '../services/RazorpayService';
+import { View, Text, TouchableOpacity, StyleSheet, Modal, ScrollView, Platform, ActivityIndicator, SafeAreaView, StatusBar, Alert, NativeEventEmitter, NativeModules, Linking, AppState } from 'react-native';
+import { PayUService } from '../services/PayUService';
+import { DodoPaymentsService } from '../services/DodoPaymentsService';
 import { getPricingForRegion, PricingInfo } from '../utils/pricing';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AuthService from '../services/AuthService';
 
-// Production Render URL
+// Localhost configuration
+// Production Configuration
 const BASE_URL = 'https://final-z80k.onrender.com/api/v2';
 
 interface PremiumModalProps {
@@ -23,19 +25,82 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
     const [pricing, setPricing] = useState<PricingInfo | null>(null);
     const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly'>('yearly');
     const [trialAlreadyUsed, setTrialAlreadyUsed] = useState(false);
+    const [userData, setUserData] = useState<any>(null);
 
     useEffect(() => {
+        // PayU Event Listeners
+        // ⚠️ Removed local NativeEventEmitter to avoid conflicts
+
+        const removeListeners = PayUService.addPaymentListeners({
+            onPaymentSuccess: (data) => {
+                console.log('PayU Payment Success:', data);
+                handlePaymentSuccess(data);
+            },
+            onPaymentFailure: (data) => {
+                console.log('PayU Payment Failure:', data);
+                Alert.alert('Payment Failed', 'Your payment could not be processed. Please try again.');
+                if (onPaymentFailed) {
+                    onPaymentFailed();
+                } else {
+                    onClose();
+                }
+            },
+            onPaymentCancel: (data) => {
+                console.log('PayU Payment Cancelled:', data);
+                Alert.alert('Payment Cancelled', 'You have cancelled the payment process.');
+                if (onPaymentFailed) {
+                    onPaymentFailed();
+                } else {
+                    onClose();
+                }
+            }
+        });
+
+        // Deep Link Listener for Dodo Payment Return
+        const handleDeepLink = async (event: { url: string }) => {
+            console.log('🔗 Deep link received:', event.url);
+
+            if (event.url.includes('arthlete://payment_success')) {
+                console.log('💳 Payment return detected, checking status...');
+                await checkPaymentStatusAndActivate();
+            }
+        };
+
+        const linkingSubscription = Linking.addEventListener('url', handleDeepLink);
+
+        // Check for initial URL (if app was closed and opened via deep link)
+        Linking.getInitialURL().then((url) => {
+            if (url && url.includes('arthlete://payment_success')) {
+                console.log('💳 App opened via payment return link');
+                checkPaymentStatusAndActivate();
+            }
+        });
+
+        // AppState listener to check when user returns to app
+        const appStateSubscription = AppState.addEventListener('change', (nextAppState) => {
+            if (nextAppState === 'active' && visible && pricing?.currency === 'USD') {
+                console.log('📱 App became active, checking payment status...');
+                checkPaymentStatusAndActivate();
+            }
+        });
+
         if (visible) {
             const regionPricing = getPricingForRegion();
             setPricing(regionPricing);
             console.log('💰 Pricing for region:', regionPricing);
 
-            // Check if user already used trial
-            checkTrialStatus();
+            // Check if user already used trial & fetch latest user details
+            fetchUserDetails();
         }
+
+        return () => {
+            removeListeners();
+            linkingSubscription.remove();
+            appStateSubscription.remove();
+        };
     }, [visible]);
 
-    const checkTrialStatus = async () => {
+    const fetchUserDetails = async () => {
         try {
             const token = await AsyncStorage.getItem('accessToken');
             if (!token) return;
@@ -45,7 +110,8 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
-            const user = response.data.data;
+            const user = response.data.data.user;
+            setUserData(user);
 
             // Hide free trial button if:
             // 1. User already activated trial (even if expired)
@@ -53,15 +119,94 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
             const shouldHideFreeTrial = user.trialActivated || user.isPremium;
             setTrialAlreadyUsed(shouldHideFreeTrial);
 
-            console.log('🔍 Trial status:', {
+            console.log('🔍 User details fetched:', {
+                email: user.email,
+                name: user.firstName,
                 trialActivated: user.trialActivated,
-                isPremium: user.isPremium,
-                hideButton: shouldHideFreeTrial
+                isPremium: user.isPremium
             });
         } catch (error) {
-            console.error('Error checking trial status:', error);
+            console.error('Error fetching user details:', error);
         }
     };
+
+    const checkPaymentStatusAndActivate = async () => {
+        try {
+            console.log('🔍 Checking payment status...');
+
+            // Refresh user profile to get latest premium status
+            await AuthService.refreshUserProfile();
+
+            // Fetch updated user details
+            const token = await AsyncStorage.getItem('accessToken');
+            if (!token) return;
+
+            const response = await axios.get(
+                `${BASE_URL}/users/current-user`,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+
+            const user = response.data.data.user;
+
+            if (user.isPremium) {
+                console.log('✅ Premium activated!');
+                Alert.alert(
+                    'Payment Successful! 🎉',
+                    'Your premium subscription has been activated. Enjoy unlimited access!',
+                    [
+                        {
+                            text: 'Start Exploring',
+                            onPress: () => {
+                                if (onSuccess) {
+                                    onSuccess();
+                                } else {
+                                    onClose();
+                                }
+                            }
+                        }
+                    ]
+                );
+            } else {
+                console.log('⏳ Premium not yet activated, payment may still be processing...');
+            }
+        } catch (error) {
+            console.error('❌ Error checking payment status:', error);
+        }
+    };
+
+    const handlePaymentSuccess = async (data: any) => {
+        try {
+            console.log('Processing successful payment...');
+
+            // 🛑 Verify payment with backend manually (since webhook might be skipped on local)
+            const token = await AsyncStorage.getItem('accessToken');
+            if (token) {
+                // PayU usually returns the response JSON as "payuResponse" inside the data object from React Native SDK
+                // Or data might be the response directly. Let's log to be sure, but send 'data' usually.
+                // Looking at SDK docs, success callback data often contains the full dictionary.
+                await axios.post(
+                    `${BASE_URL}/payment/verify-payu`,
+                    data, // Pass the entire success object (should contain txnid, hash, etc.)
+                    { headers: { Authorization: `Bearer ${token}` } }
+                );
+                console.log('✅ Backend verification triggered');
+            }
+
+            await AuthService.refreshUserProfile();
+
+            if (onSuccess) {
+                onSuccess();
+            } else {
+                onClose();
+            }
+        } catch (error) {
+            console.error('Error post-payment:', error);
+            // Even if verification call fails (e.g. network), we might want to refresh profile just in case.
+            await AuthService.refreshUserProfile();
+            onClose();
+        }
+    };
+
 
     const handlePurchase = async () => {
         if (!pricing) return;
@@ -69,30 +214,65 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
         const plan = selectedPlan;
         const productInfo = `${plan.charAt(0).toUpperCase() + plan.slice(1)} Subscription`;
 
-        try {
-            await RazorpayService.startPayment({
-                planType: plan,
-                productInfo: productInfo,
-                userName: userName || 'User',
-                email: userEmail || 'user@example.com',
-                phone: '9999999999',
-                currency: pricing.currency
-            });
+        // Use fetched user data if available, otherwise fallback to props
+        const email = userData?.email || userEmail || 'user@example.com';
+        const name = userData?.firstName || userName || 'User';
+        const phone = userData?.phone || '9999999999';
 
-            // Call onSuccess if provided, otherwise onClose
-            if (onSuccess) {
-                onSuccess();
+        console.log('🛒 Initiating purchase for:', { email, name, currency: pricing.currency });
+
+        try {
+            // Route to appropriate payment gateway based on currency
+            if (pricing.currency === 'INR') {
+                // Indian users -> PayU
+                console.log('🇮🇳 Using PayU for Indian user');
+
+                const txnid = `TXN${Date.now()}${Math.floor(Math.random() * 1000)}`;
+                const amountInRupees = '1.00'; // Override for 1 INR testing
+                // For production, use: const amountInRupees = (Number(planPricing.amount) / 100).toFixed(2);
+
+                await PayUService.startPayment({
+                    amount: amountInRupees,
+                    productInfo: productInfo,
+                    firstName: name,
+                    email: email,
+                    phone: phone,
+                    txnid: txnid,
+                });
             } else {
-                onClose();
+                // International users -> Dodo Payments
+                console.log('🌍 Using Dodo Payments for international user');
+
+                Alert.alert(
+                    'Secure Payment',
+                    'You will be redirected to the browser to complete payment.\n\n⚠️ IMPORTANT: After paying, please switch back to this app manually to activate your premium.',
+                    [
+                        {
+                            text: 'Proceed to Payment',
+                            onPress: async () => {
+                                const result = await DodoPaymentsService.startPaymentFlow({
+                                    planType: selectedPlan,
+                                    customerEmail: email,
+                                    customerName: name
+                                });
+
+                                if (result.success) {
+                                    console.log('✅ Dodo payment initiated:', result.paymentId);
+                                } else {
+                                    Alert.alert('Payment Error', 'Failed to initiate payment. Please try again.');
+                                }
+                            }
+                        },
+                        { text: 'Cancel', style: 'cancel' }
+                    ]
+                );
             }
         } catch (error) {
-            console.error('Payment error/cancelled:', error);
-            // Payment failed or was cancelled - show free trial
-            if (onPaymentFailed) {
-                onPaymentFailed();
-            }
+            console.error('❌ Payment Start Error:', error);
+            Alert.alert('Error', 'Failed to start payment. Please try again.');
         }
     };
+
 
     const handleStartFreeTrial = async () => {
         console.log('🎁 START FREE TRIAL CLICKED');
@@ -112,7 +292,6 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
 
             console.log('✅ API Response:', response.data);
 
-            // Check if user already has premium access
             if (response.data.data?.isPremium) {
                 console.log('✅ User already has premium access');
                 console.log('🔄 Refreshing user profile...');
@@ -125,12 +304,10 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
                 return;
             }
 
-            // Check if trial was just activated
             if (response.data.success) {
                 console.log('✅ Free trial activated successfully');
                 console.log('🔄 Refreshing user profile to update cache...');
 
-                // Refresh user profile to update cached isPremium status
                 await AuthService.refreshUserProfile();
                 console.log('✅ User profile refreshed');
 
@@ -142,7 +319,6 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
                     console.warn('⚠️ onSuccess is not defined');
                 }
             } else {
-                // Trial already used and expired
                 console.log('❌ Trial already used and expired');
                 console.warn('⚠️ User cannot activate trial again');
             }
@@ -151,7 +327,6 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
             console.error('Error response:', error.response?.data);
             console.error('Error message:', error.message);
 
-            // Even if error, still navigate (might already have trial)
             console.log('🏠 Navigating to Home despite error...');
             if (onSuccess) {
                 onSuccess();
@@ -178,7 +353,6 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
     const yearlyPlan = pricing.yearly;
     const monthlyPlan = pricing.monthly;
 
-    // Calculate savings for yearly plan
     const monthlyCost = monthlyPlan.amount;
     const yearlyCost = yearlyPlan.amount;
     const yearlyMonthlyCost = Math.round(yearlyCost / 12);
@@ -187,11 +361,11 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
     return (
         <Modal
             animationType="slide"
-            transparent={true}
+            transparent={false}
             visible={visible}
             onRequestClose={onClose}
         >
-            <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+            <SafeAreaView style={[styles.container, styles.androidSafeArea]}>
                 <ScrollView
                     contentContainerStyle={styles.scrollContent}
                     showsVerticalScrollIndicator={false}
@@ -202,67 +376,47 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
                     </TouchableOpacity>
 
                     {/* Header */}
-                    <Text style={styles.brandName}>Arthlete<Text style={styles.plus}>Pro</Text></Text>
-
-                    {/* Pricing Header */}
-                    <View style={styles.pricingHeader}>
-                        <Text style={styles.startingText}>Starting at just </Text>
-                        {isIndianUser && monthlyPlan.discount > 0 && (
-                            <Text style={styles.originalPriceSmall}>{monthlyPlan.displayOriginalPrice} </Text>
-                        )}
-                        <Text style={styles.discountedPrice}>
-                            {pricing.symbol}{yearlyMonthlyCost / (pricing.currency === 'INR' ? 100 : 100)}/mo
-                        </Text>
-                    </View>
-
-                    {/* Sparkle Icon */}
-                    <Text style={styles.sparkle}>✨</Text>
-
-                    {/* Limited Time Offer */}
-                    {isIndianUser && monthlyPlan.discount > 0 && (
-                        <Text style={styles.limitedOffer}>Limited Time Offer!</Text>
-                    )}
+                    <Text style={styles.headerTitle}>Pricing Plans</Text>
+                    <Text style={styles.headerSubtitle}>
+                        Find the plan that fits your needs.{'\n'}Switch anytime.
+                    </Text>
 
                     {/* Plan Cards */}
-                    <View style={styles.plansContainer}>
+                    <View style={styles.plansWrapper}>
                         {/* Yearly Plan */}
                         <TouchableOpacity
                             style={[
-                                styles.planCard,
-                                selectedPlan === 'yearly' && styles.planCardSelected
+                                styles.planCardVertical,
+                                selectedPlan === 'yearly' && styles.planCardVerticalSelected
                             ]}
                             onPress={() => setSelectedPlan('yearly')}
                             activeOpacity={0.8}
                         >
-                            {savingsPercent > 0 && (
-                                <View style={styles.saveBadge}>
-                                    <Text style={styles.saveBadgeText}>Save {savingsPercent}%</Text>
-                                </View>
-                            )}
-
-                            <View style={styles.planHeader}>
-                                <View>
-                                    <Text style={styles.planDuration}>12 Months</Text>
-                                    <Text style={styles.planPrice}>
-                                        {pricing.symbol}{yearlyMonthlyCost / (pricing.currency === 'INR' ? 100 : 100)} /mo
-                                    </Text>
-                                    <View style={styles.priceRow}>
-                                        <Text style={styles.originalPrice}>
-                                            {pricing.symbol}{monthlyCost * 12 / (pricing.currency === 'INR' ? 100 : 100)}
-                                        </Text>
-                                        <Text style={styles.discountPrice}>
-                                            {yearlyPlan.displayPrice}
-                                        </Text>
-                                    </View>
-                                </View>
-
+                            <View style={styles.planCardContent}>
                                 <View style={[
-                                    styles.checkbox,
-                                    selectedPlan === 'yearly' && styles.checkboxSelected
+                                    styles.radioButtonLeft,
+                                    selectedPlan === 'yearly' && styles.radioButtonLeftSelected
                                 ]}>
                                     {selectedPlan === 'yearly' && (
-                                        <Text style={styles.checkmark}>✓</Text>
+                                        <View style={styles.radioButtonLeftInner} />
                                     )}
+                                </View>
+                                <View style={styles.planCardInfo}>
+                                    <View style={styles.planTitleRow}>
+                                        <Text style={styles.planTitle}>Yearly</Text>
+                                        {savingsPercent > 0 && (
+                                            <View style={styles.popularBadge}>
+                                                <Text style={styles.popularBadgeText}>Save {savingsPercent}%</Text>
+                                            </View>
+                                        )}
+                                    </View>
+                                    <Text style={styles.planSubtitle}>Best value for committed users</Text>
+                                </View>
+                                <View style={styles.planPriceContainer}>
+                                    <Text style={styles.planPriceAmount}>
+                                        {pricing.symbol}{yearlyMonthlyCost / (pricing.currency === 'INR' ? 100 : 100)}
+                                    </Text>
+                                    <Text style={styles.planPricePeriod}>/mo</Text>
                                 </View>
                             </View>
                         </TouchableOpacity>
@@ -270,92 +424,94 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
                         {/* Monthly Plan */}
                         <TouchableOpacity
                             style={[
-                                styles.planCard,
-                                styles.planCardUnselected,
-                                selectedPlan === 'monthly' && styles.planCardSelected
+                                styles.planCardVertical,
+                                selectedPlan === 'monthly' && styles.planCardVerticalSelected
                             ]}
                             onPress={() => setSelectedPlan('monthly')}
                             activeOpacity={0.8}
                         >
-                            <View style={styles.planHeader}>
-                                <View>
-                                    <Text style={[styles.planDuration, selectedPlan !== 'monthly' && styles.textMuted]}>
-                                        1 Month
-                                    </Text>
-                                    <Text style={[styles.planPrice, selectedPlan !== 'monthly' && styles.textMuted]}>
-                                        {monthlyPlan.displayPrice} /mo
-                                    </Text>
-                                    {isIndianUser && monthlyPlan.discount > 0 && (
-                                        <Text style={[styles.originalPrice, selectedPlan !== 'monthly' && styles.textMuted]}>
-                                            {monthlyPlan.displayOriginalPrice}
-                                        </Text>
-                                    )}
-                                </View>
-
+                            <View style={styles.planCardContent}>
                                 <View style={[
-                                    styles.checkbox,
-                                    selectedPlan === 'monthly' && styles.checkboxSelected
+                                    styles.radioButtonLeft,
+                                    selectedPlan === 'monthly' && styles.radioButtonLeftSelected
                                 ]}>
                                     {selectedPlan === 'monthly' && (
-                                        <Text style={styles.checkmark}>✓</Text>
+                                        <View style={styles.radioButtonLeftInner} />
                                     )}
+                                </View>
+                                <View style={styles.planCardInfo}>
+                                    <Text style={styles.planTitle}>Monthly</Text>
+                                    <Text style={styles.planSubtitle}>Flexible month-to-month billing</Text>
+                                </View>
+                                <View style={styles.planPriceContainer}>
+                                    <Text style={styles.planPriceAmount}>
+                                        {pricing.symbol}{monthlyCost / (pricing.currency === 'INR' ? 100 : 100)}
+                                    </Text>
+                                    <Text style={styles.planPricePeriod}>/mo</Text>
                                 </View>
                             </View>
                         </TouchableOpacity>
                     </View>
 
-                    {/* Benefits Section */}
-                    <View style={styles.benefitsSection}>
-                        <Text style={styles.benefitsTitle}>— Why People Love Arthlete Pro —</Text>
+                    {/* Features Section */}
+                    <View style={styles.featuresSection}>
+                        <Text style={styles.featuresTitle}>Features:</Text>
 
-                        <BenefitItem
-                            icon="🏋️"
-                            title="Unlimited Workout Access"
-                            description="Access all premium workouts and training programs."
-                        />
+                        <View style={styles.featureItem}>
+                            <Text style={styles.featureCheckmark}>✓</Text>
+                            <Text style={styles.featureText}>Unlimited Workout Access</Text>
+                        </View>
 
-                        <BenefitItem
-                            icon="🏆"
-                            title="Challenges & Competitions"
-                            description="Join exciting challenges and compete with friends."
-                        />
+                        <View style={styles.featureItem}>
+                            <Text style={styles.featureCheckmark}>✓</Text>
+                            <Text style={styles.featureText}>Challenges & Competitions</Text>
+                        </View>
 
-                        <BenefitItem
-                            icon="📊"
-                            title="Advanced Progress Tracking"
-                            description="Track your fitness journey with detailed analytics."
-                        />
+                        <View style={styles.featureItem}>
+                            <Text style={styles.featureCheckmark}>✓</Text>
+                            <Text style={styles.featureText}>Advanced Progress Tracking</Text>
+                        </View>
 
-                        <BenefitItem
-                            icon="🎯"
-                            title="Personalized Workout Plans"
-                            description="Get AI-powered workout recommendations tailored for you."
-                        />
+                        <View style={styles.featureItem}>
+                            <Text style={styles.featureCheckmark}>✓</Text>
+                            <Text style={styles.featureText}>Personalized Workout Plans</Text>
+                        </View>
                     </View>
 
                     {/* CTA Button */}
                     <TouchableOpacity
-                        style={styles.ctaButton}
+                        style={styles.ctaButtonNew}
                         onPress={handlePurchase}
                         activeOpacity={0.9}
                     >
-                        <Text style={styles.ctaButtonText}>
-                            Get Arthlete Pro for {pricing.symbol}
-                            {selectedPlan === 'yearly'
-                                ? (yearlyMonthlyCost / (pricing.currency === 'INR' ? 100 : 100))
-                                : (monthlyCost / (pricing.currency === 'INR' ? 100 : 100))
-                            }/mo
-                        </Text>
+                        <Text style={styles.ctaButtonTextNew}>Get Full Access</Text>
                     </TouchableOpacity>
 
-                    {/* Free Trial Button - Only show if trial not used */}
+                    {/* Free Trial Button */}
                     {!trialAlreadyUsed && (
                         <TouchableOpacity
-                            style={styles.freeTrialButton}
+                            style={styles.freeTrialButtonNew}
                             onPress={handleStartFreeTrial}
                             activeOpacity={0.9}
                         >
-                            <Text style={styles.freeTrialButtonText}>Start Free Trial</Text>
+                            <Text style={styles.freeTrialButtonTextNew}>Start Free Trial</Text>
+                        </TouchableOpacity>
+                    )}
+
+                    {/* Dodo Verification Button (International Only) */}
+                    {pricing.currency === 'USD' && (
+                        <TouchableOpacity
+                            style={{ padding: 16, marginTop: 8, alignItems: 'center' }}
+                            onPress={checkPaymentStatusAndActivate}
+                        >
+                            <Text style={{
+                                color: '#666',
+                                fontFamily: 'Lexend',
+                                textDecorationLine: 'underline',
+                                fontSize: 13
+                            }}>
+                                Already Paid? Check Status
+                            </Text>
                         </TouchableOpacity>
                     )}
                 </ScrollView>
@@ -364,22 +520,13 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
     );
 };
 
-const BenefitItem: React.FC<{ icon: string; title: string; description: string }> = ({ icon, title, description }) => (
-    <View style={styles.benefitItem}>
-        <View style={styles.benefitIcon}>
-            <Text style={styles.benefitIconText}>{icon}</Text>
-        </View>
-        <View style={styles.benefitContent}>
-            <Text style={styles.benefitTitle}>{title}</Text>
-            <Text style={styles.benefitDescription}>{description}</Text>
-        </View>
-    </View>
-);
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#FFF5F0', // Light peachy background
+    },
+    androidSafeArea: {
+        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
     },
     closeButton: {
         alignSelf: 'flex-end',
@@ -389,7 +536,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0.1)',
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: 16,
+        marginBottom: 12,
     },
     closeButtonText: {
         fontSize: 20,
@@ -397,206 +544,171 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     },
     scrollContent: {
-        paddingTop: 20,
-        paddingHorizontal: 20,
+        paddingTop: 12,
+        paddingHorizontal: 24,
         paddingBottom: 40,
     },
-    brandName: {
-        fontSize: 40,
-        fontWeight: '600',
+    headerTitle: {
+        fontSize: 28,
+        fontWeight: '700',
         fontFamily: 'Lexend',
         color: '#1A1A1A',
         textAlign: 'center',
-        marginBottom: 16,
+        marginBottom: 8,
     },
-    plus: {
-        color: '#FF6B35',
-    },
-    pricingHeader: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexWrap: 'wrap',
-        marginBottom: 20,
-    },
-    startingText: {
+    headerSubtitle: {
         fontSize: 16,
         color: '#666',
         fontFamily: 'Lexend',
-    },
-    originalPriceSmall: {
-        fontSize: 16,
-        color: '#999',
-        textDecorationLine: 'line-through',
-        fontFamily: 'Lexend',
-    },
-    discountedPrice: {
-        fontSize: 24,
-        fontWeight: '700',
-        color: '#FF6B35',
-        fontFamily: 'Lexend',
-    },
-    sparkle: {
-        fontSize: 32,
         textAlign: 'center',
-        marginBottom: 12,
+        lineHeight: 24,
+        marginBottom: 20,
     },
-    limitedOffer: {
-        fontSize: 18,
-        fontWeight: '600',
-        color: '#FF6B35',
-        fontFamily: 'Lexend',
-        textAlign: 'center',
-        marginBottom: 32,
-    },
-    plansContainer: {
+    toggleContainer: {
         flexDirection: 'row',
-        gap: 12,
+        backgroundColor: 'rgba(255,255,255,0.1)',
+        borderRadius: 12,
+        padding: 4,
         marginBottom: 32,
     },
-    planCard: {
+    toggleButton: {
         flex: 1,
-        backgroundColor: 'white',
-        borderRadius: 20,
-        padding: 16,
+        paddingVertical: 12,
+        borderRadius: 8,
+        alignItems: 'center',
+    },
+    toggleButtonActive: {
+        backgroundColor: 'rgba(255,255,255,0.2)',
+    },
+    toggleButtonText: {
+        fontSize: 16,
+        fontWeight: '600',
+        fontFamily: 'Lexend',
+        color: '#A0A0A0',
+    },
+    toggleButtonTextActive: {
+        color: '#FFFFFF',
+    },
+    plansWrapper: {
+        marginBottom: 24,
+    },
+    planCardVertical: {
+        backgroundColor: '#FFFFFF',
+        borderRadius: 16,
+        padding: 20,
+        marginBottom: 16,
         borderWidth: 2,
         borderColor: '#E0E0E0',
-        position: 'relative',
-        minHeight: 130,
     },
-    planCardSelected: {
+    planCardVerticalSelected: {
+        backgroundColor: '#FFF5F0',
         borderColor: '#FF6B35',
         borderWidth: 3,
-        backgroundColor: '#FFF5F0',
     },
-    planCardUnselected: {
-        opacity: 0.7,
-    },
-    saveBadge: {
-        position: 'absolute',
-        top: -12,
-        left: 20,
-        backgroundColor: '#FF6B35',
-        paddingHorizontal: 16,
-        paddingVertical: 6,
-        borderRadius: 16,
-    },
-    saveBadgeText: {
-        color: 'white',
-        fontSize: 12,
-        fontWeight: '700',
-        fontFamily: 'Lexend',
-    },
-    planHeader: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    planDuration: {
-        fontSize: 18,
-        fontWeight: '700',
-        color: '#1A1A1A',
-        fontFamily: 'Lexend',
-        marginBottom: 2,
-    },
-    planPrice: {
-        fontSize: 16,
-        fontWeight: '600',
-        color: '#1A1A1A',
-        fontFamily: 'Lexend',
-        marginBottom: 2,
-    },
-    priceRow: {
+    planCardContent: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 8,
     },
-    originalPrice: {
-        fontSize: 14,
-        color: '#999',
-        textDecorationLine: 'line-through',
-        fontFamily: 'Lexend',
-    },
-    discountPrice: {
-        fontSize: 16,
-        fontWeight: '600',
-        color: '#FF6B35',
-        fontFamily: 'Lexend',
-    },
-    textMuted: {
-        color: '#999',
-    },
-    checkbox: {
-        position: 'absolute',
-        bottom: 16,
-        right: 16,
+    radioButtonLeft: {
         width: 24,
         height: 24,
         borderRadius: 12,
         borderWidth: 2,
-        borderColor: '#D0D0D0',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    checkboxSelected: {
-        backgroundColor: '#FF6B35',
-        borderColor: '#FF6B35',
-    },
-    checkmark: {
-        color: 'white',
-        fontSize: 16,
-        fontWeight: '700',
-    },
-    benefitsSection: {
-        marginBottom: 24,
-    },
-    benefitsTitle: {
-        fontSize: 16,
-        fontWeight: '600',
-        color: '#FF6B35',
-        fontFamily: 'Lexend',
-        textAlign: 'center',
-        marginBottom: 24,
-    },
-    benefitItem: {
-        flexDirection: 'row',
-        marginBottom: 20,
-        alignItems: 'flex-start',
-    },
-    benefitIcon: {
-        width: 48,
-        height: 48,
-        borderRadius: 12,
-        backgroundColor: '#FFF',
+        borderColor: '#666',
         justifyContent: 'center',
         alignItems: 'center',
         marginRight: 16,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 2,
     },
-    benefitIconText: {
-        fontSize: 24,
+    radioButtonLeftSelected: {
+        borderColor: '#FF6B35',
     },
-    benefitContent: {
+    radioButtonLeftInner: {
+        width: 12,
+        height: 12,
+        borderRadius: 6,
+        backgroundColor: '#FF6B35',
+    },
+    planCardInfo: {
         flex: 1,
     },
-    benefitTitle: {
-        fontSize: 16,
-        fontWeight: '600',
-        color: '#1A1A1A',
-        fontFamily: 'Lexend',
+    planTitleRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
         marginBottom: 4,
     },
-    benefitDescription: {
+    planTitle: {
+        fontSize: 20,
+        fontWeight: '700',
+        fontFamily: 'Lexend',
+        color: '#1A1A1A',
+        marginRight: 12,
+    },
+    popularBadge: {
+        backgroundColor: '#FF6B35',
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        borderRadius: 6,
+    },
+    popularBadgeText: {
+        fontSize: 11,
+        fontWeight: '700',
+        fontFamily: 'Lexend',
+        color: '#FFFFFF',
+    },
+    planSubtitle: {
         fontSize: 14,
         color: '#666',
         fontFamily: 'Lexend',
+    },
+    planPriceContainer: {
+        alignItems: 'flex-end',
+    },
+    planPriceAmount: {
+        fontSize: 28,
+        fontWeight: '700',
+        fontFamily: 'Lexend',
+        color: '#1A1A1A',
+    },
+    planPricePeriod: {
+        fontSize: 16,
+        color: '#666',
+        fontFamily: 'Lexend',
+    },
+    featuresSection: {
+        marginBottom: 24,
+    },
+    featuresTitle: {
+        fontSize: 18,
+        fontWeight: '700',
+        fontFamily: 'Lexend',
+        color: '#1A1A1A',
+        marginBottom: 16,
+    },
+    featureItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 12,
+    },
+    featureCheckmark: {
+        fontSize: 18,
+        color: '#4CAF50',
+        marginRight: 12,
+        fontWeight: '700',
+    },
+    featureText: {
+        fontSize: 16,
+        color: '#333',
+        fontFamily: 'Lexend',
+    },
+    trialInfo: {
+        fontSize: 14,
+        color: '#666',
+        fontFamily: 'Lexend',
+        textAlign: 'center',
+        marginBottom: 24,
         lineHeight: 20,
     },
-    ctaButton: {
+    ctaButtonNew: {
         backgroundColor: '#FF6B35',
         paddingVertical: 18,
         paddingHorizontal: 24,
@@ -607,14 +719,14 @@ const styles = StyleSheet.create({
         shadowRadius: 8,
         elevation: 6,
     },
-    ctaButtonText: {
-        color: 'white',
+    ctaButtonTextNew: {
+        color: '#FFFFFF',
         fontSize: 18,
         fontWeight: '700',
         fontFamily: 'Lexend',
         textAlign: 'center',
     },
-    freeTrialButton: {
+    freeTrialButtonNew: {
         backgroundColor: 'transparent',
         paddingVertical: 18,
         paddingHorizontal: 24,
@@ -623,7 +735,7 @@ const styles = StyleSheet.create({
         borderColor: '#FF6B35',
         marginTop: 16,
     },
-    freeTrialButtonText: {
+    freeTrialButtonTextNew: {
         color: '#FF6B35',
         fontSize: 18,
         fontWeight: '700',

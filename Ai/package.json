@@ -17,6 +17,7 @@
     "@react-navigation/stack": "^6.4.1",
     "@sency/react-native-smkit-ui": "^2.0.1",
     "axios": "^1.13.2",
+    "payu-non-seam-less-react": "^3.3.5",
     "react": "18.2.0",
     "react-native": "0.74.2",
     "react-native-app-auth": "^8.1.0",
@@ -24,7 +25,6 @@
     "react-native-image-picker": "^8.2.1",
     "react-native-keychain": "^10.0.0",
     "react-native-localize": "^3.6.0",
-    "react-native-razorpay": "^2.3.1",
     "react-native-safe-area-context": "^5.6.2",
     "react-native-screens": "^3.37.0"
   },
