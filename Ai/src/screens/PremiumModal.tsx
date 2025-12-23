@@ -1,7 +1,7 @@
 // Updated: 2025-12-23 14:38
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Modal, ScrollView, Platform, ActivityIndicator, SafeAreaView, StatusBar, Alert, NativeEventEmitter, NativeModules, Linking, AppState } from 'react-native';
-import { PayUService } from '../services/PayUService';
+import { RazorpayService } from '../services/RazorpayService';
 import { DodoPaymentsService } from '../services/DodoPaymentsService';
 import { getPricingForRegion, PricingInfo } from '../utils/pricing';
 import axios from 'axios';
@@ -32,30 +32,7 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
         // PayU Event Listeners
         // ⚠️ Removed local NativeEventEmitter to avoid conflicts
 
-        const removeListeners = PayUService.addPaymentListeners({
-            onPaymentSuccess: (data) => {
-                console.log('PayU Payment Success:', data);
-                handlePaymentSuccess(data);
-            },
-            onPaymentFailure: (data) => {
-                console.log('PayU Payment Failure:', data);
-                Alert.alert('Payment Failed', 'Your payment could not be processed. Please try again.');
-                if (onPaymentFailed) {
-                    onPaymentFailed();
-                } else {
-                    onClose();
-                }
-            },
-            onPaymentCancel: (data) => {
-                console.log('PayU Payment Cancelled:', data);
-                Alert.alert('Payment Cancelled', 'You have cancelled the payment process.');
-                if (onPaymentFailed) {
-                    onPaymentFailed();
-                } else {
-                    onClose();
-                }
-            }
-        });
+        // PayU listeners removed for Razorpay migration
 
         // Deep Link Listener for Dodo Payment Return
         const handleDeepLink = async (event: { url: string }) => {
@@ -96,7 +73,7 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
         }
 
         return () => {
-            removeListeners();
+            // removeListeners();
             linkingSubscription.remove();
             appStateSubscription.remove();
         };
@@ -267,20 +244,40 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
         try {
             // Route to appropriate payment gateway based on currency
             if (pricing.currency === 'INR') {
-                // Indian users -> PayU
-                console.log('🇮🇳 Using PayU for Indian user');
+                // Indian users -> Razorpay
+                console.log('🇮🇳 Using Razorpay for Indian user');
 
-                const txnid = `TXN${Date.now()}${Math.floor(Math.random() * 1000)}`;
-                const amountInRupees = '1.00'; // Override for 1 INR testing
-                // For production, use: const amountInRupees = (Number(planPricing.amount) / 100).toFixed(2);
+                const planPricing = selectedPlan === 'monthly' ? pricing.monthly : pricing.yearly;
+                // Amount in paise
+                const amountInPaise = planPricing.amount;
 
-                await PayUService.startPayment({
-                    amount: amountInRupees,
-                    productInfo: productInfo,
-                    firstName: name,
+                console.log(`💰 Initiating Razorpay payment for ${selectedPlan} plan: ₹${amountInPaise / 100}`);
+
+                await RazorpayService.startPayment({
+                    planType: selectedPlan,
+                    amountInPaise: amountInPaise,
+                    currency: 'INR',
                     email: email,
-                    phone: phone,
-                    txnid: txnid,
+                    contact: phone,
+                    name: name,
+                    onSuccess: async (data: any) => {
+                        console.log('✅ Razorpay Payment Success');
+                        await AuthService.refreshUserProfile();
+                        if (onSuccess) {
+                            onSuccess();
+                        } else {
+                            onClose();
+                        }
+                    },
+                    onFailure: (error: any) => {
+                        console.error('❌ Razorpay Payment Failure', error);
+                        console.error('Error Details:', error.response?.data);
+                        const errorMessage = error.response?.data?.message || error.message || 'Payment processing failed';
+                        Alert.alert('Payment Failed', errorMessage);
+                        if (onPaymentFailed) {
+                            onPaymentFailed();
+                        }
+                    }
                 });
             } else {
                 // International users -> Dodo Payments

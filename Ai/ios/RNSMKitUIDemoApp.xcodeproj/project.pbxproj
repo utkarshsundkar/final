@@ -474,6 +474,7 @@
 				PRODUCT_NAME = RNSMKitUIDemoApp;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -501,6 +502,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.arthlete.app;
 				PRODUCT_NAME = RNSMKitUIDemoApp;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -596,6 +598,7 @@
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				USE_HERMES = true;
 			};
 			name = Debug;
@@ -686,6 +689,7 @@
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				USE_HERMES = true;
 				VALIDATE_PRODUCT = YES;
 			};

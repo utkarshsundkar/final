@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import AuthService from '../services/AuthService';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { responsive } from '../utils/responsive';
 
 const { width, height } = Dimensions.get('window');
 
@@ -191,8 +192,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     heroImageWrapper: {
-        width: width * 0.85,
-        height: '90%',
+        width: responsive.isTablet ? 720 : width * 0.85,
+        height: responsive.isTablet ? 480 : '90%',
         borderRadius: 30,
         overflow: 'hidden',
         backgroundColor: '#F0F0F0',
@@ -214,7 +215,7 @@ const styles = StyleSheet.create({
         right: 0,
         marginHorizontal: 20,
         backgroundColor: 'rgba(255, 255, 255, 0.95)',
-        padding: 12,
+        padding: responsive.isTablet ? 20 : 12,
         borderRadius: 16,
         flexDirection: 'row',
         alignItems: 'center',
@@ -227,14 +228,14 @@ const styles = StyleSheet.create({
     },
     notificationBadgeBottom: {
         position: 'absolute',
-        top: 90, // Overlap the first badge
+        top: responsive.isTablet ? 120 : 90, // Overlap the first badge
         left: 0,
         right: 0,
-        marginLeft: 50, // Shift right relative to first badge (which has 20)
+        marginLeft: responsive.isTablet ? 80 : 50, // Slightly reduced shift
         marginRight: 10,
         backgroundColor: 'rgba(255, 255, 255, 0.95)',
         zIndex: 10, // Ensure strictly on top
-        padding: 12,
+        padding: responsive.isTablet ? 20 : 12,
         borderRadius: 16,
         flexDirection: 'row',
         alignItems: 'center',
@@ -245,21 +246,21 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     notificationIcon: {
-        width: 36,
-        height: 36,
-        borderRadius: 18,
+        width: responsive.isTablet ? 48 : 36,
+        height: responsive.isTablet ? 48 : 36,
+        borderRadius: responsive.isTablet ? 24 : 18,
         backgroundColor: '#FF8C42', // Theme Orange
         alignItems: 'center',
         justifyContent: 'center',
         marginRight: 12,
     },
     notifIconImage: {
-        width: 20,
-        height: 20,
+        width: responsive.isTablet ? 28 : 20,
+        height: responsive.isTablet ? 28 : 20,
         tintColor: '#FFF',
     },
     notifTitle: {
-        fontSize: 14,
+        fontSize: responsive.isTablet ? 18 : 14,
         fontWeight: Platform.OS === 'ios' ? '700' : '600',
         color: '#333',
         fontFamily: 'Lexend',
@@ -270,28 +271,31 @@ const styles = StyleSheet.create({
         }),
     },
     notifSubtitle: {
-        fontSize: 12,
+        fontSize: responsive.isTablet ? 14 : 12,
         color: '#666',
         fontFamily: 'Lexend',
         marginTop: 2,
     },
     contentContainer: {
         flex: 0.45,
+        width: '100%',
+        maxWidth: 850,
+        alignSelf: 'center',
         paddingHorizontal: 30,
-        paddingTop: 20, // Increased top padding to move text down
+        paddingTop: responsive.isTablet ? 40 : 20,
         justifyContent: 'space-between',
-        paddingBottom: Platform.OS === 'ios' ? 20 : 40,
+        paddingBottom: Platform.OS === 'ios' ? (responsive.isTablet ? 40 : 20) : 40,
     },
     headlineContainer: {
         marginTop: 20, // Increased margin
     },
     headlineLight: {
-        fontSize: 32,
+        fontSize: responsive.isTablet ? 56 : 32,
         color: '#999',
         fontFamily: 'Lexend',
-        fontWeight: Platform.OS === 'ios' ? '500' : '600', // Made a little bold
+        fontWeight: Platform.OS === 'ios' ? '500' : '600',
         letterSpacing: -0.5,
-        lineHeight: 36,
+        lineHeight: responsive.isTablet ? 64 : 36,
     },
     headlineRow: {
         flexDirection: 'row',
@@ -299,12 +303,12 @@ const styles = StyleSheet.create({
         marginVertical: -2,
     },
     headlineBold: {
-        fontSize: 32,
+        fontSize: responsive.isTablet ? 56 : 32,
         color: '#000',
         fontFamily: 'Lexend',
         fontWeight: Platform.OS === 'ios' ? '700' : '600',
         letterSpacing: -0.5,
-        lineHeight: 36,
+        lineHeight: responsive.isTablet ? 64 : 36,
         ...(Platform.OS === 'android' && {
             textShadowColor: 'rgba(0, 0, 0, 0.3)',
             textShadowOffset: { width: 0, height: 0 },
@@ -312,8 +316,8 @@ const styles = StyleSheet.create({
         }),
     },
     headlineIcon: {
-        width: 32,
-        height: 32,
+        width: responsive.isTablet ? 54 : 32,
+        height: responsive.isTablet ? 54 : 32,
         marginHorizontal: 8,
     },
     buttonsContainer: {
@@ -324,13 +328,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingVertical: 16,
+        paddingVertical: responsive.isTablet ? 24 : 16,
         borderRadius: 16, // Squared corners
         marginBottom: 4,
     },
     googleButtonText: {
         color: '#FFF',
-        fontSize: 16,
+        fontSize: responsive.isTablet ? 20 : 16,
         fontFamily: 'Lexend',
         fontWeight: '600',
         marginLeft: 10,
@@ -340,19 +344,19 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingVertical: 16,
+        paddingVertical: responsive.isTablet ? 24 : 16,
         borderRadius: 16, // Squared corners
     },
     appleButtonText: {
         color: '#000',
-        fontSize: 16,
+        fontSize: responsive.isTablet ? 20 : 16,
         fontFamily: 'Lexend',
         fontWeight: '600',
         marginLeft: 10,
     },
     buttonIcon: {
-        width: 20,
-        height: 20,
+        width: responsive.isTablet ? 28 : 20,
+        height: responsive.isTablet ? 28 : 20,
         resizeMode: 'contain',
     },
     emailLink: {

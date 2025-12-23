@@ -32,10 +32,7 @@ class AuthService {
     private listeners: ((user: User | null) => void)[] = [];
 
     constructor() {
-        // Google Sign-In DISABLED - Use Email Authentication
-        // To enable: Fix URL scheme configuration in Google Cloud Console
-        // and ensure SHA-1 fingerprint is registered
-        console.log('AuthService initialized - Email authentication ready');
+        console.log('AuthService initialized - Authentication ready');
     }
 
     // Check if user exists in backend

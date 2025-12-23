@@ -12,6 +12,7 @@ import {
     Linking,
     ActionSheetIOS,
 } from 'react-native';
+import { responsive } from '../utils/responsive';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { launchImageLibrary, ImageLibraryOptions } from 'react-native-image-picker';
 import AuthService, { User } from '../services/AuthService';
@@ -146,7 +147,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
         <View style={styles.mainContainer}>
             {/* Header Section */}
             <View style={styles.headerContainer}>
-                <SafeAreaView>
+                <SafeAreaView style={responsive.getContainerStyle()}>
                     <View style={styles.headerContent}>
                         <View style={styles.headerLeft}>
                             <Text style={styles.headerTitle}>PROFILE</Text>
@@ -280,6 +281,7 @@ const styles = StyleSheet.create({
     contentContainer: {
         padding: 20,
         paddingBottom: 120,
+        ...responsive.getContainerStyle(),
     },
     profileImageContainer: {
         alignItems: 'center',

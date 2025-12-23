@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Platform } from 'react-native';
+import { responsive } from '../utils/responsive';
 import OnboardingLayout from './OnboardingLayout';
 import OnboardingService from '../services/OnboardingService';
 
@@ -47,7 +48,7 @@ const AgeScreen = ({ navigation }: any) => {
             onBack={handleBack}
             nextDisabled={isNextDisabled}
         >
-            <View style={styles.contentContainer}>
+            <View style={[styles.contentContainer, responsive.getContainerStyle()]}>
                 {/* Glowing Input Container */}
                 <View style={styles.glowContainer}>
                     <View style={[

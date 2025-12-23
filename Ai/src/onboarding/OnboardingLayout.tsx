@@ -10,6 +10,7 @@ import {
     StatusBar
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { responsive } from '../utils/responsive';
 
 interface OnboardingLayoutProps {
     title: string;
@@ -40,7 +41,7 @@ const OnboardingLayout: React.FC<OnboardingLayoutProps> = ({
             <StatusBar barStyle="dark-content" backgroundColor="#F8F5F2" />
 
             {/* Header: Back + Progress */}
-            <View style={styles.header}>
+            <View style={[styles.header, responsive.getContainerStyle()]}>
                 <TouchableOpacity onPress={onBack} style={styles.backButton}>
                     <Image
                         source={{ uri: 'https://img.icons8.com/ios-filled/50/333333/left.png' }}
@@ -59,7 +60,7 @@ const OnboardingLayout: React.FC<OnboardingLayoutProps> = ({
             </View>
 
             {/* Main Content */}
-            <View style={styles.content}>
+            <View style={[styles.content, responsive.getContainerStyle()]}>
                 <View style={styles.titleContainer}>
                     <Text style={styles.title}>{title}</Text>
                     {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
@@ -71,7 +72,7 @@ const OnboardingLayout: React.FC<OnboardingLayoutProps> = ({
             </View>
 
             {/* Footer / Next Button */}
-            <View style={styles.footer}>
+            <View style={[styles.footer, responsive.getContainerStyle()]}>
                 <TouchableOpacity
                     style={[styles.nextButton, nextDisabled && styles.nextButtonDisabled]}
                     onPress={onNext}
@@ -97,37 +98,37 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 20,
-        paddingTop: 10,
-        paddingBottom: 20,
+        paddingTop: responsive.isTablet ? 30 : 10,
+        paddingBottom: responsive.isTablet ? 40 : 20,
     },
     backButton: {
         padding: 8,
         marginRight: 10,
     },
     backIcon: {
-        width: 20,
-        height: 20,
+        width: responsive.isTablet ? 28 : 20,
+        height: responsive.isTablet ? 28 : 20,
     },
     progressContainer: {
         flex: 1,
         flexDirection: 'row',
-        height: 6,
+        height: responsive.isTablet ? 10 : 6,
         backgroundColor: '#E0E0E0',
-        borderRadius: 3,
+        borderRadius: 5,
         marginHorizontal: 10,
         overflow: 'hidden',
     },
     progressBar: {
         height: '100%',
         backgroundColor: '#FF8C42',
-        borderRadius: 3,
+        borderRadius: 5,
     },
     stepText: {
-        fontSize: 12,
+        fontSize: responsive.isTablet ? 18 : 12,
         color: '#999',
         fontFamily: 'Lexend',
         fontWeight: '600',
-        width: 45, // Increased width for double-digit numbers
+        width: responsive.isTablet ? 70 : 45, // Increased width for double-digit numbers
         textAlign: 'right',
     },
     content: {
@@ -139,11 +140,12 @@ const styles = StyleSheet.create({
         marginBottom: 30,
     },
     title: {
-        fontSize: 32,
+        fontSize: responsive.isTablet ? 54 : 32,
         color: '#1A1A1A',
         fontFamily: 'Lexend',
         fontWeight: Platform.OS === 'ios' ? '700' : '600',
         marginBottom: 10,
+        lineHeight: responsive.isTablet ? 64 : 38,
         // textShadow workaround for Android bold
         ...(Platform.OS === 'android' && {
             textShadowColor: 'rgba(0, 0, 0, 0.5)',
@@ -152,23 +154,23 @@ const styles = StyleSheet.create({
         }),
     },
     subtitle: {
-        fontSize: 16,
+        fontSize: responsive.isTablet ? 22 : 16,
         color: '#888',
         fontFamily: 'Lexend',
-        lineHeight: 24,
+        lineHeight: responsive.isTablet ? 32 : 24,
     },
     body: {
         flex: 1,
     },
     footer: {
         paddingHorizontal: 30,
-        paddingBottom: 30,
+        paddingBottom: responsive.isTablet ? 60 : 30,
         alignItems: 'flex-end', // Right align next button
     },
     nextButton: {
-        width: 60,
-        height: 60,
-        borderRadius: 30,
+        width: responsive.isTablet ? 80 : 60,
+        height: responsive.isTablet ? 80 : 60,
+        borderRadius: responsive.isTablet ? 40 : 30,
         backgroundColor: '#FF8C42',
         justifyContent: 'center',
         alignItems: 'center',
@@ -184,8 +186,8 @@ const styles = StyleSheet.create({
         elevation: 0,
     },
     nextIcon: {
-        width: 24,
-        height: 24,
+        width: responsive.isTablet ? 32 : 24,
+        height: responsive.isTablet ? 32 : 24,
         tintColor: '#FFF',
     },
 });

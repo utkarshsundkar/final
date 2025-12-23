@@ -53,7 +53,6 @@ import {
   startWorkoutProgram,
   setEndExercisePreferences,
   setCounterPreferences,
-  exitWorkout,
 } from '@sency/react-native-smkit-ui';
 import * as SMWorkoutLibrary from '@sency/react-native-smkit-ui/src/SMWorkout';
 import ProgressScreen from './src/screens/ProgressScreen';
@@ -63,6 +62,7 @@ import LeaderboardScreen from './src/screens/LeaderboardScreen';
 import PremiumModal from './src/screens/PremiumModal';
 import { checkIsPremium } from './src/hooks/usePremiumStatus';
 import { Platform, UIManager } from 'react-native';
+import { responsive } from './src/utils/responsive';
 
 if (Platform.OS === 'android') {
   if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -312,64 +312,6 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
       { name: 'Glutes Bridge', detail: '60s x 3 sets' },
       { name: 'Side Lunge Left', detail: '60s x 3 sets' },
       { name: 'Side Lunge Right', detail: '60s x 3 sets' },
-    ]
-  },
-  'CardioMax': {
-    id: 'CardioMax',
-    title: 'Cardio Max',
-    description: 'All-in-one cardio session - 3 sets',
-    exercises: [
-      { name: 'High Knees', detail: '60s x 3 sets' },
-      { name: 'Jumping Jacks', detail: '60s x 3 sets' },
-      { name: 'Skater Hops', detail: '60s x 3 sets' },
-      { name: 'Jumps', detail: '60s x 3 sets' },
-      { name: 'Ski Jumps', detail: '60s x 3 sets' },
-    ]
-  },
-  'CoreCrusher': {
-    id: 'CoreCrusher',
-    title: 'Core Crusher',
-    description: 'Crush your core with intense exercises - 3 sets',
-    exercises: [
-      { name: 'Crunches', detail: '60s x 3 sets' },
-      { name: 'Oblique Crunches', detail: '60s x 3 sets' },
-      { name: 'High Plank', detail: '60s x 3 sets' },
-      { name: 'Side Plank', detail: '60s x 3 sets' },
-    ]
-  },
-  'MobilityFlow': {
-    id: 'MobilityFlow',
-    title: 'Mobility Flow',
-    description: 'Smooth sequence for flexibility - 3 sets',
-    exercises: [
-      { name: 'Jefferson Curl', detail: '60s x 3 sets' },
-      { name: 'Standing Hamstring Mobility', detail: '60s x 3 sets' },
-      { name: 'Hamstring Mobility', detail: '60s x 3 sets' },
-      { name: 'Side Bend Left', detail: '60s x 3 sets' },
-      { name: 'Side Bend Right', detail: '60s x 3 sets' },
-    ]
-  },
-  'DynamicMobility': {
-    id: 'DynamicMobility',
-    title: 'Dynamic Mobility',
-    description: 'Active range of motion work - 3 sets',
-    exercises: [
-      { name: 'Standing Knee Raise Left', detail: '60s x 3 sets' },
-      { name: 'Standing Knee Raise Right', detail: '60s x 3 sets' },
-      { name: 'Side Lunge Left', detail: '60s x 3 sets' },
-      { name: 'Side Lunge Right', detail: '60s x 3 sets' },
-      { name: 'Hamstring Mobility', detail: '60s x 3 sets' },
-    ]
-  },
-  'GluteBlaster': {
-    id: 'GluteBlaster',
-    title: 'Glute Blaster',
-    description: 'Target and strengthen your glutes - 3 sets',
-    exercises: [
-      { name: 'Glutes Bridge', detail: '60s x 3 sets' },
-      { name: 'Side Lunge Left', detail: '60s x 3 sets' },
-      { name: 'Side Lunge Right', detail: '60s x 3 sets' },
-      { name: 'Lunge', detail: '60s x 3 sets' },
     ]
   },
 };
@@ -1726,7 +1668,7 @@ const MainTabScreen = ({ navigation }: any) => {
         );
 
         try {
-          await exitWorkout();
+
         } catch (e) { }
 
         try {
@@ -1789,7 +1731,7 @@ const MainTabScreen = ({ navigation }: any) => {
         );
 
         try {
-          await exitWorkout();
+
         } catch (e) { }
 
         try {
@@ -1817,7 +1759,7 @@ const MainTabScreen = ({ navigation }: any) => {
           if (set < 3) thighsExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
         }
         const thighsWorkout = new SMWorkoutLibrary.SMWorkout('Thighs', 'Thunder Thighs', 'Strengthen your quads and hamstrings', SMWorkoutLibrary.BodyZone.FullBody, thighsExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
-        try { await exitWorkout(); } catch (e) { }
+
         try { const result = await startCustomWorkout(thighsWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
 
       } else if (type === 'Hips & Glutes') {
@@ -1833,7 +1775,7 @@ const MainTabScreen = ({ navigation }: any) => {
           if (set < 3) hipsExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
         }
         const hipsWorkout = new SMWorkoutLibrary.SMWorkout('Hips & Glutes', 'Glute Gains', 'Target the glutes and hips', SMWorkoutLibrary.BodyZone.FullBody, hipsExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
-        try { await exitWorkout(); } catch (e) { }
+
         try { const result = await startCustomWorkout(hipsWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
 
       } else if (type === 'Calves') {
@@ -1847,7 +1789,7 @@ const MainTabScreen = ({ navigation }: any) => {
           if (set < 3) calvesExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
         }
         const calvesWorkout = new SMWorkoutLibrary.SMWorkout('Calves', 'Calf Craze', 'Build powerful calves', SMWorkoutLibrary.BodyZone.LowerBody, calvesExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
-        try { await exitWorkout(); } catch (e) { }
+
         try { const result = await startCustomWorkout(calvesWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'Arms') {
         const armsExercises = [];
@@ -1860,7 +1802,7 @@ const MainTabScreen = ({ navigation }: any) => {
           if (set < 3) armsExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
         }
         const armsWorkout = new SMWorkoutLibrary.SMWorkout('Arms', 'Arm Arsenal', 'Pump up your biceps and triceps', SMWorkoutLibrary.BodyZone.UpperBody, armsExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
-        try { await exitWorkout(); } catch (e) { }
+
         try { const result = await startCustomWorkout(armsWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'Abs') {
         const absExercises = [];
@@ -1877,7 +1819,7 @@ const MainTabScreen = ({ navigation }: any) => {
           if (set < 3) absExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
         }
         const absWorkout = new SMWorkoutLibrary.SMWorkout('Abs', 'Core Crusher', 'Strengthen your core', SMWorkoutLibrary.BodyZone.FullBody, absExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
-        try { await exitWorkout(); } catch (e) { }
+
         try { const result = await startCustomWorkout(absWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'PlankCore') {
         const plankExercises = [];
@@ -1892,7 +1834,7 @@ const MainTabScreen = ({ navigation }: any) => {
           if (set < 3) plankExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
         }
         const plankWorkout = new SMWorkoutLibrary.SMWorkout('PlankCore', 'Plank & Core Stability', 'Build a rock-solid core', SMWorkoutLibrary.BodyZone.FullBody, plankExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
-        try { await exitWorkout(); } catch (e) { }
+
         try { const result = await startCustomWorkout(plankWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'Featured_UpperBody') {
         const featuredExercises = [];
@@ -1911,7 +1853,7 @@ const MainTabScreen = ({ navigation }: any) => {
           if (set < 3) featuredExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
         }
         const featuredWorkout = new SMWorkoutLibrary.SMWorkout('Featured_UpperBody', 'Upper Body Circuit', 'Comprehensive strength circuit', SMWorkoutLibrary.BodyZone.FullBody, featuredExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
-        try { await exitWorkout(); } catch (e) { }
+
         try { const result = await startCustomWorkout(featuredWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'Featured_CoreCrusher') {
         const coreCrusherExercises = [];
@@ -1926,7 +1868,7 @@ const MainTabScreen = ({ navigation }: any) => {
           if (set < 3) coreCrusherExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
         }
         const coreCrusherWorkout = new SMWorkoutLibrary.SMWorkout('Featured_CoreCrusher', 'Core Crusher', 'Intense core session', SMWorkoutLibrary.BodyZone.FullBody, coreCrusherExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
-        try { await exitWorkout(); } catch (e) { }
+
         try { const result = await startCustomWorkout(coreCrusherWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'Featured_HIITExpress') {
         const hiitExercises = [];
@@ -1943,7 +1885,7 @@ const MainTabScreen = ({ navigation }: any) => {
           if (set < 3) hiitExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
         }
         const hiitWorkout = new SMWorkoutLibrary.SMWorkout('Featured_HIITExpress', 'HIIT Express', 'High Intensity Cardio', SMWorkoutLibrary.BodyZone.FullBody, hiitExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
-        try { await exitWorkout(); } catch (e) { }
+
         try { const result = await startCustomWorkout(hiitWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'Featured_MobilityFlow') {
         const mobilityExercises = [];
@@ -1962,7 +1904,7 @@ const MainTabScreen = ({ navigation }: any) => {
           if (set < 3) mobilityExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
         }
         const mobilityWorkout = new SMWorkoutLibrary.SMWorkout('Featured_MobilityFlow', 'Mobility Flow', 'Flexibility and Range of Motion', SMWorkoutLibrary.BodyZone.FullBody, mobilityExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
-        try { await exitWorkout(); } catch (e) { }
+
         try { const result = await startCustomWorkout(mobilityWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'Featured_GluteBlaster') {
         const gluteExercises = [];
@@ -1979,7 +1921,7 @@ const MainTabScreen = ({ navigation }: any) => {
           if (set < 3) gluteExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
         }
         const gluteWorkout = new SMWorkoutLibrary.SMWorkout('Featured_GluteBlaster', 'Glute Blaster', 'Sculpt Glutes and Legs', SMWorkoutLibrary.BodyZone.FullBody, gluteExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
-        try { await exitWorkout(); } catch (e) { }
+
         try { const result = await startCustomWorkout(gluteWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'Featured_PowerPlyo') {
         const plyoExercises = [];
@@ -1994,7 +1936,7 @@ const MainTabScreen = ({ navigation }: any) => {
           if (set < 3) plyoExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
         }
         const plyoWorkout = new SMWorkoutLibrary.SMWorkout('Featured_PowerPlyo', 'Power Plyo', 'Explosive Plyometrics', SMWorkoutLibrary.BodyZone.FullBody, plyoExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
-        try { await exitWorkout(); } catch (e) { }
+
         try { const result = await startCustomWorkout(plyoWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'CardioCrusher') {
         console.log('CardioCrusher workout block reached');
@@ -2031,7 +1973,7 @@ const MainTabScreen = ({ navigation }: any) => {
         console.log('About to call startCustomWorkout with workout:', cardioWorkout);
         try {
           try {
-            await exitWorkout();
+
             console.log('Exited any previous workout session');
           } catch (e) {
             console.log('No previous workout to exit or exit failed:', e);
@@ -2076,7 +2018,7 @@ const MainTabScreen = ({ navigation }: any) => {
         console.log('About to call startCustomWorkout with workout:', absWorkout);
         try {
           try {
-            await exitWorkout();
+
             console.log('Exited any previous workout session');
           } catch (e) {
             console.log('No previous workout to exit or exit failed:', e);
@@ -2277,7 +2219,7 @@ const MainTabScreen = ({ navigation }: any) => {
         console.log('About to call startCustomWorkout with workout:', chestWorkout);
         try {
           try {
-            await exitWorkout();
+
             console.log('Exited any previous workout session');
           } catch (e) {
             console.log('No previous workout to exit or exit failed:', e);
@@ -2403,7 +2345,7 @@ const MainTabScreen = ({ navigation }: any) => {
         console.log('About to call startCustomWorkout with workout:', armsWorkout);
         try {
           try {
-            await exitWorkout();
+
             console.log('Exited any previous workout session');
           } catch (e) {
             console.log('No previous workout to exit or exit failed:', e);
@@ -2458,7 +2400,7 @@ const MainTabScreen = ({ navigation }: any) => {
         console.log('About to call startCustomWorkout with workout:', legsWorkout);
         try {
           try {
-            await exitWorkout();
+
             console.log('Exited any previous workout session');
           } catch (e) {
             console.log('No previous workout to exit or exit failed:', e);
@@ -2584,7 +2526,7 @@ const MainTabScreen = ({ navigation }: any) => {
         console.log('About to call startCustomWorkout with workout:', upperBodyWorkout);
         try {
           try {
-            await exitWorkout();
+
             console.log('Exited any previous workout session');
           } catch (e) {
             console.log('No previous workout to exit or exit failed:', e);
@@ -2707,7 +2649,7 @@ const MainTabScreen = ({ navigation }: any) => {
         );
 
         try {
-          await exitWorkout();
+
         } catch (e) {
           console.log('No previous workout to exit');
         }
@@ -2781,7 +2723,7 @@ const MainTabScreen = ({ navigation }: any) => {
         );
 
         try {
-          await exitWorkout();
+
         } catch (e) { }
 
         try {
@@ -2853,7 +2795,7 @@ const MainTabScreen = ({ navigation }: any) => {
         );
 
         try {
-          await exitWorkout();
+
         } catch (e) { }
 
         try {
@@ -2925,7 +2867,7 @@ const MainTabScreen = ({ navigation }: any) => {
         );
 
         try {
-          await exitWorkout();
+
         } catch (e) { }
 
         try {
@@ -3007,7 +2949,7 @@ const MainTabScreen = ({ navigation }: any) => {
         );
 
         try {
-          await exitWorkout();
+
         } catch (e) { }
 
         try {
@@ -3034,7 +2976,7 @@ const MainTabScreen = ({ navigation }: any) => {
           if (set < 3) coreExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
         }
         const coreWorkout = new SMWorkoutLibrary.SMWorkout('CoreCrusher', 'Core Crusher', 'Crush your core', SMWorkoutLibrary.BodyZone.FullBody, coreExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
-        try { await exitWorkout(); } catch (e) { }
+
         try { const result = await startCustomWorkout(coreWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'AbsReloaded') {
         const absExercises = [];
@@ -3051,7 +2993,7 @@ const MainTabScreen = ({ navigation }: any) => {
           if (set < 3) absExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
         }
         const absWorkout = new SMWorkoutLibrary.SMWorkout('AbsReloaded', 'Abs Reloaded', 'Core focused routine', SMWorkoutLibrary.BodyZone.FullBody, absExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
-        try { await exitWorkout(); } catch (e) { }
+
         try { const result = await startCustomWorkout(absWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'MobilityFlow') {
         const mobilityExercises = [];
@@ -3070,7 +3012,7 @@ const MainTabScreen = ({ navigation }: any) => {
           if (set < 3) mobilityExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
         }
         const mobilityWorkout = new SMWorkoutLibrary.SMWorkout('MobilityFlow', 'Mobility Flow', 'Smooth sequence for flexibility', SMWorkoutLibrary.BodyZone.FullBody, mobilityExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
-        try { await exitWorkout(); } catch (e) { }
+
         try { const result = await startCustomWorkout(mobilityWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'DynamicMobility') {
         const dynamicExercises = [];
@@ -3089,7 +3031,7 @@ const MainTabScreen = ({ navigation }: any) => {
           if (set < 3) dynamicExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
         }
         const dynamicWorkout = new SMWorkoutLibrary.SMWorkout('DynamicMobility', 'Dynamic Mobility', 'Active range of motion work', SMWorkoutLibrary.BodyZone.FullBody, dynamicExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
-        try { await exitWorkout(); } catch (e) { }
+
         try { const result = await startCustomWorkout(dynamicWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'GluteBlaster') {
         const gluteExercises = [];
@@ -3106,7 +3048,7 @@ const MainTabScreen = ({ navigation }: any) => {
           if (set < 3) gluteExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
         }
         const gluteWorkout = new SMWorkoutLibrary.SMWorkout('GluteBlaster', 'Glute Blaster', 'Target and strengthen your glutes', SMWorkoutLibrary.BodyZone.LowerBody, gluteExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
-        try { await exitWorkout(); } catch (e) { }
+
         try { const result = await startCustomWorkout(gluteWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'PostureFix') {
         const postureExercises = [];
@@ -3123,7 +3065,7 @@ const MainTabScreen = ({ navigation }: any) => {
           if (set < 3) postureExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
         }
         const postureWorkout = new SMWorkoutLibrary.SMWorkout('PostureFix', 'Posture Fix', 'Improve alignment and posture', SMWorkoutLibrary.BodyZone.FullBody, postureExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
-        try { await exitWorkout(); } catch (e) { }
+
         try { const result = await startCustomWorkout(postureWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'MobilityMax') {
         const mobilityMaxExercises = [];
@@ -3152,7 +3094,7 @@ const MainTabScreen = ({ navigation }: any) => {
           if (set < 3) mobilityMaxExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
         }
         const mobilityMaxWorkout = new SMWorkoutLibrary.SMWorkout('MobilityMax', 'Mobility Max', 'Complete mobility session', SMWorkoutLibrary.BodyZone.FullBody, mobilityMaxExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
-        try { await exitWorkout(); } catch (e) { }
+
         try { const result = await startCustomWorkout(mobilityMaxWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'SideToSideBurner') {
         const sideExercises = [];
@@ -3173,7 +3115,7 @@ const MainTabScreen = ({ navigation }: any) => {
           if (set < 3) sideExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
         }
         const sideWorkout = new SMWorkoutLibrary.SMWorkout('SideToSideBurner', 'Side to Side Burner', 'Lateral movements for legs', SMWorkoutLibrary.BodyZone.LowerBody, sideExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
-        try { await exitWorkout(); } catch (e) { }
+
         try { const result = await startCustomWorkout(sideWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'LowImpactTorch') {
         const lowImpactExercises = [];
@@ -3192,7 +3134,7 @@ const MainTabScreen = ({ navigation }: any) => {
           if (set < 3) lowImpactExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
         }
         const lowImpactWorkout = new SMWorkoutLibrary.SMWorkout('LowImpactTorch', 'Low Impact Torch', 'Burn calories without impact', SMWorkoutLibrary.BodyZone.FullBody, lowImpactExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
-        try { await exitWorkout(); } catch (e) { }
+
         try { const result = await startCustomWorkout(lowImpactWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'LowerMax') {
         const lowerMaxExercises = [];
@@ -3223,7 +3165,7 @@ const MainTabScreen = ({ navigation }: any) => {
           if (set < 3) lowerMaxExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
         }
         const lowerMaxWorkout = new SMWorkoutLibrary.SMWorkout('LowerMax', 'Lower Max', 'Complete lower body challenge', SMWorkoutLibrary.BodyZone.LowerBody, lowerMaxExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
-        try { await exitWorkout(); } catch (e) { }
+
         try { const result = await startCustomWorkout(lowerMaxWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       }
     } catch (error) {
@@ -3358,7 +3300,7 @@ const MainTabScreen = ({ navigation }: any) => {
         else startChallenge(data.id);
       }}
       style={{
-        width: width * 0.85,
+        width: responsive.isIPad ? 380 : width * 0.85,
         backgroundColor: '#FFF',
         borderRadius: 24,
         marginHorizontal: 10,
@@ -3370,17 +3312,18 @@ const MainTabScreen = ({ navigation }: any) => {
         elevation: 10,
         borderWidth: 1,
         borderColor: 'rgba(0,0,0,0.05)',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        minHeight: responsive.isIPad ? 480 : 'auto',
       }}
     >
       {/* Header Image with Gradient & Badge */}
-      <View style={{ height: 160, width: '100%' }}>
+      <View style={{ height: responsive.isIPad ? 220 : 160, width: '100%' }}>
         <Image source={data.image} style={{ width: '100%', height: '100%' }} resizeMode="cover" />
-        <View style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 160, backgroundColor: 'rgba(0,0,0,0.1)' }} />
+        <View style={{ position: 'absolute', top: 0, left: 0, right: 0, height: responsive.isIPad ? 220 : 160, backgroundColor: 'rgba(0,0,0,0.1)' }} />
 
         {/* Badge */}
         <View style={{ position: 'absolute', top: 16, right: 16, backgroundColor: 'rgba(255,255,255,0.95)', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 12, shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 4 }}>
-          <Text style={{ fontSize: 12, fontWeight: '700', color: '#000', fontFamily: 'Lexend' }}>{data.category.toUpperCase()}</Text>
+          <Text style={{ fontSize: responsive.isIPad ? 14 : 12, fontWeight: '700', color: '#000', fontFamily: 'Lexend' }}>{data.category.toUpperCase()}</Text>
         </View>
 
         {/* Avatars Overlay */}
@@ -3397,22 +3340,22 @@ const MainTabScreen = ({ navigation }: any) => {
       </View>
 
       {/* Content Body - Infographic Style */}
-      <View style={{ padding: 20 }}>
+      <View style={{ padding: responsive.isIPad ? 30 : 20 }}>
         {/* Title & Desc */}
-        <Text style={{ fontSize: 22, fontWeight: '700', color: '#1A1A1A', fontFamily: 'Lexend', marginBottom: 6 }}>{data.title}</Text>
-        <Text style={{ fontSize: 14, color: '#666', fontFamily: 'Lexend', lineHeight: 20, marginBottom: 24 }} numberOfLines={2}>
+        <Text style={{ fontSize: responsive.isIPad ? 28 : 22, fontWeight: '700', color: '#1A1A1A', fontFamily: 'Lexend', marginBottom: 6 }}>{data.title}</Text>
+        <Text style={{ fontSize: responsive.isIPad ? 18 : 14, color: '#666', fontFamily: 'Lexend', lineHeight: responsive.isIPad ? 26 : 20, marginBottom: responsive.isIPad ? 32 : 24 }} numberOfLines={2}>
           {data.description}
         </Text>
 
         {/* Info Grid - The "Infographic" part */}
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#F8F9FA', borderRadius: 16, padding: 16, borderWidth: 1, borderColor: '#EEE' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#F8F9FA', borderRadius: 16, padding: responsive.isIPad ? 20 : 16, borderWidth: 1, borderColor: '#EEE' }}>
           {/* Goal */}
           <View style={{ alignItems: 'center', flex: 1 }}>
             <View style={{ width: 34, height: 34, borderRadius: 17, backgroundColor: '#FFF3E0', justifyContent: 'center', alignItems: 'center', marginBottom: 6 }}>
               <Image source={{ uri: 'https://img.icons8.com/ios-filled/50/FF8C00/trophy.png' }} style={{ width: 16, height: 16 }} />
             </View>
-            <Text style={{ fontSize: 10, color: '#999', fontWeight: '600', fontFamily: 'Lexend', marginBottom: 2 }}>GOAL</Text>
-            <Text style={{ fontSize: 14, color: '#1A1A1A', fontWeight: '700', fontFamily: 'Lexend' }}>{data.goal.replace(' POINTS', '')} pts</Text>
+            <Text style={{ fontSize: responsive.isIPad ? 12 : 10, color: '#999', fontWeight: '600', fontFamily: 'Lexend', marginBottom: 2 }}>GOAL</Text>
+            <Text style={{ fontSize: responsive.isIPad ? 18 : 14, color: '#1A1A1A', fontWeight: '700', fontFamily: 'Lexend' }}>{data.goal.replace(' POINTS', '')} pts</Text>
           </View>
 
           <View style={{ width: 1, backgroundColor: '#E0E0E0', height: '60%', alignSelf: 'center' }} />
@@ -3422,8 +3365,8 @@ const MainTabScreen = ({ navigation }: any) => {
             <View style={{ width: 34, height: 34, borderRadius: 17, backgroundColor: '#E8F5E9', justifyContent: 'center', alignItems: 'center', marginBottom: 6 }}>
               <Image source={{ uri: 'https://img.icons8.com/ios-filled/50/4CD964/calendar.png' }} style={{ width: 16, height: 16 }} />
             </View>
-            <Text style={{ fontSize: 10, color: '#999', fontWeight: '600', fontFamily: 'Lexend', marginBottom: 2 }}>STARTED</Text>
-            <Text style={{ fontSize: 14, color: '#1A1A1A', fontWeight: '700', fontFamily: 'Lexend' }}>{data.started.split(', ')[0]}</Text>
+            <Text style={{ fontSize: responsive.isIPad ? 12 : 10, color: '#999', fontWeight: '600', fontFamily: 'Lexend', marginBottom: 2 }}>STARTED</Text>
+            <Text style={{ fontSize: responsive.isIPad ? 18 : 14, color: '#1A1A1A', fontWeight: '700', fontFamily: 'Lexend' }}>{data.started.split(', ')[0]}</Text>
           </View>
 
           <View style={{ width: 1, backgroundColor: '#E0E0E0', height: '60%', alignSelf: 'center' }} />
@@ -3433,8 +3376,8 @@ const MainTabScreen = ({ navigation }: any) => {
             <View style={{ width: 34, height: 34, borderRadius: 17, backgroundColor: '#E3F2FD', justifyContent: 'center', alignItems: 'center', marginBottom: 6 }}>
               <Image source={{ uri: 'https://img.icons8.com/ios-filled/50/007AFF/running.png' }} style={{ width: 16, height: 16 }} />
             </View>
-            <Text style={{ fontSize: 10, color: '#999', fontWeight: '600', fontFamily: 'Lexend', marginBottom: 2 }}>STATUS</Text>
-            <Text style={{ fontSize: 14, color: '#007AFF', fontWeight: '700', fontFamily: 'Lexend' }}>Active</Text>
+            <Text style={{ fontSize: responsive.isIPad ? 12 : 10, color: '#999', fontWeight: '600', fontFamily: 'Lexend', marginBottom: 2 }}>STATUS</Text>
+            <Text style={{ fontSize: responsive.isIPad ? 18 : 14, color: '#007AFF', fontWeight: '700', fontFamily: 'Lexend' }}>Active</Text>
           </View>
         </View>
 
@@ -3567,7 +3510,7 @@ const MainTabScreen = ({ navigation }: any) => {
                             </View>
                           </View>
 
-                          <Text style={[styles.cardTitle, { marginTop: 0, fontSize: 20 }]}>Morning Kickstart</Text>
+                          <Text style={[styles.cardTitle, { marginTop: 0, fontSize: responsive.isIPad ? 28 : 20 }]}>Morning Kickstart</Text>
 
                           {/* Info Rows */}
                           <View style={[styles.infoRow, { alignItems: 'flex-start' }]}>
@@ -3672,6 +3615,10 @@ const MainTabScreen = ({ navigation }: any) => {
                             key={idx}
                             activeOpacity={0.95}
                             onPress={() => {
+                              if (!isPremium) {
+                                setShowPremiumModal(true);
+                                return;
+                              }
                               const details = BODY_FOCUS_DETAILS[item.id];
                               if (details) setSelectedWorkout(details);
                             }}
@@ -3706,6 +3653,10 @@ const MainTabScreen = ({ navigation }: any) => {
 
                                 <TouchableOpacity
                                   onPress={() => {
+                                    if (!isPremium) {
+                                      setShowPremiumModal(true);
+                                      return;
+                                    }
                                     const details = BODY_FOCUS_DETAILS[item.id];
                                     if (details) setSelectedWorkout(details);
                                   }}
@@ -3754,7 +3705,13 @@ const MainTabScreen = ({ navigation }: any) => {
                         {WORKOUT_PROGRAMS.filter(p => p.category === selectedFilter).map((program) => (
                           <TouchableOpacity
                             key={program.id}
-                            onPress={() => setSelectedWorkout(WORKOUT_DETAILS_DATA[program.id])}
+                            onPress={() => {
+                              if (!isPremium) {
+                                setShowPremiumModal(true);
+                                return;
+                              }
+                              setSelectedWorkout(WORKOUT_DETAILS_DATA[program.id]);
+                            }}
                             style={{
                               width: (width - 52) / 2,
                               backgroundColor: 'white',
@@ -3799,197 +3756,74 @@ const MainTabScreen = ({ navigation }: any) => {
                         </View>
 
                         <ScrollView
-                          horizontal
+                          horizontal={true}
                           showsHorizontalScrollIndicator={false}
-                          contentContainerStyle={{ paddingHorizontal: 20 }}
+                          contentContainerStyle={{
+                            paddingHorizontal: 20,
+                            flexDirection: 'column',
+                            flexWrap: 'wrap',
+                            height: responsive.isIPad ? 310 : 230, // Force 2 rows
+                            gap: 16,
+                          }}
                         >
-                          <View style={{ flexDirection: 'row', gap: 12 }}>
-                            {/* First Column */}
-                            <View style={{ gap: 12 }}>
-                              {[
-                                { title: 'Shoulders', img: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400' },
-                                { title: 'Chest', img: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400' },
-                              ].map((item, index) => (
-                                <TouchableOpacity
-                                  key={index}
-                                  onPress={() => {
-                                    const details = BODY_FOCUS_DETAILS[item.title];
-                                    if (details) {
-                                      setSelectedWorkout(details);
-                                    } else {
-                                      navigation.navigate('BodyFocus');
-                                    }
-                                  }}
-                                >
-                                  <View style={{
-                                    width: 140,
-                                    height: 100,
-                                    borderRadius: 16,
-                                    overflow: 'hidden',
-                                    backgroundColor: '#f0f0f0',
-                                    shadowColor: '#000',
-                                    shadowOffset: { width: 0, height: 2 },
-                                    shadowOpacity: 0.1,
-                                    shadowRadius: 4,
-                                    elevation: 3
-                                  }}>
-                                    <Image source={{ uri: item.img }} style={{ width: '100%', height: '100%' }} resizeMode="cover" />
-                                    <View style={{
-                                      position: 'absolute',
-                                      bottom: 0,
-                                      left: 0,
-                                      right: 0,
-                                      backgroundColor: 'rgba(0,0,0,0.6)',
-                                      paddingVertical: 8,
-                                      paddingHorizontal: 10
-                                    }}>
-                                      <Text style={{ fontSize: 13, fontWeight: '600', color: '#fff', fontFamily: 'Lexend' }}>{item.title}</Text>
-                                    </View>
-                                  </View>
-                                </TouchableOpacity>
-                              ))}
-                            </View>
-
-                            {/* Second Column */}
-                            <View style={{ gap: 12 }}>
-                              {[
-                                { title: 'Thighs', img: 'https://images.unsplash.com/photo-1434682881908-b43d0467b798?w=400' },
-                                { title: 'Hips & Glutes', img: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400' },
-                              ].map((item, index) => (
-                                <TouchableOpacity
-                                  key={index}
-                                  onPress={() => {
-                                    const details = BODY_FOCUS_DETAILS[item.title];
-                                    if (details) {
-                                      setSelectedWorkout(details);
-                                    } else {
-                                      navigation.navigate('BodyFocus');
-                                    }
-                                  }}
-                                >
-                                  <View style={{
-                                    width: 140,
-                                    height: 100,
-                                    borderRadius: 16,
-                                    overflow: 'hidden',
-                                    backgroundColor: '#f0f0f0',
-                                    shadowColor: '#000',
-                                    shadowOffset: { width: 0, height: 2 },
-                                    shadowOpacity: 0.1,
-                                    shadowRadius: 4,
-                                    elevation: 3
-                                  }}>
-                                    <Image source={{ uri: item.img }} style={{ width: '100%', height: '100%' }} resizeMode="cover" />
-                                    <View style={{
-                                      position: 'absolute',
-                                      bottom: 0,
-                                      left: 0,
-                                      right: 0,
-                                      backgroundColor: 'rgba(0,0,0,0.6)',
-                                      paddingVertical: 8,
-                                      paddingHorizontal: 10
-                                    }}>
-                                      <Text style={{ fontSize: 13, fontWeight: '600', color: '#fff', fontFamily: 'Lexend' }}>{item.title}</Text>
-                                    </View>
-                                  </View>
-                                </TouchableOpacity>
-                              ))}
-                            </View>
-
-                            {/* Third Column */}
-                            <View style={{ gap: 12 }}>
-                              {[
-                                { title: 'Calves', img: 'https://images.unsplash.com/photo-1517344884109-1f4cedcb4529?w=400' },
-                                { title: 'Arms', img: 'https://images.unsplash.com/photo-1584466977773-e625c37cdd50?w=400' },
-                              ].map((item, index) => (
-                                <TouchableOpacity
-                                  key={index}
-                                  onPress={() => {
-                                    const details = BODY_FOCUS_DETAILS[item.title];
-                                    if (details) {
-                                      setSelectedWorkout(details);
-                                    } else {
-                                      navigation.navigate('BodyFocus');
-                                    }
-                                  }}
-                                >
-                                  <View style={{
-                                    width: 140,
-                                    height: 100,
-                                    borderRadius: 16,
-                                    overflow: 'hidden',
-                                    backgroundColor: '#f0f0f0',
-                                    shadowColor: '#000',
-                                    shadowOffset: { width: 0, height: 2 },
-                                    shadowOpacity: 0.1,
-                                    shadowRadius: 4,
-                                    elevation: 3
-                                  }}>
-                                    <Image source={{ uri: item.img }} style={{ width: '100%', height: '100%' }} resizeMode="cover" />
-                                    <View style={{
-                                      position: 'absolute',
-                                      bottom: 0,
-                                      left: 0,
-                                      right: 0,
-                                      backgroundColor: 'rgba(0,0,0,0.6)',
-                                      paddingVertical: 8,
-                                      paddingHorizontal: 10
-                                    }}>
-                                      <Text style={{ fontSize: 13, fontWeight: '600', color: '#fff', fontFamily: 'Lexend' }}>{item.title}</Text>
-                                    </View>
-                                  </View>
-                                </TouchableOpacity>
-                              ))}
-                            </View>
-
-                            {/* Fourth Column */}
-                            <View style={{ gap: 12 }}>
-                              {[
-                                { title: 'Abs', img: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400' },
-                                { title: 'PlankCore', img: 'https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?w=400' },
-                              ].map((item, index) => (
-                                <TouchableOpacity
-                                  key={item.title}
-                                  onPress={() => {
-                                    const details = BODY_FOCUS_DETAILS[item.title];
-                                    if (details) {
-                                      setSelectedWorkout(details);
-                                    } else {
-                                      navigation.navigate('BodyFocus');
-                                    }
-                                  }}
-                                >
-                                  <View style={{
-                                    width: 140,
-                                    height: 100,
-                                    borderRadius: 16,
-                                    overflow: 'hidden',
-                                    backgroundColor: '#f0f0f0',
-                                    shadowColor: '#000',
-                                    shadowOffset: { width: 0, height: 2 },
-                                    shadowOpacity: 0.1,
-                                    shadowRadius: 4,
-                                    elevation: 3
-                                  }}>
-                                    <Image source={{ uri: item.img }} style={{ width: '100%', height: '100%' }} resizeMode="cover" />
-                                    <View style={{
-                                      position: 'absolute',
-                                      bottom: 0,
-                                      left: 0,
-                                      right: 0,
-                                      backgroundColor: 'rgba(0,0,0,0.6)',
-                                      paddingVertical: 8,
-                                      paddingHorizontal: 10
-                                    }}>
-                                      <Text style={{ fontSize: 13, fontWeight: '600', color: '#fff', fontFamily: 'Lexend' }}>
-                                        {item.title === 'PlankCore' ? 'Plank & Core' : item.title}
-                                      </Text>
-                                    </View>
-                                  </View>
-                                </TouchableOpacity>
-                              ))}
-                            </View>
-                          </View>
+                          {[
+                            { title: 'Shoulders', img: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400' },
+                            { title: 'Chest', img: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400' },
+                            { title: 'Thighs', img: 'https://images.unsplash.com/photo-1434682881908-b43d0467b798?w=400' },
+                            { title: 'Hips & Glutes', img: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400' },
+                            { title: 'Calves', img: 'https://images.unsplash.com/photo-1517344884109-1f4cedcb4529?w=400' },
+                            { title: 'Arms', img: 'https://images.unsplash.com/photo-1584466977773-e625c37cdd50?w=400' },
+                            { title: 'Abs', img: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400' },
+                            { title: 'PlankCore', img: 'https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?w=400' },
+                          ].map((item, index) => (
+                            <TouchableOpacity
+                              key={index}
+                              onPress={() => {
+                                if (!isPremium) {
+                                  setShowPremiumModal(true);
+                                  return;
+                                }
+                                const details = BODY_FOCUS_DETAILS[item.title];
+                                if (details) {
+                                  setSelectedWorkout(details);
+                                } else {
+                                  navigation.navigate('BodyFocus');
+                                }
+                              }}
+                              style={{
+                                width: responsive.isIPad ? 190 : 140,
+                                height: responsive.isIPad ? 140 : 100,
+                              }}
+                            >
+                              <View style={{
+                                width: '100%',
+                                height: '100%',
+                                borderRadius: 16,
+                                overflow: 'hidden',
+                                backgroundColor: '#f0f0f0',
+                                shadowColor: '#000',
+                                shadowOffset: { width: 0, height: 2 },
+                                shadowOpacity: 0.1,
+                                shadowRadius: 4,
+                                elevation: 3
+                              }}>
+                                <Image source={{ uri: item.img }} style={{ width: '100%', height: '100%' }} resizeMode="cover" />
+                                <View style={{
+                                  position: 'absolute',
+                                  bottom: 0,
+                                  left: 0,
+                                  right: 0,
+                                  backgroundColor: 'rgba(0,0,0,0.6)',
+                                  paddingVertical: 8,
+                                  paddingHorizontal: 10
+                                }}>
+                                  <Text style={{ fontSize: 13, fontWeight: '600', color: '#fff', fontFamily: 'Lexend' }}>
+                                    {item.title === 'PlankCore' ? 'Plank & Core' : item.title}
+                                  </Text>
+                                </View>
+                              </View>
+                            </TouchableOpacity>
+                          ))}
                         </ScrollView>
                       </View>
 
@@ -4517,7 +4351,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     borderRadius: 24,
     padding: 24,
-    width: '90%',
+    width: responsive.isTablet ? 500 : '90%',
+    alignSelf: 'center',
     maxHeight: '80%',
   },
   celebrationHeader: {
@@ -4647,6 +4482,8 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 32,
     padding: 24,
     maxHeight: '85%',
+    width: responsive.isTablet ? 600 : '100%',
+    alignSelf: 'center',
   },
   header: {
     flexDirection: 'row',
@@ -4741,7 +4578,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10, // Reduced from 30
   },
   cardContainer: {
-    width: width * 0.85,
+    width: responsive.isIPad ? 380 : width * 0.85,
     marginRight: 20,
     borderRadius: 40,
     // No overflow hidden here to allow shadow, but inner content is clipped
@@ -4796,7 +4633,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   cardTitle: {
-    fontSize: 22,
+    fontSize: responsive.isIPad ? 28 : 22,
     fontWeight: '600',
     color: '#000',
     marginBottom: 12,
@@ -4809,18 +4646,18 @@ const styles = StyleSheet.create({
     alignItems: 'center', // Changed from flex-start to center for better alignment
   },
   label: {
-    width: 100, // Reduced width to give more space for text
+    width: responsive.isIPad ? 140 : 100, // Reduced width to give more space for text
     color: '#8B7B9B',
-    fontSize: 13,
+    fontSize: responsive.isIPad ? 16 : 13,
     fontWeight: '500',
     fontFamily: 'Lexend',
   },
   value: {
     flex: 1,
     color: '#000',
-    fontSize: 14,
+    fontSize: responsive.isIPad ? 18 : 14,
     fontWeight: '400',
-    lineHeight: 20,
+    lineHeight: responsive.isIPad ? 24 : 20,
     fontFamily: 'Lexend',
   },
   startedValueContainer: {
@@ -4902,12 +4739,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8F7F4',
   },
   screenTitle: {
-    fontSize: 32,
+    fontSize: responsive.isIPad ? 42 : 32,
     fontWeight: '700',
     fontFamily: 'Lexend',
     marginBottom: 24,
     marginTop: 40,
     color: '#000',
+    width: responsive.isIPad ? 850 : '100%',
+    alignSelf: 'center',
   },
   placeholderCard: {
     backgroundColor: 'white',
@@ -4939,11 +4778,13 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   dailyCard: {
-    width: '100%', // Increased width to fill container
-    // alignSelf: 'center', // Removed to align left with padding
+    width: '100%',
+    maxWidth: 850,
+    alignSelf: 'center',
     backgroundColor: 'white',
     borderRadius: 40,
-    padding: 24, // Match cardDetails padding
+    padding: responsive.isIPad ? 40 : 24,
+    minHeight: responsive.isIPad ? 280 : 'auto',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -4985,6 +4826,8 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 32,
     height: '85%',
     padding: 24,
+    width: responsive.isIPad ? 850 : '100%',
+    alignSelf: 'center',
   },
   detailDragIndicator: {
     width: 40,
@@ -5105,8 +4948,8 @@ const App = () => {
     // Configure Google Sign-In
     const { GoogleSignin } = require('@react-native-google-signin/google-signin');
     GoogleSignin.configure({
-      iosClientId: '912055738866-i5c8hvqf6aabbshbjdigcahftd2ogok0.apps.googleusercontent.com', // iOS Client ID
-      webClientId: '912055738866-hk3j6eoskm7vbk40cmae334b8qqqer27.apps.googleusercontent.com', // Android/Web Client ID
+      iosClientId: '912055738866-63pugaqc2m9s04gcv8qg5volltl6u2uo.apps.googleusercontent.com', // iOS Client ID
+      webClientId: '912055738866-ho32cblfdh4ckfgjvnu5l8n6u2glp8de.apps.googleusercontent.com', // Corrected Web Client ID
       offlineAccess: true,
     });
 

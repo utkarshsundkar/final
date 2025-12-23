@@ -11,11 +11,11 @@ export const MOJOAUTH_CONFIG = {
     oauth: {
         google: {
             // iOS Client ID
-            iosClientId: '912055738866-i5c8hvqf6aabbshbjdigcahftd2ogok0.apps.googleusercontent.com',
+            iosClientId: '912055738866-63pugaqc2m9s04gcv8qg5volltl6u2uo.apps.googleusercontent.com',
             // Android Client ID
-            androidClientId: '912055738866-hk3j6eoskm7vbk40cmae334b8qqqer27.apps.googleusercontent.com',
-            // Web Client ID (if you have one for MojoAuth)
-            webClientId: 'YOUR_WEB_CLIENT_ID.apps.googleusercontent.com', // Optional
+            androidClientId: '912055738866-6br3254spfodrmmeepc43kf7rmu1vesk.apps.googleusercontent.com',
+            // Web Client ID
+            webClientId: '912055738866-ho32cblfdh4ckfgjvnu5l8n6u2glp8de.apps.googleusercontent.com',
             redirectUrl: 'com.arthlete.app://oauth/callback',
             scopes: ['openid', 'profile', 'email'],
         },

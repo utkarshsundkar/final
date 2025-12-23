@@ -1,5 +1,5 @@
-import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Dimensions, Image } from 'react-native';
+import { responsive } from '../utils/responsive';
 
 const { width } = Dimensions.get('window');
 
@@ -14,7 +14,9 @@ const ProgressScreen = () => {
         <View style={styles.container}>
             {/* Fixed White Header */}
             <View style={styles.headerContainer}>
-                <Text style={styles.headerTitle}>PROGRESS</Text>
+                <View style={responsive.getContainerStyle()}>
+                    <Text style={styles.headerTitle}>PROGRESS</Text>
+                </View>
             </View>
 
             <ScrollView contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
@@ -190,6 +192,9 @@ const styles = StyleSheet.create({
     contentContainer: {
         padding: 24,
         paddingTop: 24,
+        maxWidth: 600,
+        alignSelf: 'center',
+        width: '100%',
     },
     headerTitle: {
         fontSize: 18, // Matched with App.tsx Header

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import { responsive } from '../utils/responsive';
 import OnboardingLayout from './OnboardingLayout';
 import OnboardingService from '../services/OnboardingService';
 
@@ -60,7 +61,7 @@ const GenderScreen = ({ navigation }: any) => {
             <View style={styles.decorativeCircle1} pointerEvents="none" />
             <View style={styles.decorativeCircle2} pointerEvents="none" />
 
-            <View style={styles.contentWrapper}>
+            <View style={[styles.contentWrapper, responsive.getContainerStyle()]}>
                 {/* Motivational Badge */}
                 <View style={styles.motivationBadge}>
                     <Text style={styles.badgeEmoji}>⭐</Text>
@@ -113,8 +114,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#FFF5EB',
-        paddingVertical: 12,
-        paddingHorizontal: 20,
+        paddingVertical: responsive.isTablet ? 16 : 12,
+        paddingHorizontal: responsive.isTablet ? 30 : 20,
         borderRadius: 25,
         marginBottom: 30,
         alignSelf: 'center',
@@ -125,11 +126,11 @@ const styles = StyleSheet.create({
         elevation: 2,
     },
     badgeEmoji: {
-        fontSize: 18,
+        fontSize: responsive.isTablet ? 24 : 18,
         marginRight: 8,
     },
     motivationText: {
-        fontSize: 14,
+        fontSize: responsive.isTablet ? 18 : 14,
         color: '#FF8C42',
         fontFamily: 'Lexend',
         fontWeight: Platform.OS === 'ios' ? '600' : '500',
@@ -137,12 +138,12 @@ const styles = StyleSheet.create({
     optionsContainer: {
         flex: 1,
         justifyContent: 'center',
-        gap: 20,
+        gap: responsive.isTablet ? 30 : 20,
     },
     optionCard: {
         backgroundColor: '#FFF',
         borderRadius: 24,
-        padding: 24,
+        padding: responsive.isTablet ? 32 : 24,
         flexDirection: 'row',
         alignItems: 'center',
         shadowColor: '#000',
@@ -152,7 +153,7 @@ const styles = StyleSheet.create({
         elevation: 4,
         borderWidth: 3,
         borderColor: 'transparent',
-        height: 110,
+        height: responsive.isTablet ? 150 : 110,
         position: 'relative',
         overflow: 'hidden',
     },
@@ -172,9 +173,9 @@ const styles = StyleSheet.create({
         opacity: 0.05,
     },
     iconContainer: {
-        width: 64,
-        height: 64,
-        borderRadius: 32,
+        width: responsive.isTablet ? 80 : 64,
+        height: responsive.isTablet ? 80 : 64,
+        borderRadius: responsive.isTablet ? 40 : 32,
         backgroundColor: '#F5F5F5',
         justifyContent: 'center',
         alignItems: 'center',
@@ -184,13 +185,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#FF8C42',
     },
     emoji: {
-        fontSize: 32,
+        fontSize: responsive.isTablet ? 44 : 32,
     },
     textContainer: {
         flex: 1,
     },
     optionLabel: {
-        fontSize: 20,
+        fontSize: responsive.isTablet ? 24 : 20,
         color: '#333',
         fontFamily: 'Lexend',
         fontWeight: Platform.OS === 'ios' ? '600' : '500',
@@ -200,9 +201,9 @@ const styles = StyleSheet.create({
         fontWeight: Platform.OS === 'ios' ? '700' : '600',
     },
     radioCircle: {
-        width: 28,
-        height: 28,
-        borderRadius: 14,
+        width: responsive.isTablet ? 36 : 28,
+        height: responsive.isTablet ? 36 : 28,
+        borderRadius: responsive.isTablet ? 18 : 14,
         borderWidth: 2,
         borderColor: '#DDD',
         justifyContent: 'center',
@@ -213,9 +214,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF',
     },
     radioInner: {
-        width: 14,
-        height: 14,
-        borderRadius: 7,
+        width: responsive.isTablet ? 18 : 14,
+        height: responsive.isTablet ? 18 : 14,
+        borderRadius: responsive.isTablet ? 9 : 7,
         backgroundColor: '#FF8C42',
     },
 });

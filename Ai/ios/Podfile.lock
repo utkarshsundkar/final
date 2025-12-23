@@ -80,6 +80,9 @@ PODS:
     - PayUIndia-Networking (~> 5.0)
     - PayUIndia-PayUParams (~> 6.8)
   - PromisesObjC (2.4.0)
+  - razorpay-core-pod (1.0.4)
+  - razorpay-pod (1.5.0):
+    - razorpay-core-pod
   - RCT-Folly (2024.01.01.00):
     - boost
     - DoubleConversion
@@ -1035,6 +1038,9 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - react-native-razorpay (2.3.1):
+    - razorpay-pod (= 1.5.0)
+    - React
   - react-native-safe-area-context (5.6.2):
     - React-Core
   - react-native-smkit-ui (2.0.1):
@@ -1407,6 +1413,7 @@ DEPENDENCIES:
   - react-native-app-auth (from `../node_modules/react-native-app-auth`)
   - react-native-biz-sdk (from `../node_modules/payu-non-seam-less-react`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
+  - react-native-razorpay (from `../node_modules/react-native-razorpay`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-smkit-ui (from `../node_modules/@sency/react-native-smkit-ui`)"
   - React-nativeconfig (from `../node_modules/react-native/ReactCommon`)
@@ -1468,6 +1475,8 @@ SPEC REPOS:
     - PayUIndia-PG-SDK
     - PayUIndia-UPICore
     - PromisesObjC
+    - razorpay-core-pod
+    - razorpay-pod
     - SocketRocket
     - SwiftyJSON
     - ZIPFoundation
@@ -1540,6 +1549,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/payu-non-seam-less-react"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
+  react-native-razorpay:
+    :path: "../node_modules/react-native-razorpay"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-smkit-ui:
@@ -1634,6 +1645,8 @@ SPEC CHECKSUMS:
   PayUIndia-PG-SDK: 958e1fa7eee3ef2e9a33ad34fd4fbb8a79f35c27
   PayUIndia-UPICore: 2b9e0db5403f7cb96bb7467a1fb551e54efe1c3e
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
+  razorpay-core-pod: a5ee92704a114e9468436dcba9d9b6222f6d9899
+  razorpay-pod: f634f1b8397eb54d547f25d35291f679545ddf17
   RCT-Folly: 02617c592a293bd6d418e0a88ff4ee1f88329b47
   RCTDeprecation: b03c35057846b685b3ccadc9bfe43e349989cdb2
   RCTRequired: 194626909cfa8d39ca6663138c417bc6c431648c
@@ -1661,6 +1674,7 @@ SPEC CHECKSUMS:
   react-native-app-auth: 9b0a0e3ca279c3426a451e2607c8483808b8ed4a
   react-native-biz-sdk: def6d61840b7a45d8d1ae5885559c3169170edc0
   react-native-image-picker: 6ccc56d6e61dcc6063474571969866aa23854663
+  react-native-razorpay: 41a407f4367b5b0e1bba89a77f9cab1918860844
   react-native-safe-area-context: e48706fb09fde89f82e12bfb49b140cfdcb761f7
   react-native-smkit-ui: f930f48ced33b1c6209ce3e1347a93e069cb3e0b
   React-nativeconfig: 5d452e509d6fbedc1522e21b566451fc673ac6b7

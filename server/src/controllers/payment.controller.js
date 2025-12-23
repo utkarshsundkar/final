@@ -97,10 +97,8 @@ const verifyPaymentAndActivate = asyncHandler(async (req, res) => {
   await paymentUpdate.save();
 
   const now = new Date()
-  const duration = planType === "starter" ? PLAN_PRICING.starter.durationInDays :
-    planType === "fifteen" ? PLAN_PRICING.fifteen.durationInDays :
-      planType === "monthly" ? PLAN_PRICING.monthly.durationInDays :
-        PLAN_PRICING.yearly.durationInDays;
+  // Fix: Access durationInDays through nested currency object (Using INR as default for duration)
+  const duration = PLAN_PRICING[planType]?.INR?.durationInDays || 30;
   const expiryDate = new Date(now.getTime() + duration * 24 * 60 * 60 * 1000);
 
   // Update user's premium status
@@ -451,33 +449,52 @@ const generatePayUHash = asyncHandler(async (req, res) => {
 });
 
 const generateDynamicPayUHash = asyncHandler(async (req, res) => {
-  const { hashString } = req.body;
+  const { hashString, hashName } = req.body;
+
+  console.log("----- DYNAMIC HASH REQUEST -----");
+  console.log("Request Body:", JSON.stringify(req.body, null, 2));
+  console.log("Hash Name:", hashName);
+  console.log("Hash String:", hashString);
+  console.log("--------------------------------");
 
   if (!hashString) {
+    console.error("❌ Missing hashString in request");
     throw new ApiError(400, "Missing hashString");
   }
 
+  const key = process.env.PAYU_MERCHANT_KEY || "YOUR_MERCHANT_KEY";
   const salt = process.env.PAYU_MERCHANT_SALT || "YOUR_SALT";
 
-  // Fix: content from SDK might already end with '|', so avoid double pipe
-  const finalHashString = hashString.endsWith('|')
-    ? `${hashString}${salt}`
-    : `${hashString}|${salt}`;
+  let stringToHash = hashString;
 
-  console.log("----- DYNAMIC HASH DEBUG -----");
+  // Check if hashString starts with the merchant key
+  // Most PayU hashes are: key|command|var1|...|salt
+  // If the SDK sent just "command|var1", we need to prepend key
+  if (!stringToHash.startsWith(key)) {
+    console.log('⚠️ Hash string missing Key. Prepending...');
+    stringToHash = `${key}|${stringToHash}`;
+  }
+
+  // Ensure salt is appended at the end
+  const finalHashString = stringToHash.endsWith('|')
+    ? `${stringToHash}${salt}`
+    : `${stringToHash}|${salt}`;
+
+  console.log("----- DYNAMIC HASH GENERATION -----");
   console.log("Received String:", hashString);
   console.log("Using Salt:", salt);
   console.log("Final String to Hash:", finalHashString);
-  console.log("------------------------------");
+  console.log("-----------------------------------");
 
   const hash = crypto.createHash('sha512').update(finalHashString).digest('hex');
 
-  console.log("Generated Hash:", hash);
+  console.log("✅ Generated Hash:", hash);
 
+  // Return in the format expected by frontend
   return res.status(200).json(
     new ApiResponse(
       200,
-      { hash },
+      { hash, hashName },
       "Dynamic Hash generated successfully"
     )
   );
@@ -979,6 +996,135 @@ const handleDodoWebhook = asyncHandler(async (req, res) => {
   return res.status(200).send('Webhook received');
 });
 
-export { getPlan, createOrder, verifyPaymentAndActivate, getUserPlanStatus, startFreeTrial, generatePayUHash, generateDynamicPayUHash, verifyPayUPayment, createDodoPayment, verifyDodoPayment, recordDodoInitiation, handleDodoWebhook };
+// PayU Success/Failure Callback Handlers
+const handlePayUSuccess = asyncHandler(async (req, res) => {
+  console.log('✅ PayU Success Callback Received');
+  console.log('Query Params:', req.query);
+  console.log('Body:', req.body);
+
+  // PayU sends data as POST form data or query params
+  const paymentData = { ...req.query, ...req.body };
+
+  console.log('💳 Payment Data:', JSON.stringify(paymentData, null, 2));
+
+  // Return a simple HTML page to keep the gateway open
+  return res.status(200).send(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Payment Successful</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <style>
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+          margin: 0;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .container {
+          text-align: center;
+          background: white;
+          padding: 40px;
+          border-radius: 20px;
+          box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .success-icon {
+          font-size: 64px;
+          margin-bottom: 20px;
+        }
+        h1 {
+          color: #333;
+          margin-bottom: 10px;
+        }
+        p {
+          color: #666;
+          margin-bottom: 30px;
+        }
+        .btn {
+          background: #FF6B35;
+          color: white;
+          padding: 15px 30px;
+          border-radius: 10px;
+          text-decoration: none;
+          display: inline-block;
+          font-weight: 600;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="success-icon">✅</div>
+        <h1>Payment Successful!</h1>
+        <p>Your premium subscription has been activated.</p>
+        <p>You can now close this window and return to the app.</p>
+      </div>
+    </body>
+    </html>
+  `);
+});
+
+const handlePayUFailure = asyncHandler(async (req, res) => {
+  console.log('❌ PayU Failure Callback Received');
+  console.log('Query Params:', req.query);
+  console.log('Body:', req.body);
+
+  const paymentData = { ...req.query, ...req.body };
+
+  console.log('💳 Failed Payment Data:', JSON.stringify(paymentData, null, 2));
+
+  return res.status(200).send(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Payment Failed</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <style>
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+          margin: 0;
+          background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        .container {
+          text-align: center;
+          background: white;
+          padding: 40px;
+          border-radius: 20px;
+          box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .error-icon {
+          font-size: 64px;
+          margin-bottom: 20px;
+        }
+        h1 {
+          color: #333;
+          margin-bottom: 10px;
+        }
+        p {
+          color: #666;
+          margin-bottom: 30px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="error-icon">❌</div>
+        <h1>Payment Failed</h1>
+        <p>Your payment could not be processed.</p>
+        <p>Please try again or contact support.</p>
+        <p>You can close this window and return to the app.</p>
+      </div>
+    </body>
+    </html>
+  `);
+});
+
+export { getPlan, createOrder, verifyPaymentAndActivate, getUserPlanStatus, startFreeTrial, generatePayUHash, generateDynamicPayUHash, verifyPayUPayment, createDodoPayment, verifyDodoPayment, recordDodoInitiation, handleDodoWebhook, handlePayUSuccess, handlePayUFailure };
 // End of file
 

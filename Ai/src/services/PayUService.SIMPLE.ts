@@ -17,6 +17,8 @@ const PayUNative = NativeModules.PayUCheckoutPro || NativeModules.PayUBizSdk;
 if (!PayUNative) {
     console.error("❌ PayU Native Module not found! Check if 'payu-non-seam-less-react' is linked.");
 } else {
+    console.log("✅ PayU Native Module found:", Object.keys(PayUNative));
+
     // 🛡️ Polyfill missing methods to prevent React Native warnings/crashes
     if (!PayUNative.addListener) {
         PayUNative.addListener = () => { };
@@ -28,6 +30,9 @@ if (!PayUNative) {
 
 // ✅ Correct Event Emitter
 const payUEventEmitter = new NativeEventEmitter(PayUNative);
+
+// Log all possible events
+console.log("📡 Setting up PayU Event Listeners for all possible events...");
 
 type PaymentCallbacks = {
     onPaymentSuccess: (data: any) => void;
@@ -71,7 +76,7 @@ export const PayUService = {
         txnid: string;
     }) => {
         try {
-            console.log('🚀 Starting PayU Payment (Simplified Flow)');
+            console.log('🚀 Starting PayU Payment');
 
             const token = await AsyncStorage.getItem('accessToken');
 
@@ -123,36 +128,16 @@ export const PayUService = {
                 firstName,
                 email,
                 phone,
-                // Using httpbin to avoid ATS issues
-                surl: 'https://httpbin.org/post',
-                furl: 'https://httpbin.org/post',
-                ios_surl: 'https://httpbin.org/post',
-                ios_furl: 'https://httpbin.org/post',
-                android_surl: 'https://httpbin.org/post',
-                android_furl: 'https://httpbin.org/post',
-
-                environment: 0, // Test mode (number)
-
-                // UDF fields (Required)
-                udf1: "",
-                udf2: "",
-                udf3: "",
-                udf4: "",
-                udf5: "",
-
-                // NO userCredential (avoids saved cards issues)
-                // NO merchantId (relies on Key)
-
-                hash, // Static Hash
+                surl: 'http://192.168.1.5:8000/api/v2/payment/payu-success',
+                furl: 'http://192.168.1.5:8000/api/v2/payment/payu-failure',
+                environment: '0', // Test mode
+                hash,
             };
 
-            // 🎨 UI Config
+            // 🎨 UI Config - MINIMAL
             const payUConfigParams = {
-                primaryColor: '#FF6B35',
-                secondaryColor: '#FFFFFF',
                 merchantName: 'Arthlete',
                 enableLog: true,
-                logLevel: 0,
             };
 
             const checkoutConfig = {

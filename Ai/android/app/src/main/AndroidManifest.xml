@@ -49,7 +49,7 @@
             <action android:name="android.intent.action.VIEW" />
             <category android:name="android.intent.category.DEFAULT" />
             <category android:name="android.intent.category.BROWSABLE" />
-            <data android:scheme="com.googleusercontent.apps.912055738866-hk3j6eoskm7vbk40cmae334b8qqqer27" />
+            <data android:scheme="com.googleusercontent.apps.912055738866-6br3254spfodrmmeepc43kf7rmu1vesk" />
         </intent-filter>
         <!-- Deep Link for Payment Return -->
         <intent-filter>
