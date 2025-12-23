@@ -835,12 +835,27 @@ const handleDodoWebhook = asyncHandler(async (req, res) => {
   // Verify webhook signature here if needed (recommended for production)
 
   if (type === 'payment.succeeded' || type === 'subscription.active') {
-    const customerEmail = data.customer?.email || data.customer_email;
-    const amount = data.amount; // e.g. 550 for $5.50
-    const currency = data.currency;
+    // Extract email from all possible Dodo payload locations
+    const customerEmail =
+      data.customer?.email ||
+      data.customer_email ||
+      data.billing_details?.email ||
+      data.data?.customer?.email;
+
+    // Extract amount from all possible locations
+    const amount =
+      data.total_amount ||
+      data.amount ||
+      data.recurring_amount ||
+      0;
+
+    const currency =
+      data.currency ||
+      data.currency_code ||
+      'USD';
 
     if (!customerEmail) {
-      console.error('❌ Webhook missing customer email');
+      console.error('❌ Webhook missing customer email. Data received:', JSON.stringify(data));
       return res.status(200).send('No email found');
     }
 
