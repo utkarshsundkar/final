@@ -26,6 +26,7 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
     const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly'>('yearly');
     const [trialAlreadyUsed, setTrialAlreadyUsed] = useState(false);
     const [userData, setUserData] = useState<any>(null);
+    const [isCheckingStatus, setIsCheckingStatus] = useState(false);
 
     useEffect(() => {
         // PayU Event Listeners
@@ -131,6 +132,7 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
     };
 
     const checkPaymentStatusAndActivate = async (retryCount = 0) => {
+        if (retryCount === 0) setIsCheckingStatus(true);
         try {
             console.log(`🔍 Checking payment status (Attempt ${retryCount + 1}/5)...`);
 
@@ -149,6 +151,7 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
             const user = response.data.data.user;
 
             if (user.isPremium) {
+                setIsCheckingStatus(false);
                 console.log('✅ Premium activated!');
                 Alert.alert(
                     'Payment Successful! 🎉',
@@ -174,6 +177,7 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
                 if (retryCount < 4) {
                     setTimeout(() => checkPaymentStatusAndActivate(retryCount + 1), 2000);
                 } else if (retryCount === 4) {
+                    setIsCheckingStatus(false);
                     // Only show alert on the FINAL failed attempt
                     Alert.alert(
                         'Still Processing',
@@ -185,6 +189,7 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
             }
         } catch (error) {
             console.error('❌ Error checking payment status:', error);
+            setIsCheckingStatus(false);
             return false;
         }
     };
@@ -398,10 +403,21 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
     return (
         <Modal
             animationType="slide"
-            transparent={false}
+            transparent={true}
             visible={visible}
             onRequestClose={onClose}
         >
+            {/* Loading Overlay for Status Check */}
+            {isCheckingStatus && (
+                <View style={styles.checkingOverlay}>
+                    <View style={styles.loadingCard}>
+                        <ActivityIndicator size="large" color="#FF6B35" />
+                        <Text style={styles.loadingText}>Verifying Payment...</Text>
+                        <Text style={styles.loadingSubtext}>This might take a few seconds</Text>
+                    </View>
+                </View>
+            )}
+
             <SafeAreaView style={[styles.container, styles.androidSafeArea]}>
                 <ScrollView
                     contentContainerStyle={styles.scrollContent}
@@ -725,6 +741,41 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 12,
+    },
+    checkingOverlay: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        zIndex: 999,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    loadingCard: {
+        backgroundColor: 'white',
+        padding: 32,
+        borderRadius: 24,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 10,
+        elevation: 8,
+    },
+    loadingText: {
+        fontSize: 18,
+        fontWeight: '700',
+        color: '#1A1A1A',
+        marginTop: 16,
+        fontFamily: 'Lexend',
+    },
+    loadingSubtext: {
+        fontSize: 14,
+        color: '#666',
+        marginTop: 8,
+        fontFamily: 'Lexend',
     },
     featureCheckmark: {
         fontSize: 18,
