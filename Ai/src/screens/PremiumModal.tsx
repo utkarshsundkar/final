@@ -17,8 +17,8 @@ interface PremiumModalProps {
     onClose: () => void;
     onSuccess?: () => void;
     onPaymentFailed?: () => void;
-    userEmail: string;
-    userName: string;
+    userEmail?: string;
+    userName?: string;
 }
 
 const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess, onPaymentFailed, userEmail, userName }) => {
@@ -216,8 +216,7 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
 
         // Use fetched user data if available, otherwise fallback to props
         let email = userData?.email || userEmail;
-        let name = userData?.firstName || userName;
-        const phone = userData?.phone || '9999999999';
+        let name = userData?.name || userName;
 
         // Critical: Ensure we have a valid email to avoid 'ghost' payments
         // If email is missing or generic default, fetch fresh from AuthService
@@ -227,7 +226,7 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
                 const freshUser = await AuthService.getCurrentUser();
                 if (freshUser?.email) {
                     email = freshUser.email;
-                    name = freshUser.name || freshUser.firstName || name || 'User';
+                    name = freshUser.name || name || 'User';
                     console.log('✅ Fetched fresh user email:', email);
                 } else {
                     throw new Error('No user found');
@@ -240,6 +239,7 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
         }
 
         name = name || 'User';
+        const phone = '9999999999'; // Default or from userData if we add it later
 
         console.log('🛒 Initiating purchase for:', { email, name, currency: pricing.currency });
 
