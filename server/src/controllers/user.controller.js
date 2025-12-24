@@ -258,8 +258,41 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 
 
 const getCurrentUser = asyncHandler(async (req, res) => {
-  // Populate the premium data
   const user = await User.findById(req.user._id).populate('premium');
+
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  const now = new Date();
+  let statusChanged = false;
+
+  // 1. Handle Trial Expiration (Backend Legacy Fields)
+  if (user.premiumType === 'trial' && user.trialEndDate && user.trialEndDate < now) {
+    console.log(`🕒 Trial expired for ${user.email}`);
+    user.isPremium = false;
+    user.premiumType = null;
+    statusChanged = true;
+  }
+
+  // 2. Handle Subscription Expiration (New Premium Model)
+  if (user.premium && user.premium.endDate < now && user.premium.active) {
+    console.log(`🕒 Subscription expired for ${user.email} (Plan: ${user.premium.planType})`);
+
+    // Deactivate the premium record
+    await mongoose.model('Premium').findByIdAndUpdate(user.premium._id, { active: false });
+
+    // Update user flags
+    user.isPremium = false;
+    user.isPaid = false;
+    user.premium = null;
+    user.premiumType = null;
+    statusChanged = true;
+  }
+
+  if (statusChanged) {
+    await user.save();
+  }
 
   return res
     .status(200)
