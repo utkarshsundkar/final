@@ -4948,8 +4948,9 @@ const App = () => {
     // Configure Google Sign-In
     const { GoogleSignin } = require('@react-native-google-signin/google-signin');
     GoogleSignin.configure({
-      iosClientId: '912055738866-63pugaqc2m9s04gcv8qg5volltl6u2uo.apps.googleusercontent.com', // iOS Client ID
-      webClientId: '912055738866-ho32cblfdh4ckfgjvnu5l8n6u2glp8de.apps.googleusercontent.com', // Corrected Web Client ID
+      iosClientId: '912055738866-63pugaqc2m9s04gcv8qg5volltl6u2uo.apps.googleusercontent.com',
+      webClientId: '912055738866-ho32cblfdh4ckfgjvnu5l8n6u2glp8de.apps.googleusercontent.com',
+      androidClientId: '912055738866-hbied6ic117drqo4ko4g6c2ist1agtkt.apps.googleusercontent.com', // Release Client ID
       offlineAccess: true,
     });
 

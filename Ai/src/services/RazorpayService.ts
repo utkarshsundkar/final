@@ -122,8 +122,9 @@ export const RazorpayService = {
                 });
 
         } catch (error: any) {
-            console.error('❌ Payment Flow Error:', error);
-            Alert.alert('Payment Error', error.message || 'Unable to start payment');
+            const backendMessage = error.response?.data?.message || error.message;
+            console.error('❌ Payment Flow Error (Full):', error.response?.data || error);
+            Alert.alert('Payment Error', backendMessage || 'Unable to start payment');
             onFailure(error);
         }
     }

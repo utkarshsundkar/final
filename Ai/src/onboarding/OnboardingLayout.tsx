@@ -7,7 +7,8 @@ import {
     Platform,
     Animated,
     Image,
-    StatusBar
+    StatusBar,
+    ScrollView
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { responsive } from '../utils/responsive';
@@ -66,9 +67,13 @@ const OnboardingLayout: React.FC<OnboardingLayoutProps> = ({
                     {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
                 </View>
 
-                <View style={styles.body}>
+                <ScrollView
+                    style={styles.body}
+                    contentContainerStyle={{ flexGrow: 1 }}
+                    showsVerticalScrollIndicator={false}
+                >
                     {children}
-                </View>
+                </ScrollView>
             </View>
 
             {/* Footer / Next Button */}
