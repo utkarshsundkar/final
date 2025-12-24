@@ -11,7 +11,8 @@ import {
   checkEmailExists,
   getLeaderboard,
   activateFreeTrial,
-  fixTrialUsers
+  fixTrialUsers,
+  updateFcmToken
 } from "../controllers/user.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
@@ -30,6 +31,7 @@ router.route("/refresh-token").post(refreshAccessToken);
 router.route("/current-user").get(verifyJWT, getCurrentUser);
 router.route("/update-account").patch(verifyJWT, updateAccountDetails);
 router.route("/activate-trial").post(verifyJWT, activateFreeTrial);
+router.route("/update-fcm-token").post(verifyJWT, updateFcmToken);
 router.route("/fix-trial-users").post(fixTrialUsers); // Temporary fix endpoint
 
 export default router;
