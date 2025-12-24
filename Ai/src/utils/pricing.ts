@@ -21,7 +21,23 @@ export interface PricingInfo {
 }
 
 export const detectUserRegion = (): 'IN' | 'INTERNATIONAL' => {
-    return 'IN'; // Forced for Razorpay testing
+    try {
+        const locales = Localization.getLocales();
+        const countryCode = locales[0]?.countryCode;
+
+        console.log('🌍 Detected country code:', countryCode);
+
+        // Check if user is in India
+        if (countryCode === 'IN') {
+            return 'IN';
+        }
+
+        return 'INTERNATIONAL';
+    } catch (error) {
+        console.error('Error detecting region:', error);
+        // Default to international if detection fails
+        return 'INTERNATIONAL';
+    }
 };
 
 export const getPricingForRegion = (): PricingInfo => {

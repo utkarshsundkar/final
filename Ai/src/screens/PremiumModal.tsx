@@ -360,17 +360,12 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
                 }
             } else {
                 console.log('❌ Trial already used and expired');
-                console.warn('⚠️ User cannot activate trial again');
+                Alert.alert('Trial Unavailable', 'You have already used your free trial. Please choose a monthly or yearly plan to continue.');
             }
         } catch (error: any) {
             console.error('❌ Error activating trial:', error);
-            console.error('Error response:', error.response?.data);
-            console.error('Error message:', error.message);
-
-            console.log('🏠 Navigating to Home despite error...');
-            if (onSuccess) {
-                onSuccess();
-            }
+            const errorMsg = error.response?.data?.message || 'Failed to activate trial. Please try again.';
+            Alert.alert('Activation Failed', errorMsg);
         }
     };
 
@@ -421,15 +416,10 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
                     contentContainerStyle={styles.scrollContent}
                     showsVerticalScrollIndicator={false}
                 >
-                    {/* Close Button */}
-                    <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-                        <Text style={styles.closeButtonText}>✕</Text>
-                    </TouchableOpacity>
-
                     {/* Header */}
-                    <Text style={styles.headerTitle}>Pricing Plans</Text>
+                    <Text style={[styles.headerTitle, { marginTop: 10 }]}>Premium Plans</Text>
                     <Text style={styles.headerSubtitle}>
-                        Find the plan that fits your needs.{'\n'}Switch anytime.
+                        Find the plan that fits your needs. Switch anytime.
                     </Text>
 
                     {/* Plan Cards */}
@@ -453,7 +443,7 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
                                     )}
                                 </View>
                                 <View style={styles.planCardInfo}>
-                                    <View style={styles.planTitleRow}>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 2 }}>
                                         <Text style={styles.planTitle}>Yearly</Text>
                                         {savingsPercent > 0 && (
                                             <View style={styles.popularBadge}>
@@ -461,7 +451,7 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
                                             </View>
                                         )}
                                     </View>
-                                    <Text style={styles.planSubtitle}>Best value for committed users</Text>
+                                    <Text style={styles.planSubtitle} numberOfLines={2}>Best value for committed users</Text>
                                 </View>
                                 <View style={styles.planPriceContainer}>
                                     <Text style={styles.planPriceAmount}>
@@ -492,7 +482,7 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
                                 </View>
                                 <View style={styles.planCardInfo}>
                                     <Text style={styles.planTitle}>Monthly</Text>
-                                    <Text style={styles.planSubtitle}>Flexible month-to-month billing</Text>
+                                    <Text style={styles.planSubtitle} numberOfLines={2}>Flexible month-to-month billing</Text>
                                 </View>
                                 <View style={styles.planPriceContainer}>
                                     <Text style={styles.planPriceAmount}>
@@ -549,22 +539,7 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
                         </TouchableOpacity>
                     )}
 
-                    {/* Dodo Verification Button (International Only) */}
-                    {pricing.currency === 'USD' && (
-                        <TouchableOpacity
-                            style={{ padding: 16, marginTop: 8, alignItems: 'center' }}
-                            onPress={() => checkPaymentStatusAndActivate()}
-                        >
-                            <Text style={{
-                                color: '#666',
-                                fontFamily: 'Lexend',
-                                textDecorationLine: 'underline',
-                                fontSize: 13
-                            }}>
-                                Already Paid? Check Status
-                            </Text>
-                        </TouchableOpacity>
-                    )}
+
                 </ScrollView>
             </SafeAreaView>
         </Modal>
@@ -595,8 +570,8 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     },
     scrollContent: {
-        paddingTop: 12,
-        paddingHorizontal: 24,
+        paddingTop: 10,
+        paddingHorizontal: 20,
         paddingBottom: 40,
     },
     headerTitle: {
@@ -715,7 +690,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
     },
     planPriceAmount: {
-        fontSize: 28,
+        fontSize: 24,
         fontWeight: '700',
         fontFamily: 'Lexend',
         color: '#1A1A1A',

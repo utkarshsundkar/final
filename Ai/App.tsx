@@ -43,6 +43,7 @@ import {
   LayoutAnimation,
   TouchableWithoutFeedback,
   TextInput,
+  AppState
 } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import {
@@ -1592,19 +1593,19 @@ const MainTabScreen = ({ navigation }: any) => {
           new SMWorkoutLibrary.SMAssessmentExercise(
             'High Plank', 35, 'PlankHighStatic', null,
             [SMWorkoutLibrary.UIElement.Timer], 'PlankHighStatic', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, 0.3, 30, null, null, null),
+            null,
             '', 'High Plank', 'Hold the position', 'Time', 'seconds'
           ),
           new SMWorkoutLibrary.SMAssessmentExercise(
             'Air Squat', 35, 'SquatRegular', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer, SMWorkoutLibrary.UIElement.GaugeOfMotion], 'SquatRegular', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Reps, 0.3, null, 12, null, null),
+            null,
             '', 'Air Squat', 'Complete the exercise', 'Reps', 'clean reps'
           ),
           new SMWorkoutLibrary.SMAssessmentExercise(
             'Push-ups', 35, 'PushupRegular', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PushupRegular', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Reps, 0.3, null, 10, null, null),
+            null,
             '', 'Push-ups', 'Complete the exercise', 'Reps', 'clean reps'
           )
         ];
@@ -1627,27 +1628,27 @@ const MainTabScreen = ({ navigation }: any) => {
             new SMWorkoutLibrary.SMExercise(
               `Shoulder Taps - Set ${set}`, 60, 'PlankHighShoulderTaps', null,
               [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PlankHighShoulderTaps', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               'Rest', 90, 'Rest', null,
               [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               `Overhead Press - Set ${set}`, 60, 'ShouldersPress', null,
               [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'ShouldersPress', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               'Rest', 90, 'Rest', null,
               [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               `Reverse Sit to Table Top - Set ${set}`, 60, 'ReverseSitToTableTop', null,
               [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'ReverseSitToTableTop', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+              null
             )
           );
           if (set < 3) {
@@ -1655,7 +1656,7 @@ const MainTabScreen = ({ navigation }: any) => {
               new SMWorkoutLibrary.SMExercise(
                 'Rest', 90, 'Rest', null,
                 [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-                new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+                null
               )
             );
           }
@@ -1690,27 +1691,27 @@ const MainTabScreen = ({ navigation }: any) => {
             new SMWorkoutLibrary.SMExercise(
               `Push-ups - Set ${set}`, 60, 'PushupRegular', null,
               [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PushupRegular', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               'Rest', 90, 'Rest', null,
               [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               `Shoulder Taps Plank - Set ${set}`, 60, 'PlankHighShoulderTaps', null,
               [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PlankHighShoulderTaps', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               'Rest', 90, 'Rest', null,
               [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               `High Plank Hold - Set ${set}`, 60, 'PlankHighStatic', null,
               [SMWorkoutLibrary.UIElement.Timer], 'PlankHighStatic', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+              null
             )
           );
           if (set < 3) {
@@ -1718,7 +1719,7 @@ const MainTabScreen = ({ navigation }: any) => {
               new SMWorkoutLibrary.SMExercise(
                 'Rest', 90, 'Rest', null,
                 [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-                new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+                null
               )
             );
           }
@@ -1748,15 +1749,15 @@ const MainTabScreen = ({ navigation }: any) => {
         const thighsExercises = [];
         for (let set = 1; set <= 3; set++) {
           thighsExercises.push(
-            new SMWorkoutLibrary.SMExercise(`Lunge - Set ${set}`, 60, 'LungeFrontRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'LungeFrontRight', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Air Squat - Set ${set}`, 60, 'SquatRegular', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SquatRegular', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Ski Jumps - Set ${set}`, 60, 'SkiJumps', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SkiJumps', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Jumps - Set ${set}`, 60, 'Jumps', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'Jumps', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null))
+            new SMWorkoutLibrary.SMExercise(`Lunge - Set ${set}`, 60, 'LungeFrontRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'LungeFrontRight', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Air Squat - Set ${set}`, 60, 'SquatRegular', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SquatRegular', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Ski Jumps - Set ${set}`, 60, 'SkiJumps', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SkiJumps', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Jumps - Set ${set}`, 60, 'Jumps', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'Jumps', '', null)
           );
-          if (set < 3) thighsExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
+          if (set < 3) thighsExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null));
         }
         const thighsWorkout = new SMWorkoutLibrary.SMWorkout('Thighs', 'Thunder Thighs', 'Strengthen your quads and hamstrings', SMWorkoutLibrary.BodyZone.FullBody, thighsExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
@@ -1766,13 +1767,13 @@ const MainTabScreen = ({ navigation }: any) => {
         const hipsExercises = [];
         for (let set = 1; set <= 3; set++) {
           hipsExercises.push(
-            new SMWorkoutLibrary.SMExercise(`Glutes Bridge - Set ${set}`, 60, 'GlutesBridge', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'GlutesBridge', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Skater Hops - Set ${set}`, 60, 'SkaterHops', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SkaterHops', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Side Lunge (Left) - Set ${set}`, 60, 'LungeSideLeft', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'LungeSideLeft', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null))
+            new SMWorkoutLibrary.SMExercise(`Glutes Bridge - Set ${set}`, 60, 'GlutesBridge', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'GlutesBridge', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Skater Hops - Set ${set}`, 60, 'SkaterHops', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SkaterHops', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Side Lunge (Left) - Set ${set}`, 60, 'LungeSideLeft', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'LungeSideLeft', '', null)
           );
-          if (set < 3) hipsExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
+          if (set < 3) hipsExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null));
         }
         const hipsWorkout = new SMWorkoutLibrary.SMWorkout('Hips & Glutes', 'Glute Gains', 'Target the glutes and hips', SMWorkoutLibrary.BodyZone.FullBody, hipsExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
@@ -1782,11 +1783,11 @@ const MainTabScreen = ({ navigation }: any) => {
         const calvesExercises = [];
         for (let set = 1; set <= 3; set++) {
           calvesExercises.push(
-            new SMWorkoutLibrary.SMExercise(`Jumping Jacks - Set ${set}`, 60, 'JumpingJacks', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'JumpingJacks', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`High Knees - Set ${set}`, 60, 'HighKnees', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'HighKnees', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null))
+            new SMWorkoutLibrary.SMExercise(`Jumping Jacks - Set ${set}`, 60, 'JumpingJacks', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'JumpingJacks', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`High Knees - Set ${set}`, 60, 'HighKnees', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'HighKnees', '', null)
           );
-          if (set < 3) calvesExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
+          if (set < 3) calvesExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null));
         }
         const calvesWorkout = new SMWorkoutLibrary.SMWorkout('Calves', 'Calf Craze', 'Build powerful calves', SMWorkoutLibrary.BodyZone.LowerBody, calvesExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
@@ -1795,11 +1796,11 @@ const MainTabScreen = ({ navigation }: any) => {
         const armsExercises = [];
         for (let set = 1; set <= 3; set++) {
           armsExercises.push(
-            new SMWorkoutLibrary.SMExercise(`Pushups - Set ${set}`, 60, 'PushupRegular', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PushupRegular', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Shoulder Press - Set ${set}`, 60, 'ShouldersPress', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'ShouldersPress', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null))
+            new SMWorkoutLibrary.SMExercise(`Pushups - Set ${set}`, 60, 'PushupRegular', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PushupRegular', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Shoulder Press - Set ${set}`, 60, 'ShouldersPress', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'ShouldersPress', '', null)
           );
-          if (set < 3) armsExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
+          if (set < 3) armsExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null));
         }
         const armsWorkout = new SMWorkoutLibrary.SMWorkout('Arms', 'Arm Arsenal', 'Pump up your biceps and triceps', SMWorkoutLibrary.BodyZone.UpperBody, armsExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
@@ -1808,15 +1809,15 @@ const MainTabScreen = ({ navigation }: any) => {
         const absExercises = [];
         for (let set = 1; set <= 3; set++) {
           absExercises.push(
-            new SMWorkoutLibrary.SMExercise(`Crunches - Set ${set}`, 60, 'Crunches', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'Crunches', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Tuck Hold - Set ${set}`, 60, 'TuckHold', null, [SMWorkoutLibrary.UIElement.Timer], 'TuckHold', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Shoulder Taps Plank - Set ${set}`, 60, 'PlankHighShoulderTaps', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PlankHighShoulderTaps', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Pushups - Set ${set}`, 60, 'PushupRegular', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PushupRegular', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null))
+            new SMWorkoutLibrary.SMExercise(`Crunches - Set ${set}`, 60, 'Crunches', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'Crunches', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Tuck Hold - Set ${set}`, 60, 'TuckHold', null, [SMWorkoutLibrary.UIElement.Timer], 'TuckHold', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Shoulder Taps Plank - Set ${set}`, 60, 'PlankHighShoulderTaps', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PlankHighShoulderTaps', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Pushups - Set ${set}`, 60, 'PushupRegular', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PushupRegular', '', null)
           );
-          if (set < 3) absExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
+          if (set < 3) absExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null));
         }
         const absWorkout = new SMWorkoutLibrary.SMWorkout('Abs', 'Core Crusher', 'Strengthen your core', SMWorkoutLibrary.BodyZone.FullBody, absExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
@@ -1825,13 +1826,13 @@ const MainTabScreen = ({ navigation }: any) => {
         const plankExercises = [];
         for (let set = 1; set <= 3; set++) {
           plankExercises.push(
-            new SMWorkoutLibrary.SMExercise(`High Plank - Set ${set}`, 60, 'PlankHighStatic', null, [SMWorkoutLibrary.UIElement.Timer], 'PlankHighStatic', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Side Plank - Set ${set}`, 60, 'PlankSideLowStatic', null, [SMWorkoutLibrary.UIElement.Timer], 'PlankSideLowStatic', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Tuck Hold - Set ${set}`, 60, 'TuckHold', null, [SMWorkoutLibrary.UIElement.Timer], 'TuckHold', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null))
+            new SMWorkoutLibrary.SMExercise(`High Plank - Set ${set}`, 60, 'PlankHighStatic', null, [SMWorkoutLibrary.UIElement.Timer], 'PlankHighStatic', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Side Plank - Set ${set}`, 60, 'PlankSideLowStatic', null, [SMWorkoutLibrary.UIElement.Timer], 'PlankSideLowStatic', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Tuck Hold - Set ${set}`, 60, 'TuckHold', null, [SMWorkoutLibrary.UIElement.Timer], 'TuckHold', '', null)
           );
-          if (set < 3) plankExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
+          if (set < 3) plankExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null));
         }
         const plankWorkout = new SMWorkoutLibrary.SMWorkout('PlankCore', 'Plank & Core Stability', 'Build a rock-solid core', SMWorkoutLibrary.BodyZone.FullBody, plankExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
@@ -1840,17 +1841,17 @@ const MainTabScreen = ({ navigation }: any) => {
         const featuredExercises = [];
         for (let set = 1; set <= 3; set++) {
           featuredExercises.push(
-            new SMWorkoutLibrary.SMExercise(`Air Squat - Set ${set}`, 60, 'SquatRegular', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SquatRegular', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Side Lunge (Left) - Set ${set}`, 60, 'LungeSideLeft', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'LungeSideLeft', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Side Lunge (Right) - Set ${set}`, 60, 'LungeSideRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'LungeSideRight', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Lunge - Set ${set}`, 60, 'LungeFrontRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'LungeFrontRight', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Glutes Bridge - Set ${set}`, 60, 'GlutesBridge', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'GlutesBridge', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null))
+            new SMWorkoutLibrary.SMExercise(`Air Squat - Set ${set}`, 60, 'SquatRegular', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SquatRegular', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Side Lunge (Left) - Set ${set}`, 60, 'LungeSideLeft', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'LungeSideLeft', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Side Lunge (Right) - Set ${set}`, 60, 'LungeSideRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'LungeSideRight', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Lunge - Set ${set}`, 60, 'LungeFrontRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'LungeFrontRight', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Glutes Bridge - Set ${set}`, 60, 'GlutesBridge', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'GlutesBridge', '', null)
           );
-          if (set < 3) featuredExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
+          if (set < 3) featuredExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null));
         }
         const featuredWorkout = new SMWorkoutLibrary.SMWorkout('Featured_UpperBody', 'Upper Body Circuit', 'Comprehensive strength circuit', SMWorkoutLibrary.BodyZone.FullBody, featuredExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
@@ -1859,13 +1860,13 @@ const MainTabScreen = ({ navigation }: any) => {
         const coreCrusherExercises = [];
         for (let set = 1; set <= 3; set++) {
           coreCrusherExercises.push(
-            new SMWorkoutLibrary.SMExercise(`Tuck Hold - Set ${set}`, 60, 'TuckHold', null, [SMWorkoutLibrary.UIElement.Timer], 'TuckHold', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Oblique Crunches - Set ${set}`, 60, 'StandingObliqueCrunches', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'StandingObliqueCrunches', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Side Plank - Set ${set}`, 60, 'PlankSideLowStatic', null, [SMWorkoutLibrary.UIElement.Timer], 'PlankSideLowStatic', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null))
+            new SMWorkoutLibrary.SMExercise(`Tuck Hold - Set ${set}`, 60, 'TuckHold', null, [SMWorkoutLibrary.UIElement.Timer], 'TuckHold', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Oblique Crunches - Set ${set}`, 60, 'StandingObliqueCrunches', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'StandingObliqueCrunches', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Side Plank - Set ${set}`, 60, 'PlankSideLowStatic', null, [SMWorkoutLibrary.UIElement.Timer], 'PlankSideLowStatic', '', null)
           );
-          if (set < 3) coreCrusherExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
+          if (set < 3) coreCrusherExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null));
         }
         const coreCrusherWorkout = new SMWorkoutLibrary.SMWorkout('Featured_CoreCrusher', 'Core Crusher', 'Intense core session', SMWorkoutLibrary.BodyZone.FullBody, coreCrusherExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
@@ -1874,15 +1875,15 @@ const MainTabScreen = ({ navigation }: any) => {
         const hiitExercises = [];
         for (let set = 1; set <= 3; set++) {
           hiitExercises.push(
-            new SMWorkoutLibrary.SMExercise(`High Knees - Set ${set}`, 60, 'HighKnees', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'HighKnees', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Skater Hops - Set ${set}`, 60, 'SkaterHops', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SkaterHops', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Shoulder Taps Plank - Set ${set}`, 60, 'PlankHighShoulderTaps', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PlankHighShoulderTaps', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Air Squat - Set ${set}`, 60, 'SquatRegular', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SquatRegular', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null))
+            new SMWorkoutLibrary.SMExercise(`High Knees - Set ${set}`, 60, 'HighKnees', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'HighKnees', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Skater Hops - Set ${set}`, 60, 'SkaterHops', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SkaterHops', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Shoulder Taps Plank - Set ${set}`, 60, 'PlankHighShoulderTaps', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PlankHighShoulderTaps', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Air Squat - Set ${set}`, 60, 'SquatRegular', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SquatRegular', '', null)
           );
-          if (set < 3) hiitExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
+          if (set < 3) hiitExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null));
         }
         const hiitWorkout = new SMWorkoutLibrary.SMWorkout('Featured_HIITExpress', 'HIIT Express', 'High Intensity Cardio', SMWorkoutLibrary.BodyZone.FullBody, hiitExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
@@ -1891,17 +1892,17 @@ const MainTabScreen = ({ navigation }: any) => {
         const mobilityExercises = [];
         for (let set = 1; set <= 3; set++) {
           mobilityExercises.push(
-            new SMWorkoutLibrary.SMExercise(`Jefferson Curl - Set ${set}`, 60, 'JeffersonCurl', null, [SMWorkoutLibrary.UIElement.Timer], 'JeffersonCurl', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Standing Hamstring Mobility - Set ${set}`, 60, 'StandingHamstringMobility', null, [SMWorkoutLibrary.UIElement.Timer], 'StandingHamstringMobility', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Hamstring Mobility - Set ${set}`, 60, 'HamstringMobility', null, [SMWorkoutLibrary.UIElement.Timer], 'HamstringMobility', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Side Bend Left - Set ${set}`, 60, 'StandingSideBendLeft', null, [SMWorkoutLibrary.UIElement.Timer], 'StandingSideBendLeft', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Side Bend Right - Set ${set}`, 60, 'StandingSideBendRight', null, [SMWorkoutLibrary.UIElement.Timer], 'StandingSideBendRight', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null))
+            new SMWorkoutLibrary.SMExercise(`Jefferson Curl - Set ${set}`, 60, 'JeffersonCurl', null, [SMWorkoutLibrary.UIElement.Timer], 'JeffersonCurl', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Standing Hamstring Mobility - Set ${set}`, 60, 'StandingHamstringMobility', null, [SMWorkoutLibrary.UIElement.Timer], 'StandingHamstringMobility', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Hamstring Mobility - Set ${set}`, 60, 'HamstringMobility', null, [SMWorkoutLibrary.UIElement.Timer], 'HamstringMobility', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Side Bend Left - Set ${set}`, 60, 'StandingSideBendLeft', null, [SMWorkoutLibrary.UIElement.Timer], 'StandingSideBendLeft', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Side Bend Right - Set ${set}`, 60, 'StandingSideBendRight', null, [SMWorkoutLibrary.UIElement.Timer], 'StandingSideBendRight', '', null)
           );
-          if (set < 3) mobilityExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
+          if (set < 3) mobilityExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null));
         }
         const mobilityWorkout = new SMWorkoutLibrary.SMWorkout('Featured_MobilityFlow', 'Mobility Flow', 'Flexibility and Range of Motion', SMWorkoutLibrary.BodyZone.FullBody, mobilityExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
@@ -1910,15 +1911,15 @@ const MainTabScreen = ({ navigation }: any) => {
         const gluteExercises = [];
         for (let set = 1; set <= 3; set++) {
           gluteExercises.push(
-            new SMWorkoutLibrary.SMExercise(`Glutes Bridge - Set ${set}`, 60, 'GlutesBridge', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'GlutesBridge', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Side Lunge Left - Set ${set}`, 60, 'LungeSideLeft', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'LungeSideLeft', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Side Lunge Right - Set ${set}`, 60, 'LungeSideRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'LungeSideRight', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Lunge - Set ${set}`, 60, 'LungeFrontRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'LungeFrontRight', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null))
+            new SMWorkoutLibrary.SMExercise(`Glutes Bridge - Set ${set}`, 60, 'GlutesBridge', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'GlutesBridge', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Side Lunge Left - Set ${set}`, 60, 'LungeSideLeft', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'LungeSideLeft', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Side Lunge Right - Set ${set}`, 60, 'LungeSideRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'LungeSideRight', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Lunge - Set ${set}`, 60, 'LungeFrontRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'LungeFrontRight', '', null)
           );
-          if (set < 3) gluteExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
+          if (set < 3) gluteExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null));
         }
         const gluteWorkout = new SMWorkoutLibrary.SMWorkout('Featured_GluteBlaster', 'Glute Blaster', 'Sculpt Glutes and Legs', SMWorkoutLibrary.BodyZone.FullBody, gluteExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
@@ -1927,13 +1928,13 @@ const MainTabScreen = ({ navigation }: any) => {
         const plyoExercises = [];
         for (let set = 1; set <= 3; set++) {
           plyoExercises.push(
-            new SMWorkoutLibrary.SMExercise(`Jumps - Set ${set}`, 60, 'Jumps', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'Jumps', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Ski Jumps - Set ${set}`, 60, 'SkiJumps', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SkiJumps', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`High Knees - Set ${set}`, 60, 'HighKnees', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'HighKnees', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null))
+            new SMWorkoutLibrary.SMExercise(`Jumps - Set ${set}`, 60, 'Jumps', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'Jumps', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Ski Jumps - Set ${set}`, 60, 'SkiJumps', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SkiJumps', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`High Knees - Set ${set}`, 60, 'HighKnees', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'HighKnees', '', null)
           );
-          if (set < 3) plyoExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
+          if (set < 3) plyoExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null));
         }
         const plyoWorkout = new SMWorkoutLibrary.SMWorkout('Featured_PowerPlyo', 'Power Plyo', 'Explosive Plyometrics', SMWorkoutLibrary.BodyZone.FullBody, plyoExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
@@ -2053,14 +2054,7 @@ const MainTabScreen = ({ navigation }: any) => {
             uiElements,
             ex.sdk,
             '',
-            new SMWorkoutLibrary.SMScoringParams(
-              ex.type === 'reps' ? SMWorkoutLibrary.ScoringType.Reps : SMWorkoutLibrary.ScoringType.Time,
-              0.3, // Match Belly League threshold
-              ex.type === 'time' ? ex.target : null,
-              ex.type === 'reps' ? ex.target : null,
-              null,
-              null
-            ),
+            null,
             '', // instructions
             ex.name, // displayName
             'Complete the exercise', // summaryTitle
@@ -2118,32 +2112,32 @@ const MainTabScreen = ({ navigation }: any) => {
           new SMWorkoutLibrary.SMExercise(
             'Push-ups - Set 1', 60, 'PushupRegular', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PushupRegular', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Shoulder Press - Set 1', 60, 'ShouldersPress', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'ShouldersPress', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Shoulder Taps Plank - Set 1', 60, 'PlankHighShoulderTaps', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PlankHighShoulderTaps', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           )
         );
 
@@ -2152,32 +2146,32 @@ const MainTabScreen = ({ navigation }: any) => {
           new SMWorkoutLibrary.SMExercise(
             'Push-ups - Set 2', 60, 'PushupRegular', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PushupRegular', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Shoulder Press - Set 2', 60, 'ShouldersPress', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'ShouldersPress', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Shoulder Taps Plank - Set 2', 60, 'PlankHighShoulderTaps', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PlankHighShoulderTaps', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           )
         );
 
@@ -2186,27 +2180,27 @@ const MainTabScreen = ({ navigation }: any) => {
           new SMWorkoutLibrary.SMExercise(
             'Push-ups - Set 3', 60, 'PushupRegular', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PushupRegular', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Shoulder Press - Set 3', 60, 'ShouldersPress', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'ShouldersPress', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Shoulder Taps Plank - Set 3', 60, 'PlankHighShoulderTaps', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PlankHighShoulderTaps', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           )
         );
 
@@ -2244,32 +2238,32 @@ const MainTabScreen = ({ navigation }: any) => {
           new SMWorkoutLibrary.SMExercise(
             'Shoulder Press - Set 1', 60, 'ShouldersPress', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'ShouldersPress', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Push-ups - Set 1', 60, 'PushupRegular', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PushupRegular', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Shoulder Taps Plank - Set 1', 60, 'PlankHighShoulderTaps', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PlankHighShoulderTaps', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           )
         );
 
@@ -2278,32 +2272,32 @@ const MainTabScreen = ({ navigation }: any) => {
           new SMWorkoutLibrary.SMExercise(
             'Shoulder Press - Set 2', 60, 'ShouldersPress', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'ShouldersPress', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Push-ups - Set 2', 60, 'PushupRegular', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PushupRegular', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Shoulder Taps Plank - Set 2', 60, 'PlankHighShoulderTaps', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PlankHighShoulderTaps', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           )
         );
 
@@ -2312,27 +2306,27 @@ const MainTabScreen = ({ navigation }: any) => {
           new SMWorkoutLibrary.SMExercise(
             'Shoulder Press - Set 3', 60, 'ShouldersPress', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'ShouldersPress', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Push-ups - Set 3', 60, 'PushupRegular', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PushupRegular', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Shoulder Taps Plank - Set 3', 60, 'PlankHighShoulderTaps', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PlankHighShoulderTaps', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           )
         );
 
@@ -2367,27 +2361,27 @@ const MainTabScreen = ({ navigation }: any) => {
           new SMWorkoutLibrary.SMExercise(
             'Air Squat', 35, 'SquatRegular', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SquatRegular', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Reps, threshold, null, 15, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Lunge', 35, 'LungeFrontRight', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'LungeFrontRight', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Reps, threshold, null, 12, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Glutes Bridge', 35, 'GlutesBridge', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'GlutesBridge', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Reps, threshold, null, 15, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Side Lunge Left', 35, 'SideLungeLeft', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SideLungeLeft', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Reps, threshold, null, 10, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Side Lunge Right', 35, 'SideLungeRight', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SideLungeRight', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Reps, threshold, null, 10, null, null)
+            null
           )
         ];
 
@@ -2425,32 +2419,32 @@ const MainTabScreen = ({ navigation }: any) => {
           new SMWorkoutLibrary.SMExercise(
             'Push-ups - Set 1', 60, 'PushupRegular', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PushupRegular', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Shoulder Press - Set 1', 60, 'ShouldersPress', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'ShouldersPress', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Shoulder Taps Plank - Set 1', 60, 'PlankHighShoulderTaps', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PlankHighShoulderTaps', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           )
         );
 
@@ -2459,32 +2453,32 @@ const MainTabScreen = ({ navigation }: any) => {
           new SMWorkoutLibrary.SMExercise(
             'Push-ups - Set 2', 60, 'PushupRegular', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PushupRegular', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Shoulder Press - Set 2', 60, 'ShouldersPress', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'ShouldersPress', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Shoulder Taps Plank - Set 2', 60, 'PlankHighShoulderTaps', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PlankHighShoulderTaps', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           )
         );
 
@@ -2493,27 +2487,27 @@ const MainTabScreen = ({ navigation }: any) => {
           new SMWorkoutLibrary.SMExercise(
             'Push-ups - Set 3', 60, 'PushupRegular', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PushupRegular', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Shoulder Press - Set 3', 60, 'ShouldersPress', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'ShouldersPress', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Shoulder Taps Plank - Set 3', 60, 'PlankHighShoulderTaps', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PlankHighShoulderTaps', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           )
         );
 
@@ -2550,32 +2544,32 @@ const MainTabScreen = ({ navigation }: any) => {
           new SMWorkoutLibrary.SMExercise(
             'Air Squat - Set 1', 60, 'SquatRegular', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SquatRegular', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Push-ups - Set 1', 60, 'PushupRegular', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PushupRegular', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Overhead Squat - Set 1', 60, 'SquatOverhead', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SquatOverhead', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           )
         );
 
@@ -2584,32 +2578,32 @@ const MainTabScreen = ({ navigation }: any) => {
           new SMWorkoutLibrary.SMExercise(
             'Air Squat - Set 2', 60, 'SquatRegular', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SquatRegular', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Push-ups - Set 2', 60, 'PushupRegular', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PushupRegular', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Overhead Squat - Set 2', 60, 'SquatOverhead', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SquatOverhead', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           )
         );
 
@@ -2618,27 +2612,27 @@ const MainTabScreen = ({ navigation }: any) => {
           new SMWorkoutLibrary.SMExercise(
             'Air Squat - Set 3', 60, 'SquatRegular', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SquatRegular', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Push-ups - Set 3', 60, 'PushupRegular', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PushupRegular', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Rest', 90, 'Rest', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+            null
           ),
           new SMWorkoutLibrary.SMExercise(
             'Overhead Squat - Set 3', 60, 'SquatOverhead', null,
             [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SquatOverhead', '',
-            new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+            null
           )
         );
 
@@ -2672,37 +2666,37 @@ const MainTabScreen = ({ navigation }: any) => {
             new SMWorkoutLibrary.SMExercise(
               `High Knees - Set ${set}`, 60, 'HighKnees', null,
               [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'HighKnees', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               'Rest', 90, 'Rest', null,
               [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               `Skater Hops - Set ${set}`, 60, 'SkaterHops', null,
               [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SkaterHops', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               'Rest', 90, 'Rest', null,
               [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               `Shoulder Taps Plank - Set ${set}`, 60, 'PlankHighShoulderTaps', null,
               [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'PlankHighShoulderTaps', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               'Rest', 90, 'Rest', null,
               [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               `Air Squat - Set ${set}`, 60, 'SquatRegular', null,
               [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SquatRegular', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+              null
             )
           );
           if (set < 3) {
@@ -2710,7 +2704,7 @@ const MainTabScreen = ({ navigation }: any) => {
               new SMWorkoutLibrary.SMExercise(
                 'Rest', 90, 'Rest', null,
                 [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-                new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+                null
               )
             );
           }
@@ -2744,37 +2738,37 @@ const MainTabScreen = ({ navigation }: any) => {
             new SMWorkoutLibrary.SMExercise(
               `Jumping Jacks - Set ${set}`, 60, 'JumpingJacks', null,
               [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'JumpingJacks', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               'Rest', 90, 'Rest', null,
               [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               `Oblique Crunches - Set ${set}`, 60, 'ObliqueCrunches', null,
               [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'ObliqueCrunches', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               'Rest', 90, 'Rest', null,
               [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               `High Knees - Set ${set}`, 60, 'HighKnees', null,
               [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'HighKnees', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               'Rest', 90, 'Rest', null,
               [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               `Crunches - Set ${set}`, 60, 'Crunches', null,
               [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'Crunches', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+              null
             )
           );
           if (set < 3) {
@@ -2782,7 +2776,7 @@ const MainTabScreen = ({ navigation }: any) => {
               new SMWorkoutLibrary.SMExercise(
                 'Rest', 90, 'Rest', null,
                 [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-                new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+                null
               )
             );
           }
@@ -2816,37 +2810,37 @@ const MainTabScreen = ({ navigation }: any) => {
             new SMWorkoutLibrary.SMExercise(
               `High Knees - Set ${set}`, 60, 'HighKnees', null,
               [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'HighKnees', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               'Rest', 90, 'Rest', null,
               [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               `Jumping Jacks - Set ${set}`, 60, 'JumpingJacks', null,
               [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'JumpingJacks', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               'Rest', 90, 'Rest', null,
               [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               `Skater Hops - Set ${set}`, 60, 'SkaterHops', null,
               [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SkaterHops', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               'Rest', 90, 'Rest', null,
               [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               `Jumps - Set ${set}`, 60, 'Jumps', null,
               [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'Jumps', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+              null
             )
           );
           if (set < 3) {
@@ -2854,7 +2848,7 @@ const MainTabScreen = ({ navigation }: any) => {
               new SMWorkoutLibrary.SMExercise(
                 'Rest', 90, 'Rest', null,
                 [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-                new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+                null
               )
             );
           }
@@ -2888,47 +2882,47 @@ const MainTabScreen = ({ navigation }: any) => {
             new SMWorkoutLibrary.SMExercise(
               `High Knees - Set ${set}`, 60, 'HighKnees', null,
               [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'HighKnees', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               'Rest', 90, 'Rest', null,
               [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               `Jumping Jacks - Set ${set}`, 60, 'JumpingJacks', null,
               [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'JumpingJacks', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               'Rest', 90, 'Rest', null,
               [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               `Skater Hops - Set ${set}`, 60, 'SkaterHops', null,
               [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SkaterHops', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               'Rest', 90, 'Rest', null,
               [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               `Jumps - Set ${set}`, 60, 'Jumps', null,
               [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'Jumps', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               'Rest', 90, 'Rest', null,
               [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+              null
             ),
             new SMWorkoutLibrary.SMExercise(
               `Ski Jumps - Set ${set}`, 60, 'SkiJumps', null,
               [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SkiJumps', '',
-              new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)
+              null
             )
           );
           if (set < 3) {
@@ -2936,7 +2930,7 @@ const MainTabScreen = ({ navigation }: any) => {
               new SMWorkoutLibrary.SMExercise(
                 'Rest', 90, 'Rest', null,
                 [SMWorkoutLibrary.UIElement.Timer], 'Rest', '',
-                new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)
+                null
               )
             );
           }
@@ -2965,15 +2959,15 @@ const MainTabScreen = ({ navigation }: any) => {
         const coreExercises = [];
         for (let set = 1; set <= 3; set++) {
           coreExercises.push(
-            new SMWorkoutLibrary.SMExercise(`Crunches - Set ${set}`, 60, 'Crunches', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'Crunches', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Oblique Crunches - Set ${set}`, 60, 'ObliqueCrunches', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'ObliqueCrunches', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`High Plank - Set ${set}`, 60, 'PlankHigh', null, [SMWorkoutLibrary.UIElement.Timer], 'PlankHigh', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Side Plank - Set ${set}`, 60, 'PlankSide', null, [SMWorkoutLibrary.UIElement.Timer], 'PlankSide', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null))
+            new SMWorkoutLibrary.SMExercise(`Crunches - Set ${set}`, 60, 'Crunches', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'Crunches', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Oblique Crunches - Set ${set}`, 60, 'ObliqueCrunches', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'ObliqueCrunches', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`High Plank - Set ${set}`, 60, 'PlankHigh', null, [SMWorkoutLibrary.UIElement.Timer], 'PlankHigh', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Side Plank - Set ${set}`, 60, 'PlankSide', null, [SMWorkoutLibrary.UIElement.Timer], 'PlankSide', '', null)
           );
-          if (set < 3) coreExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
+          if (set < 3) coreExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null));
         }
         const coreWorkout = new SMWorkoutLibrary.SMWorkout('CoreCrusher', 'Core Crusher', 'Crush your core', SMWorkoutLibrary.BodyZone.FullBody, coreExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
@@ -2982,15 +2976,15 @@ const MainTabScreen = ({ navigation }: any) => {
         const absExercises = [];
         for (let set = 1; set <= 3; set++) {
           absExercises.push(
-            new SMWorkoutLibrary.SMExercise(`Crunches - Set ${set}`, 60, 'Crunches', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'Crunches', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Tuck Hold - Set ${set}`, 60, 'TuckHold', null, [SMWorkoutLibrary.UIElement.Timer], 'TuckHold', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Oblique Crunches - Set ${set}`, 60, 'ObliqueCrunches', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'ObliqueCrunches', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Side Plank - Set ${set}`, 60, 'PlankSide', null, [SMWorkoutLibrary.UIElement.Timer], 'PlankSide', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null))
+            new SMWorkoutLibrary.SMExercise(`Crunches - Set ${set}`, 60, 'Crunches', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'Crunches', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Tuck Hold - Set ${set}`, 60, 'TuckHold', null, [SMWorkoutLibrary.UIElement.Timer], 'TuckHold', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Oblique Crunches - Set ${set}`, 60, 'ObliqueCrunches', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'ObliqueCrunches', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Side Plank - Set ${set}`, 60, 'PlankSide', null, [SMWorkoutLibrary.UIElement.Timer], 'PlankSide', '', null)
           );
-          if (set < 3) absExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
+          if (set < 3) absExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null));
         }
         const absWorkout = new SMWorkoutLibrary.SMWorkout('AbsReloaded', 'Abs Reloaded', 'Core focused routine', SMWorkoutLibrary.BodyZone.FullBody, absExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
@@ -2999,17 +2993,17 @@ const MainTabScreen = ({ navigation }: any) => {
         const mobilityExercises = [];
         for (let set = 1; set <= 3; set++) {
           mobilityExercises.push(
-            new SMWorkoutLibrary.SMExercise(`Jefferson Curl - Set ${set}`, 60, 'JeffersonCurl', null, [SMWorkoutLibrary.UIElement.Timer], 'JeffersonCurl', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Standing Hamstring Mobility - Set ${set}`, 60, 'StandingHamstringMobility', null, [SMWorkoutLibrary.UIElement.Timer], 'StandingHamstringMobility', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Hamstring Mobility - Set ${set}`, 60, 'HamstringMobility', null, [SMWorkoutLibrary.UIElement.Timer], 'HamstringMobility', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Side Bend Left - Set ${set}`, 60, 'SideBendLeft', null, [SMWorkoutLibrary.UIElement.Timer], 'SideBendLeft', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Side Bend Right - Set ${set}`, 60, 'SideBendRight', null, [SMWorkoutLibrary.UIElement.Timer], 'SideBendRight', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null))
+            new SMWorkoutLibrary.SMExercise(`Jefferson Curl - Set ${set}`, 60, 'JeffersonCurl', null, [SMWorkoutLibrary.UIElement.Timer], 'JeffersonCurl', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Standing Hamstring Mobility - Set ${set}`, 60, 'StandingHamstringMobility', null, [SMWorkoutLibrary.UIElement.Timer], 'StandingHamstringMobility', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Hamstring Mobility - Set ${set}`, 60, 'HamstringMobility', null, [SMWorkoutLibrary.UIElement.Timer], 'HamstringMobility', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Side Bend Left - Set ${set}`, 60, 'SideBendLeft', null, [SMWorkoutLibrary.UIElement.Timer], 'SideBendLeft', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Side Bend Right - Set ${set}`, 60, 'SideBendRight', null, [SMWorkoutLibrary.UIElement.Timer], 'SideBendRight', '', null)
           );
-          if (set < 3) mobilityExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
+          if (set < 3) mobilityExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null));
         }
         const mobilityWorkout = new SMWorkoutLibrary.SMWorkout('MobilityFlow', 'Mobility Flow', 'Smooth sequence for flexibility', SMWorkoutLibrary.BodyZone.FullBody, mobilityExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
@@ -3018,17 +3012,17 @@ const MainTabScreen = ({ navigation }: any) => {
         const dynamicExercises = [];
         for (let set = 1; set <= 3; set++) {
           dynamicExercises.push(
-            new SMWorkoutLibrary.SMExercise(`Standing Knee Raise Left - Set ${set}`, 60, 'StandingKneeRaiseLeft', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'StandingKneeRaiseLeft', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Standing Knee Raise Right - Set ${set}`, 60, 'StandingKneeRaiseRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'StandingKneeRaiseRight', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Side Lunge Left - Set ${set}`, 60, 'SideLungeLeft', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SideLungeLeft', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Side Lunge Right - Set ${set}`, 60, 'SideLungeRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SideLungeRight', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Hamstring Mobility - Set ${set}`, 60, 'HamstringMobility', null, [SMWorkoutLibrary.UIElement.Timer], 'HamstringMobility', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null))
+            new SMWorkoutLibrary.SMExercise(`Standing Knee Raise Left - Set ${set}`, 60, 'StandingKneeRaiseLeft', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'StandingKneeRaiseLeft', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Standing Knee Raise Right - Set ${set}`, 60, 'StandingKneeRaiseRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'StandingKneeRaiseRight', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Side Lunge Left - Set ${set}`, 60, 'SideLungeLeft', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SideLungeLeft', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Side Lunge Right - Set ${set}`, 60, 'SideLungeRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SideLungeRight', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Hamstring Mobility - Set ${set}`, 60, 'HamstringMobility', null, [SMWorkoutLibrary.UIElement.Timer], 'HamstringMobility', '', null)
           );
-          if (set < 3) dynamicExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
+          if (set < 3) dynamicExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null));
         }
         const dynamicWorkout = new SMWorkoutLibrary.SMWorkout('DynamicMobility', 'Dynamic Mobility', 'Active range of motion work', SMWorkoutLibrary.BodyZone.FullBody, dynamicExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
@@ -3037,15 +3031,15 @@ const MainTabScreen = ({ navigation }: any) => {
         const gluteExercises = [];
         for (let set = 1; set <= 3; set++) {
           gluteExercises.push(
-            new SMWorkoutLibrary.SMExercise(`Glutes Bridge - Set ${set}`, 60, 'GlutesBridge', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'GlutesBridge', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Side Lunge Left - Set ${set}`, 60, 'SideLungeLeft', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SideLungeLeft', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Side Lunge Right - Set ${set}`, 60, 'SideLungeRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SideLungeRight', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Lunge - Set ${set}`, 60, 'LungeFrontRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'LungeFrontRight', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null))
+            new SMWorkoutLibrary.SMExercise(`Glutes Bridge - Set ${set}`, 60, 'GlutesBridge', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'GlutesBridge', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Side Lunge Left - Set ${set}`, 60, 'SideLungeLeft', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SideLungeLeft', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Side Lunge Right - Set ${set}`, 60, 'SideLungeRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SideLungeRight', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Lunge - Set ${set}`, 60, 'LungeFrontRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'LungeFrontRight', '', null)
           );
-          if (set < 3) gluteExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
+          if (set < 3) gluteExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null));
         }
         const gluteWorkout = new SMWorkoutLibrary.SMWorkout('GluteBlaster', 'Glute Blaster', 'Target and strengthen your glutes', SMWorkoutLibrary.BodyZone.LowerBody, gluteExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
@@ -3054,15 +3048,15 @@ const MainTabScreen = ({ navigation }: any) => {
         const postureExercises = [];
         for (let set = 1; set <= 3; set++) {
           postureExercises.push(
-            new SMWorkoutLibrary.SMExercise(`Jefferson Curl - Set ${set}`, 60, 'JeffersonCurl', null, [SMWorkoutLibrary.UIElement.Timer], 'JeffersonCurl', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Glutes Bridge - Set ${set}`, 60, 'GlutesBridge', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'GlutesBridge', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Hamstring Mobility - Set ${set}`, 60, 'HamstringMobility', null, [SMWorkoutLibrary.UIElement.Timer], 'HamstringMobility', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Overhead Squat - Set ${set}`, 60, 'SquatOverhead', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SquatOverhead', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null))
+            new SMWorkoutLibrary.SMExercise(`Jefferson Curl - Set ${set}`, 60, 'JeffersonCurl', null, [SMWorkoutLibrary.UIElement.Timer], 'JeffersonCurl', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Glutes Bridge - Set ${set}`, 60, 'GlutesBridge', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'GlutesBridge', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Hamstring Mobility - Set ${set}`, 60, 'HamstringMobility', null, [SMWorkoutLibrary.UIElement.Timer], 'HamstringMobility', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Overhead Squat - Set ${set}`, 60, 'SquatOverhead', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SquatOverhead', '', null)
           );
-          if (set < 3) postureExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
+          if (set < 3) postureExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null));
         }
         const postureWorkout = new SMWorkoutLibrary.SMWorkout('PostureFix', 'Posture Fix', 'Improve alignment and posture', SMWorkoutLibrary.BodyZone.FullBody, postureExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
@@ -3071,27 +3065,27 @@ const MainTabScreen = ({ navigation }: any) => {
         const mobilityMaxExercises = [];
         for (let set = 1; set <= 3; set++) {
           mobilityMaxExercises.push(
-            new SMWorkoutLibrary.SMExercise(`Jefferson Curl - Set ${set}`, 60, 'JeffersonCurl', null, [SMWorkoutLibrary.UIElement.Timer], 'JeffersonCurl', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Standing Hamstring Mobility - Set ${set}`, 60, 'StandingHamstringMobility', null, [SMWorkoutLibrary.UIElement.Timer], 'StandingHamstringMobility', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Hamstring Mobility - Set ${set}`, 60, 'HamstringMobility', null, [SMWorkoutLibrary.UIElement.Timer], 'HamstringMobility', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Side Bend Left - Set ${set}`, 60, 'SideBendLeft', null, [SMWorkoutLibrary.UIElement.Timer], 'SideBendLeft', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Side Bend Right - Set ${set}`, 60, 'SideBendRight', null, [SMWorkoutLibrary.UIElement.Timer], 'SideBendRight', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Reverse Sit to Table Top - Set ${set}`, 60, 'ReverseSitToTableTop', null, [SMWorkoutLibrary.UIElement.Timer], 'ReverseSitToTableTop', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Standing Knee Raise Left - Set ${set}`, 60, 'StandingKneeRaiseLeft', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'StandingKneeRaiseLeft', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Standing Knee Raise Right - Set ${set}`, 60, 'StandingKneeRaiseRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'StandingKneeRaiseRight', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Glutes Bridge - Set ${set}`, 60, 'GlutesBridge', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'GlutesBridge', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Overhead Squat - Set ${set}`, 60, 'SquatOverhead', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SquatOverhead', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null))
+            new SMWorkoutLibrary.SMExercise(`Jefferson Curl - Set ${set}`, 60, 'JeffersonCurl', null, [SMWorkoutLibrary.UIElement.Timer], 'JeffersonCurl', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Standing Hamstring Mobility - Set ${set}`, 60, 'StandingHamstringMobility', null, [SMWorkoutLibrary.UIElement.Timer], 'StandingHamstringMobility', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Hamstring Mobility - Set ${set}`, 60, 'HamstringMobility', null, [SMWorkoutLibrary.UIElement.Timer], 'HamstringMobility', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Side Bend Left - Set ${set}`, 60, 'SideBendLeft', null, [SMWorkoutLibrary.UIElement.Timer], 'SideBendLeft', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Side Bend Right - Set ${set}`, 60, 'SideBendRight', null, [SMWorkoutLibrary.UIElement.Timer], 'SideBendRight', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Reverse Sit to Table Top - Set ${set}`, 60, 'ReverseSitToTableTop', null, [SMWorkoutLibrary.UIElement.Timer], 'ReverseSitToTableTop', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Standing Knee Raise Left - Set ${set}`, 60, 'StandingKneeRaiseLeft', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'StandingKneeRaiseLeft', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Standing Knee Raise Right - Set ${set}`, 60, 'StandingKneeRaiseRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'StandingKneeRaiseRight', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Glutes Bridge - Set ${set}`, 60, 'GlutesBridge', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'GlutesBridge', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Overhead Squat - Set ${set}`, 60, 'SquatOverhead', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SquatOverhead', '', null)
           );
-          if (set < 3) mobilityMaxExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
+          if (set < 3) mobilityMaxExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null));
         }
         const mobilityMaxWorkout = new SMWorkoutLibrary.SMWorkout('MobilityMax', 'Mobility Max', 'Complete mobility session', SMWorkoutLibrary.BodyZone.FullBody, mobilityMaxExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
@@ -3100,19 +3094,19 @@ const MainTabScreen = ({ navigation }: any) => {
         const sideExercises = [];
         for (let set = 1; set <= 3; set++) {
           sideExercises.push(
-            new SMWorkoutLibrary.SMExercise(`Skater Hops - Set ${set}`, 60, 'SkaterHops', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SkaterHops', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Standing Knee Raise Left - Set ${set}`, 60, 'StandingKneeRaiseLeft', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'StandingKneeRaiseLeft', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Standing Knee Raise Right - Set ${set}`, 60, 'StandingKneeRaiseRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'StandingKneeRaiseRight', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`High Knees - Set ${set}`, 60, 'HighKnees', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'HighKnees', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Side Lunge Left - Set ${set}`, 60, 'SideLungeLeft', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SideLungeLeft', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Side Lunge Right - Set ${set}`, 60, 'SideLungeRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SideLungeRight', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null))
+            new SMWorkoutLibrary.SMExercise(`Skater Hops - Set ${set}`, 60, 'SkaterHops', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SkaterHops', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Standing Knee Raise Left - Set ${set}`, 60, 'StandingKneeRaiseLeft', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'StandingKneeRaiseLeft', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Standing Knee Raise Right - Set ${set}`, 60, 'StandingKneeRaiseRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'StandingKneeRaiseRight', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`High Knees - Set ${set}`, 60, 'HighKnees', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'HighKnees', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Side Lunge Left - Set ${set}`, 60, 'SideLungeLeft', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SideLungeLeft', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Side Lunge Right - Set ${set}`, 60, 'SideLungeRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SideLungeRight', '', null)
           );
-          if (set < 3) sideExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
+          if (set < 3) sideExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null));
         }
         const sideWorkout = new SMWorkoutLibrary.SMWorkout('SideToSideBurner', 'Side to Side Burner', 'Lateral movements for legs', SMWorkoutLibrary.BodyZone.LowerBody, sideExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
@@ -3121,17 +3115,17 @@ const MainTabScreen = ({ navigation }: any) => {
         const lowImpactExercises = [];
         for (let set = 1; set <= 3; set++) {
           lowImpactExercises.push(
-            new SMWorkoutLibrary.SMExercise(`Glutes Bridge - Set ${set}`, 60, 'GlutesBridge', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'GlutesBridge', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Oblique Crunches - Set ${set}`, 60, 'ObliqueCrunches', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'ObliqueCrunches', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Standing Knee Raise Left - Set ${set}`, 60, 'StandingKneeRaiseLeft', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'StandingKneeRaiseLeft', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Standing Knee Raise Right - Set ${set}`, 60, 'StandingKneeRaiseRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'StandingKneeRaiseRight', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Reverse Sit to Table Top - Set ${set}`, 60, 'ReverseSitToTableTop', null, [SMWorkoutLibrary.UIElement.Timer], 'ReverseSitToTableTop', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null))
+            new SMWorkoutLibrary.SMExercise(`Glutes Bridge - Set ${set}`, 60, 'GlutesBridge', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'GlutesBridge', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Oblique Crunches - Set ${set}`, 60, 'ObliqueCrunches', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'ObliqueCrunches', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Standing Knee Raise Left - Set ${set}`, 60, 'StandingKneeRaiseLeft', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'StandingKneeRaiseLeft', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Standing Knee Raise Right - Set ${set}`, 60, 'StandingKneeRaiseRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'StandingKneeRaiseRight', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Reverse Sit to Table Top - Set ${set}`, 60, 'ReverseSitToTableTop', null, [SMWorkoutLibrary.UIElement.Timer], 'ReverseSitToTableTop', '', null)
           );
-          if (set < 3) lowImpactExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
+          if (set < 3) lowImpactExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null));
         }
         const lowImpactWorkout = new SMWorkoutLibrary.SMWorkout('LowImpactTorch', 'Low Impact Torch', 'Burn calories without impact', SMWorkoutLibrary.BodyZone.FullBody, lowImpactExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
@@ -3140,29 +3134,29 @@ const MainTabScreen = ({ navigation }: any) => {
         const lowerMaxExercises = [];
         for (let set = 1; set <= 3; set++) {
           lowerMaxExercises.push(
-            new SMWorkoutLibrary.SMExercise(`Glutes Bridge - Set ${set}`, 60, 'GlutesBridge', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'GlutesBridge', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Side Lunge Left - Set ${set}`, 60, 'SideLungeLeft', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SideLungeLeft', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Side Lunge Right - Set ${set}`, 60, 'SideLungeRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SideLungeRight', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Lunge - Set ${set}`, 60, 'LungeFrontRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'LungeFrontRight', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Air Squat - Set ${set}`, 60, 'SquatRegular', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SquatRegular', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Skater Hops - Set ${set}`, 60, 'SkaterHops', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SkaterHops', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Standing Knee Raise Left - Set ${set}`, 60, 'StandingKneeRaiseLeft', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'StandingKneeRaiseLeft', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Standing Knee Raise Right - Set ${set}`, 60, 'StandingKneeRaiseRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'StandingKneeRaiseRight', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`High Knees - Set ${set}`, 60, 'HighKnees', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'HighKnees', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Oblique Crunches - Set ${set}`, 60, 'ObliqueCrunches', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'ObliqueCrunches', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null)),
-            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)),
-            new SMWorkoutLibrary.SMExercise(`Reverse Sit to Table Top - Set ${set}`, 60, 'ReverseSitToTableTop', null, [SMWorkoutLibrary.UIElement.Timer], 'ReverseSitToTableTop', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 60, null, null))
+            new SMWorkoutLibrary.SMExercise(`Glutes Bridge - Set ${set}`, 60, 'GlutesBridge', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'GlutesBridge', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Side Lunge Left - Set ${set}`, 60, 'SideLungeLeft', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SideLungeLeft', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Side Lunge Right - Set ${set}`, 60, 'SideLungeRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SideLungeRight', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Lunge - Set ${set}`, 60, 'LungeFrontRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'LungeFrontRight', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Air Squat - Set ${set}`, 60, 'SquatRegular', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SquatRegular', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Skater Hops - Set ${set}`, 60, 'SkaterHops', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'SkaterHops', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Standing Knee Raise Left - Set ${set}`, 60, 'StandingKneeRaiseLeft', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'StandingKneeRaiseLeft', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Standing Knee Raise Right - Set ${set}`, 60, 'StandingKneeRaiseRight', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'StandingKneeRaiseRight', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`High Knees - Set ${set}`, 60, 'HighKnees', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'HighKnees', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Oblique Crunches - Set ${set}`, 60, 'ObliqueCrunches', null, [SMWorkoutLibrary.UIElement.RepsCounter, SMWorkoutLibrary.UIElement.Timer], 'ObliqueCrunches', '', null),
+            new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null),
+            new SMWorkoutLibrary.SMExercise(`Reverse Sit to Table Top - Set ${set}`, 60, 'ReverseSitToTableTop', null, [SMWorkoutLibrary.UIElement.Timer], 'ReverseSitToTableTop', '', null)
           );
-          if (set < 3) lowerMaxExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', new SMWorkoutLibrary.SMScoringParams(SMWorkoutLibrary.ScoringType.Time, threshold, null, 90, null, null)));
+          if (set < 3) lowerMaxExercises.push(new SMWorkoutLibrary.SMExercise('Rest', 90, 'Rest', null, [SMWorkoutLibrary.UIElement.Timer], 'Rest', '', null));
         }
         const lowerMaxWorkout = new SMWorkoutLibrary.SMWorkout('LowerMax', 'Lower Max', 'Complete lower body challenge', SMWorkoutLibrary.BodyZone.LowerBody, lowerMaxExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
@@ -3558,6 +3552,7 @@ const MainTabScreen = ({ navigation }: any) => {
                       {/* Featured - Horizontal Scroll */}
                       <ScrollView
                         horizontal
+                        nestedScrollEnabled={true}
                         showsHorizontalScrollIndicator={false}
                         contentContainerStyle={{ paddingHorizontal: 20, gap: 16, paddingBottom: 25, marginTop: 10 }}
                       >
@@ -3671,6 +3666,7 @@ const MainTabScreen = ({ navigation }: any) => {
                       {/* Filter Tabs */}
                       <ScrollView
                         horizontal
+                        nestedScrollEnabled={true}
                         showsHorizontalScrollIndicator={false}
                         contentContainerStyle={{ paddingHorizontal: 20, paddingRight: 40, paddingVertical: 8, marginBottom: 12 }}
                       >
@@ -3757,6 +3753,7 @@ const MainTabScreen = ({ navigation }: any) => {
 
                         <ScrollView
                           horizontal={true}
+                          nestedScrollEnabled={true}
                           showsHorizontalScrollIndicator={false}
                           contentContainerStyle={{
                             paddingHorizontal: 20,
@@ -4950,11 +4947,20 @@ const App = () => {
     GoogleSignin.configure({
       iosClientId: '912055738866-63pugaqc2m9s04gcv8qg5volltl6u2uo.apps.googleusercontent.com',
       webClientId: '912055738866-ho32cblfdh4ckfgjvnu5l8n6u2glp8de.apps.googleusercontent.com',
-      androidClientId: '912055738866-hbied6ic117drqo4ko4g6c2ist1agtkt.apps.googleusercontent.com', // Release Client ID
       offlineAccess: true,
     });
 
+    const subscription = AppState.addEventListener('change', (nextAppState) => {
+      if (nextAppState === 'active') {
+        AuthService.refreshUserProfile();
+      }
+    });
+
     checkAuthAndOnboarding();
+
+    return () => {
+      subscription.remove();
+    };
   }, []);
 
   const checkAuthAndOnboarding = async () => {

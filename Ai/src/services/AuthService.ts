@@ -243,10 +243,10 @@ class AuthService {
                 return { success: false, message: 'Google Play Services not available' };
             }
 
-            console.error('Google Sign-In error:', error.message);
+            console.error('Google Sign-In error:', error.message, error.code);
             return {
                 success: false,
-                message: 'Google sign-in failed. Please try again.',
+                message: `Google sign-in failed (${error.code || 'unknown'}): ${error.message || 'Please try again.'}`,
             };
         }
     }

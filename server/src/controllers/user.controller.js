@@ -507,30 +507,6 @@ const fixTrialUsers = asyncHandler(async (req, res) => {
   );
 });
 
-// Update FCM Token for notifications
-const updateFcmToken = asyncHandler(async (req, res) => {
-  const { fcmToken } = req.body;
-  const userId = req.user?._id;
-
-  if (!fcmToken) {
-    throw new ApiError(400, "FCM Token is required");
-  }
-
-  const user = await User.findByIdAndUpdate(
-    userId,
-    { $set: { fcmToken: fcmToken } },
-    { new: true }
-  );
-
-  if (!user) {
-    throw new ApiError(404, "User not found");
-  }
-
-  return res.status(200).json(
-    new ApiResponse(200, { success: true }, "FCM Token updated successfully")
-  );
-});
-
 export {
   registerUser,
   loginUser,
@@ -543,7 +519,6 @@ export {
   checkEmailExists,
   getLeaderboard,
   activateFreeTrial,
-  fixTrialUsers,
-  updateFcmToken, // Export new function
+  fixTrialUsers, // Export new function
 };
 

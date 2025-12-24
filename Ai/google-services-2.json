@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "442086232032",
+    "project_id": "arthlete-46398",
+    "storage_bucket": "arthlete-46398.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:442086232032:android:5021288a69a763b599a585",
+        "android_client_info": {
+          "package_name": "com.rnsmkituidemoapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANcrDGAJoE8LAAkxPMnFlarTfrKvXkEwU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
