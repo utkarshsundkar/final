@@ -7,14 +7,14 @@ const { width } = Dimensions.get('window');
 
 // Data for Body Focus Areas
 const BODY_FOCUS_DATA = [
-    { title: 'Shoulders', img: require('../../assets/shoulder-exercise.jpg') },
-    { title: 'Chest', img: require('../../assets/chest-exercise.jpg') },
-    { title: 'Thighs', img: require('../../assets/thigh-exercise.jpg') },
-    { title: 'Hips & Glutes', img: require('../../assets/hips-glutes-exercise.jpg') },
-    { title: 'Calves', img: require('../../assets/calves-exercise.jpg') },
-    { title: 'Arms', img: require('../../assets/arms-exercise.jpg') },
-    { title: 'Abs', img: require('../../assets/abs-exercise.jpg') },
-    { title: 'Oblique', img: require('../../assets/plank-core-exercise.jpg') },
+    { title: 'Shoulders', img: 'https://ik.imagekit.io/an85p0bgo/icons/shoulder-exercise.jpg' },
+    { title: 'Chest', img: 'https://cdn.corenexis.com/view/4781723168' },
+    { title: 'Thighs', img: 'https://ik.imagekit.io/an85p0bgo/icons/thigh-exercise.jpg' },
+    { title: 'Hips & Glutes', img: 'https://ik.imagekit.io/an85p0bgo/icons/hips-glutes-exercise.jpg' },
+    { title: 'Calves', img: 'https://ik.imagekit.io/an85p0bgo/icons/calves-exercise.jpg' },
+    { title: 'Arms', img: 'https://cdn.corenexis.com/view/2352672168' },
+    { title: 'Abs', img: 'https://ik.imagekit.io/an85p0bgo/abs-exercise.jpg' },
+    { title: 'Oblique', img: 'https://ik.imagekit.io/an85p0bgo/icons/plank-core-exercise.jpg' },
 ];
 
 // Workout Details for each area
