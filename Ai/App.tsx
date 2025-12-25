@@ -64,6 +64,7 @@ import PremiumModal from './src/screens/PremiumModal';
 import { checkIsPremium } from './src/hooks/usePremiumStatus';
 import { Platform, UIManager } from 'react-native';
 import { responsive } from './src/utils/responsive';
+import SplashScreen from 'react-native-splash-screen';
 
 if (Platform.OS === 'android') {
   if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -85,6 +86,7 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
       { name: 'Jumping Jacks', detail: '60s x 3 sets' },
       { name: 'Skater Hops', detail: '60s x 3 sets' },
       { name: 'Jumps', detail: '60s x 3 sets' },
+      { name: 'Alternate Windmill Toe Touch', detail: '60s x 3 sets' },
     ]
   },
   'AbsReloaded': {
@@ -321,62 +323,62 @@ const WORKOUT_PROGRAMS = [
   {
     id: 'UpperBodyStrength', title: 'Upper Body Strength', desc: 'Focus on Upper Body.',
     time: '18 min', tag: '3 x 3 sets', category: 'Strength',
-    image: 'https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?w=400'
+    image: require('./assets/upper-body-strength.jpg')
   },
   {
     id: 'FullBodyBuilder', title: 'Full-Body Builder', desc: 'Focus on Full Body.',
     time: '18 min', tag: '3 x 3 sets', category: 'Strength',
-    image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400'
+    image: require('./assets/full-body-builder.jpg')
   },
   {
     id: 'HIITExpress', title: 'HIIT Express', desc: 'Fast paced cardio.',
     time: '24 min', tag: '4 x 3 sets', category: 'Cardio',
-    image: 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?w=400'
+    image: require('./assets/hiit-express.jpg')
   },
   {
     id: 'SweatCircuit', title: 'Sweat Circuit', desc: 'Circuit training.',
     time: '24 min', tag: '4 x 3 sets', category: 'Cardio',
-    image: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=400'
+    image: require('./assets/sweat-circuit.jpg')
   },
   {
     id: 'ChestProgram', title: 'Chest Program', desc: 'Focus on proper form...',
     time: '18 min', tag: '3 x 3 sets', category: 'Strength',
-    image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400'
+    image: require('./assets/chest-exercise-2.jpg')
   },
   {
     id: 'ArmsProgram', title: 'Arms Program', desc: 'Increase weights grad...',
     time: '18 min', tag: '3 x 3 sets', category: 'Strength',
-    image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400'
+    image: require('./assets/arms-program.jpg')
   },
   {
     id: 'LegsProgram', title: 'Legs Program', desc: 'Build strength and...',
     time: '33 min', tag: '5 x 3 sets', category: 'Lower',
-    image: 'https://images.unsplash.com/photo-1434682881908-b43d0467b798?w=400'
+    image: require('./assets/legs-program.jpg')
   },
   {
     id: 'CardioCrusher', title: 'Cardio Crusher', desc: 'High intensity cardio...',
     time: '24 min', tag: '4 x 3 sets', category: 'Cardio',
-    image: 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=400'
+    image: require('./assets/cardio-crusher.jpg')
   },
   {
     id: 'CardioMax', title: 'Cardio Max', desc: 'All-in-one cardio.',
     time: '30 min', tag: '5 x 3 sets', category: 'Cardio',
-    image: 'https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?w=400'
+    image: require('./assets/cardio-max.jpg')
   },
   {
     id: 'CoreCrusher', title: 'Core Crusher', desc: 'Crush your core.',
     time: '24 min', tag: '4 x 3 sets', category: 'Core',
-    image: 'https://images.unsplash.com/photo-1544216894-cfc47f3ae3e3?w=400'
+    image: require('./assets/core-crusher.jpg')
   },
   {
     id: 'AbsReloaded', title: 'Abs Reloaded', desc: 'Core focused routine.',
     time: '24 min', tag: '4 x 3 sets', category: 'Core',
-    image: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400'
+    image: require('./assets/abs-reloaded.jpg')
   },
   {
     id: 'MobilityFlow', title: 'Mobility Flow', desc: 'Smooth sequence.',
     time: '30 min', tag: '5 x 3 sets', category: 'Mobility',
-    image: 'https://images.unsplash.com/photo-1544367563-12123d8959c9?w=400'
+    image: require('./assets/mobility-flow-2.jpg')
   },
   {
     id: 'DynamicMobility', title: 'Dynamic Mobility', desc: 'Active range.',
@@ -391,27 +393,27 @@ const WORKOUT_PROGRAMS = [
   {
     id: 'MobilityMax', title: 'Mobility Max', desc: 'Full mobility.',
     time: '6 mins', tag: '10 Exercises', category: 'Mobility',
-    image: 'https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?w=400'
+    image: require('./assets/mobility-max.jpg')
   },
   {
     id: 'GluteBlaster', title: 'Glute Blaster', desc: 'Sculpt your glutes.',
     time: '24 min', tag: '4 x 3 sets', category: 'Lower',
-    image: 'https://images.unsplash.com/photo-1574680096141-9877b4765613?w=400'
+    image: require('./assets/glute-blaster-2.jpg')
   },
   {
     id: 'SideToSideBurner', title: 'Side to Side Burner', desc: 'Lateral leg work.',
     time: '3 mins', tag: '6 Exercises', category: 'Lower',
-    image: 'https://images.unsplash.com/photo-1434682881908-b43d0467b798?w=400'
+    image: require('./assets/side-to-side-burner.jpg')
   },
   {
     id: 'LowImpactTorch', title: 'Low Impact Torch', desc: 'Low impact cardio.',
     time: '2.5 mins', tag: '5 Exercises', category: 'Lower',
-    image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=400'
+    image: require('./assets/low-impact-torch.jpg')
   },
   {
     id: 'LowerMax', title: 'Lower Max', desc: 'Ultimate leg day.',
     time: '6 mins', tag: '11 Exercises', category: 'Lower',
-    image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400'
+    image: require('./assets/lower-max.jpg')
   }
 ];
 
@@ -967,6 +969,20 @@ const MainTabScreen = ({ navigation }: any) => {
       Alert.alert('Configure Failed', e.message);
     }
   }
+
+  // SDK UI Customization & Phone Calibration Configuration
+  const getModifications = () => {
+    return JSON.stringify({
+      primaryColor: 'orange', // Match app theme color (#FF6B35)
+      phoneCalibration: {
+        enabled: false, // Disable phone calibration screen by default
+        autoCalibrate: false,
+        calibrationSensitivity: 0.8,
+      },
+      showProgressBar: true,
+      showCounters: true,
+    });
+  };
 
   // --- Test Function to Send Demo Data (REMOVED) ---
   /*
@@ -1547,7 +1563,7 @@ const MainTabScreen = ({ navigation }: any) => {
         SMWorkoutLibrary.BodyZone.FullBody, exercises,
         SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Short, null
       );
-      const result = await startCustomWorkout(workout, null, true, false);
+      const result = await startCustomWorkout(workout, getModifications());
       if (result) {
         handleWorkoutCompletion({ summary: result });
       }
@@ -1614,7 +1630,7 @@ const MainTabScreen = ({ navigation }: any) => {
           'belly_league', 'Belly League Workout', 'Custom Assessment Routine', SMWorkoutLibrary.BodyZone.FullBody, customExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Short, null
         );
 
-        const result = await startCustomWorkout(customAssessment, null, true, false);
+        const result = await startCustomWorkout(customAssessment, getModifications());
         if (result) {
           handleWorkoutCompletion({ summary: result });
         }
@@ -1673,7 +1689,7 @@ const MainTabScreen = ({ navigation }: any) => {
         } catch (e) { }
 
         try {
-          const result = await startCustomWorkout(shouldersWorkout, null, true, false);
+          const result = await startCustomWorkout(shouldersWorkout, getModifications());
           if (result) {
             handleWorkoutCompletion({ summary: result });
           }
@@ -1736,7 +1752,7 @@ const MainTabScreen = ({ navigation }: any) => {
         } catch (e) { }
 
         try {
-          const result = await startCustomWorkout(chestWorkout, null, true, false);
+          const result = await startCustomWorkout(chestWorkout, getModifications());
           if (result) {
             handleWorkoutCompletion({ summary: result });
           }
@@ -1761,7 +1777,7 @@ const MainTabScreen = ({ navigation }: any) => {
         }
         const thighsWorkout = new SMWorkoutLibrary.SMWorkout('Thighs', 'Thunder Thighs', 'Strengthen your quads and hamstrings', SMWorkoutLibrary.BodyZone.FullBody, thighsExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
-        try { const result = await startCustomWorkout(thighsWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
+        try { const result = await startCustomWorkout(thighsWorkout, getModifications()); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
 
       } else if (type === 'Hips & Glutes') {
         const hipsExercises = [];
@@ -1777,7 +1793,7 @@ const MainTabScreen = ({ navigation }: any) => {
         }
         const hipsWorkout = new SMWorkoutLibrary.SMWorkout('Hips & Glutes', 'Glute Gains', 'Target the glutes and hips', SMWorkoutLibrary.BodyZone.FullBody, hipsExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
-        try { const result = await startCustomWorkout(hipsWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
+        try { const result = await startCustomWorkout(hipsWorkout, getModifications()); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
 
       } else if (type === 'Calves') {
         const calvesExercises = [];
@@ -1791,7 +1807,7 @@ const MainTabScreen = ({ navigation }: any) => {
         }
         const calvesWorkout = new SMWorkoutLibrary.SMWorkout('Calves', 'Calf Craze', 'Build powerful calves', SMWorkoutLibrary.BodyZone.LowerBody, calvesExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
-        try { const result = await startCustomWorkout(calvesWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
+        try { const result = await startCustomWorkout(calvesWorkout, getModifications()); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'Arms') {
         const armsExercises = [];
         for (let set = 1; set <= 3; set++) {
@@ -1804,7 +1820,7 @@ const MainTabScreen = ({ navigation }: any) => {
         }
         const armsWorkout = new SMWorkoutLibrary.SMWorkout('Arms', 'Arm Arsenal', 'Pump up your biceps and triceps', SMWorkoutLibrary.BodyZone.UpperBody, armsExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
-        try { const result = await startCustomWorkout(armsWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
+        try { const result = await startCustomWorkout(armsWorkout, getModifications()); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'Abs') {
         const absExercises = [];
         for (let set = 1; set <= 3; set++) {
@@ -1821,7 +1837,7 @@ const MainTabScreen = ({ navigation }: any) => {
         }
         const absWorkout = new SMWorkoutLibrary.SMWorkout('Abs', 'Core Crusher', 'Strengthen your core', SMWorkoutLibrary.BodyZone.FullBody, absExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
-        try { const result = await startCustomWorkout(absWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
+        try { const result = await startCustomWorkout(absWorkout, getModifications()); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'PlankCore') {
         const plankExercises = [];
         for (let set = 1; set <= 3; set++) {
@@ -1836,7 +1852,7 @@ const MainTabScreen = ({ navigation }: any) => {
         }
         const plankWorkout = new SMWorkoutLibrary.SMWorkout('PlankCore', 'Plank & Core Stability', 'Build a rock-solid core', SMWorkoutLibrary.BodyZone.FullBody, plankExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
-        try { const result = await startCustomWorkout(plankWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
+        try { const result = await startCustomWorkout(plankWorkout, getModifications()); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'Featured_UpperBody') {
         const featuredExercises = [];
         for (let set = 1; set <= 3; set++) {
@@ -1855,7 +1871,7 @@ const MainTabScreen = ({ navigation }: any) => {
         }
         const featuredWorkout = new SMWorkoutLibrary.SMWorkout('Featured_UpperBody', 'Upper Body Circuit', 'Comprehensive strength circuit', SMWorkoutLibrary.BodyZone.FullBody, featuredExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
-        try { const result = await startCustomWorkout(featuredWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
+        try { const result = await startCustomWorkout(featuredWorkout, getModifications()); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'Featured_CoreCrusher') {
         const coreCrusherExercises = [];
         for (let set = 1; set <= 3; set++) {
@@ -1870,7 +1886,7 @@ const MainTabScreen = ({ navigation }: any) => {
         }
         const coreCrusherWorkout = new SMWorkoutLibrary.SMWorkout('Featured_CoreCrusher', 'Core Crusher', 'Intense core session', SMWorkoutLibrary.BodyZone.FullBody, coreCrusherExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
-        try { const result = await startCustomWorkout(coreCrusherWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
+        try { const result = await startCustomWorkout(coreCrusherWorkout, getModifications()); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'Featured_HIITExpress') {
         const hiitExercises = [];
         for (let set = 1; set <= 3; set++) {
@@ -1887,7 +1903,7 @@ const MainTabScreen = ({ navigation }: any) => {
         }
         const hiitWorkout = new SMWorkoutLibrary.SMWorkout('Featured_HIITExpress', 'HIIT Express', 'High Intensity Cardio', SMWorkoutLibrary.BodyZone.FullBody, hiitExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
-        try { const result = await startCustomWorkout(hiitWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
+        try { const result = await startCustomWorkout(hiitWorkout, getModifications()); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'Featured_MobilityFlow') {
         const mobilityExercises = [];
         for (let set = 1; set <= 3; set++) {
@@ -1906,7 +1922,7 @@ const MainTabScreen = ({ navigation }: any) => {
         }
         const mobilityWorkout = new SMWorkoutLibrary.SMWorkout('Featured_MobilityFlow', 'Mobility Flow', 'Flexibility and Range of Motion', SMWorkoutLibrary.BodyZone.FullBody, mobilityExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
-        try { const result = await startCustomWorkout(mobilityWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
+        try { const result = await startCustomWorkout(mobilityWorkout, getModifications()); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'Featured_GluteBlaster') {
         const gluteExercises = [];
         for (let set = 1; set <= 3; set++) {
@@ -1923,7 +1939,7 @@ const MainTabScreen = ({ navigation }: any) => {
         }
         const gluteWorkout = new SMWorkoutLibrary.SMWorkout('Featured_GluteBlaster', 'Glute Blaster', 'Sculpt Glutes and Legs', SMWorkoutLibrary.BodyZone.FullBody, gluteExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
-        try { const result = await startCustomWorkout(gluteWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
+        try { const result = await startCustomWorkout(gluteWorkout, getModifications()); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'Featured_PowerPlyo') {
         const plyoExercises = [];
         for (let set = 1; set <= 3; set++) {
@@ -1938,7 +1954,7 @@ const MainTabScreen = ({ navigation }: any) => {
         }
         const plyoWorkout = new SMWorkoutLibrary.SMWorkout('Featured_PowerPlyo', 'Power Plyo', 'Explosive Plyometrics', SMWorkoutLibrary.BodyZone.FullBody, plyoExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
-        try { const result = await startCustomWorkout(plyoWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
+        try { const result = await startCustomWorkout(plyoWorkout, getModifications()); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'CardioCrusher') {
         console.log('CardioCrusher workout block reached');
         // Cardio Crusher Workout
@@ -1962,6 +1978,10 @@ const MainTabScreen = ({ navigation }: any) => {
             'Jumps', 35, 'Jumps', null,
             [SMWorkoutLibrary.UIElement.Timer], 'Jumps', '', null
 
+          ),
+          new SMWorkoutLibrary.SMExercise(
+            'Alternate Windmill Toe Touch', 35, 'AlternateWindmillToeTouch', null,
+            [SMWorkoutLibrary.UIElement.Timer], 'AlternateWindmillToeTouch', '', null
           )
         ];
 
@@ -1979,7 +1999,7 @@ const MainTabScreen = ({ navigation }: any) => {
           } catch (e) {
             console.log('No previous workout to exit or exit failed:', e);
           }
-          const result = await startCustomWorkout(cardioWorkout, null, true, false);
+          const result = await startCustomWorkout(cardioWorkout, getModifications());
           console.log('startCustomWorkout returned:', result);
           if (result) {
             handleWorkoutCompletion({ summary: result });
@@ -2024,7 +2044,7 @@ const MainTabScreen = ({ navigation }: any) => {
           } catch (e) {
             console.log('No previous workout to exit or exit failed:', e);
           }
-          const result = await startCustomWorkout(absWorkout, null, true, false);
+          const result = await startCustomWorkout(absWorkout, getModifications());
           console.log('startCustomWorkout returned:', result);
           if (result) {
             handleWorkoutCompletion({ summary: result });
@@ -2074,7 +2094,7 @@ const MainTabScreen = ({ navigation }: any) => {
           null
         );
 
-        const result = await startCustomWorkout(focusWorkout, null, true, true);
+        const result = await startCustomWorkout(focusWorkout, getModifications());
         if (result) {
           handleWorkoutCompletion({ summary: result });
         }
@@ -2098,7 +2118,7 @@ const MainTabScreen = ({ navigation }: any) => {
           'fit_ninjas', 'Fit Ninjas', 'High Intensity Routine', SMWorkoutLibrary.BodyZone.FullBody, strengthExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Short, null
         );
 
-        const result = await startCustomWorkout(ninjaWorkout, null, true, true);
+        const result = await startCustomWorkout(ninjaWorkout, getModifications());
         if (result) {
           handleWorkoutCompletion({ summary: result });
         }
@@ -2219,7 +2239,7 @@ const MainTabScreen = ({ navigation }: any) => {
             console.log('No previous workout to exit or exit failed:', e);
           }
 
-          const result = await startCustomWorkout(chestWorkout, null, true, false);
+          const result = await startCustomWorkout(chestWorkout, getModifications());
           console.log('startCustomWorkout returned:', result);
           if (result) {
             handleWorkoutCompletion({ summary: result });
@@ -2345,7 +2365,7 @@ const MainTabScreen = ({ navigation }: any) => {
             console.log('No previous workout to exit or exit failed:', e);
           }
 
-          const result = await startCustomWorkout(armsWorkout, null, true, false);
+          const result = await startCustomWorkout(armsWorkout, getModifications());
           console.log('startCustomWorkout returned:', result);
           if (result) {
             handleWorkoutCompletion({ summary: result });
@@ -2400,7 +2420,7 @@ const MainTabScreen = ({ navigation }: any) => {
             console.log('No previous workout to exit or exit failed:', e);
           }
 
-          const result = await startCustomWorkout(legsWorkout, null, true, false);
+          const result = await startCustomWorkout(legsWorkout, getModifications());
           console.log('startCustomWorkout returned:', result);
           if (result) {
             handleWorkoutCompletion({ summary: result });
@@ -2526,7 +2546,7 @@ const MainTabScreen = ({ navigation }: any) => {
             console.log('No previous workout to exit or exit failed:', e);
           }
 
-          const result = await startCustomWorkout(upperBodyWorkout, null, true, false);
+          const result = await startCustomWorkout(upperBodyWorkout, getModifications());
           console.log('startCustomWorkout returned:', result);
           if (result) {
             handleWorkoutCompletion({ summary: result });
@@ -2649,7 +2669,7 @@ const MainTabScreen = ({ navigation }: any) => {
         }
 
         try {
-          const result = await startCustomWorkout(fullBodyWorkout, null, true, false);
+          const result = await startCustomWorkout(fullBodyWorkout, getModifications());
           if (result) {
             handleWorkoutCompletion({ summary: result });
           }
@@ -2721,7 +2741,7 @@ const MainTabScreen = ({ navigation }: any) => {
         } catch (e) { }
 
         try {
-          const result = await startCustomWorkout(hiitWorkout, null, true, false);
+          const result = await startCustomWorkout(hiitWorkout, getModifications());
           if (result) {
             handleWorkoutCompletion({ summary: result });
           }
@@ -2793,7 +2813,7 @@ const MainTabScreen = ({ navigation }: any) => {
         } catch (e) { }
 
         try {
-          const result = await startCustomWorkout(sweatWorkout, null, true, false);
+          const result = await startCustomWorkout(sweatWorkout, getModifications());
           if (result) {
             handleWorkoutCompletion({ summary: result });
           }
@@ -2865,7 +2885,7 @@ const MainTabScreen = ({ navigation }: any) => {
         } catch (e) { }
 
         try {
-          const result = await startCustomWorkout(cardioWorkout, null, true, false);
+          const result = await startCustomWorkout(cardioWorkout, getModifications());
           if (result) {
             handleWorkoutCompletion({ summary: result });
           }
@@ -2947,7 +2967,7 @@ const MainTabScreen = ({ navigation }: any) => {
         } catch (e) { }
 
         try {
-          const result = await startCustomWorkout(maxWorkout, null, true, false);
+          const result = await startCustomWorkout(maxWorkout, getModifications());
           if (result) {
             handleWorkoutCompletion({ summary: result });
           }
@@ -2971,7 +2991,7 @@ const MainTabScreen = ({ navigation }: any) => {
         }
         const coreWorkout = new SMWorkoutLibrary.SMWorkout('CoreCrusher', 'Core Crusher', 'Crush your core', SMWorkoutLibrary.BodyZone.FullBody, coreExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
-        try { const result = await startCustomWorkout(coreWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
+        try { const result = await startCustomWorkout(coreWorkout, getModifications()); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'AbsReloaded') {
         const absExercises = [];
         for (let set = 1; set <= 3; set++) {
@@ -2988,7 +3008,7 @@ const MainTabScreen = ({ navigation }: any) => {
         }
         const absWorkout = new SMWorkoutLibrary.SMWorkout('AbsReloaded', 'Abs Reloaded', 'Core focused routine', SMWorkoutLibrary.BodyZone.FullBody, absExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
-        try { const result = await startCustomWorkout(absWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
+        try { const result = await startCustomWorkout(absWorkout, getModifications()); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'MobilityFlow') {
         const mobilityExercises = [];
         for (let set = 1; set <= 3; set++) {
@@ -3007,7 +3027,7 @@ const MainTabScreen = ({ navigation }: any) => {
         }
         const mobilityWorkout = new SMWorkoutLibrary.SMWorkout('MobilityFlow', 'Mobility Flow', 'Smooth sequence for flexibility', SMWorkoutLibrary.BodyZone.FullBody, mobilityExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
-        try { const result = await startCustomWorkout(mobilityWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
+        try { const result = await startCustomWorkout(mobilityWorkout, getModifications()); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'DynamicMobility') {
         const dynamicExercises = [];
         for (let set = 1; set <= 3; set++) {
@@ -3026,7 +3046,7 @@ const MainTabScreen = ({ navigation }: any) => {
         }
         const dynamicWorkout = new SMWorkoutLibrary.SMWorkout('DynamicMobility', 'Dynamic Mobility', 'Active range of motion work', SMWorkoutLibrary.BodyZone.FullBody, dynamicExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
-        try { const result = await startCustomWorkout(dynamicWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
+        try { const result = await startCustomWorkout(dynamicWorkout, getModifications()); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'GluteBlaster') {
         const gluteExercises = [];
         for (let set = 1; set <= 3; set++) {
@@ -3043,7 +3063,7 @@ const MainTabScreen = ({ navigation }: any) => {
         }
         const gluteWorkout = new SMWorkoutLibrary.SMWorkout('GluteBlaster', 'Glute Blaster', 'Target and strengthen your glutes', SMWorkoutLibrary.BodyZone.LowerBody, gluteExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
-        try { const result = await startCustomWorkout(gluteWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
+        try { const result = await startCustomWorkout(gluteWorkout, getModifications()); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'PostureFix') {
         const postureExercises = [];
         for (let set = 1; set <= 3; set++) {
@@ -3060,7 +3080,7 @@ const MainTabScreen = ({ navigation }: any) => {
         }
         const postureWorkout = new SMWorkoutLibrary.SMWorkout('PostureFix', 'Posture Fix', 'Improve alignment and posture', SMWorkoutLibrary.BodyZone.FullBody, postureExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
-        try { const result = await startCustomWorkout(postureWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
+        try { const result = await startCustomWorkout(postureWorkout, getModifications()); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'MobilityMax') {
         const mobilityMaxExercises = [];
         for (let set = 1; set <= 3; set++) {
@@ -3089,7 +3109,7 @@ const MainTabScreen = ({ navigation }: any) => {
         }
         const mobilityMaxWorkout = new SMWorkoutLibrary.SMWorkout('MobilityMax', 'Mobility Max', 'Complete mobility session', SMWorkoutLibrary.BodyZone.FullBody, mobilityMaxExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
-        try { const result = await startCustomWorkout(mobilityMaxWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
+        try { const result = await startCustomWorkout(mobilityMaxWorkout, getModifications()); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'SideToSideBurner') {
         const sideExercises = [];
         for (let set = 1; set <= 3; set++) {
@@ -3110,7 +3130,7 @@ const MainTabScreen = ({ navigation }: any) => {
         }
         const sideWorkout = new SMWorkoutLibrary.SMWorkout('SideToSideBurner', 'Side to Side Burner', 'Lateral movements for legs', SMWorkoutLibrary.BodyZone.LowerBody, sideExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
-        try { const result = await startCustomWorkout(sideWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
+        try { const result = await startCustomWorkout(sideWorkout, getModifications()); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'LowImpactTorch') {
         const lowImpactExercises = [];
         for (let set = 1; set <= 3; set++) {
@@ -3129,7 +3149,7 @@ const MainTabScreen = ({ navigation }: any) => {
         }
         const lowImpactWorkout = new SMWorkoutLibrary.SMWorkout('LowImpactTorch', 'Low Impact Torch', 'Burn calories without impact', SMWorkoutLibrary.BodyZone.FullBody, lowImpactExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
-        try { const result = await startCustomWorkout(lowImpactWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
+        try { const result = await startCustomWorkout(lowImpactWorkout, getModifications()); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       } else if (type === 'LowerMax') {
         const lowerMaxExercises = [];
         for (let set = 1; set <= 3; set++) {
@@ -3160,7 +3180,7 @@ const MainTabScreen = ({ navigation }: any) => {
         }
         const lowerMaxWorkout = new SMWorkoutLibrary.SMWorkout('LowerMax', 'Lower Max', 'Complete lower body challenge', SMWorkoutLibrary.BodyZone.LowerBody, lowerMaxExercises, SMWorkoutLibrary.WorkoutDifficulty.LowDifficulty, SMWorkoutLibrary.WorkoutDuration.Long, null);
 
-        try { const result = await startCustomWorkout(lowerMaxWorkout, null, true, false); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
+        try { const result = await startCustomWorkout(lowerMaxWorkout, getModifications()); if (result) handleWorkoutCompletion({ summary: result }); } catch (error) { Alert.alert('Workout Error', `Failed to start workout: ${error}`); }
       }
     } catch (error) {
       console.error(error);
@@ -3436,7 +3456,7 @@ const MainTabScreen = ({ navigation }: any) => {
       category: 'Cardio',
       started: 'Aug 15, 2023',
       goal: '2 000 POINTS',
-      image: { uri: 'https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?auto=format&fit=crop&w=800&q=80' },
+      image: require('./assets/cardio-crusher-2.jpg'),
       bgColor: '#E3F2FD',
       action: () => startChallenge('CardioCrusher')
     },
@@ -3447,7 +3467,7 @@ const MainTabScreen = ({ navigation }: any) => {
       category: 'Strength',
       started: 'Sep 10, 2023',
       goal: '1 800 POINTS',
-      image: { uri: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=800&q=80' },
+      image: require('./assets/abs-reloaded-2.jpg'),
       bgColor: '#FFFFFF',
       action: () => startChallenge('AbsReloaded')
     }
@@ -3562,7 +3582,7 @@ const MainTabScreen = ({ navigation }: any) => {
                             title: 'Upper Body Circuit',
                             coach: 'coach Laura',
                             duration: '30',
-                            img: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=800&q=80',
+                            img: require('./assets/upper-body-circuit.jpg'),
                             tag: 'Strength'
                           },
                           {
@@ -3570,7 +3590,7 @@ const MainTabScreen = ({ navigation }: any) => {
                             title: 'Core Crusher',
                             coach: 'coach Mike',
                             duration: '18',
-                            img: 'https://images.unsplash.com/photo-1544367563-12123d896889?auto=format&fit=crop&w=800&q=80',
+                            img: require('./assets/core-crusher-2.jpg'),
                             tag: 'Core'
                           },
                           {
@@ -3578,7 +3598,7 @@ const MainTabScreen = ({ navigation }: any) => {
                             title: 'HIIT Express',
                             coach: 'coach Sarah',
                             duration: '24',
-                            img: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=800&q=80',
+                            img: require('./assets/hiit-express-2.jpg'),
                             tag: 'Cardio'
                           },
                           {
@@ -3586,7 +3606,7 @@ const MainTabScreen = ({ navigation }: any) => {
                             title: 'Mobility Flow',
                             coach: 'coach Alex',
                             duration: '30',
-                            img: 'https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&w=800&q=80',
+                            img: require('./assets/mobility-flow.jpg'),
                             tag: 'Mobility'
                           },
                           {
@@ -3594,7 +3614,7 @@ const MainTabScreen = ({ navigation }: any) => {
                             title: 'Glute Blaster',
                             coach: 'coach John',
                             duration: '24',
-                            img: 'https://images.unsplash.com/photo-1434608519344-49d77a699ded?auto=format&fit=crop&w=800&q=80',
+                            img: require('./assets/glute-blaster.jpg'),
                             tag: 'Lower Body'
                           },
                           {
@@ -3602,7 +3622,7 @@ const MainTabScreen = ({ navigation }: any) => {
                             title: 'Power Plyo',
                             coach: 'coach Steve',
                             duration: '18',
-                            img: 'https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?auto=format&fit=crop&w=800&q=80',
+                            img: require('./assets/power-plyo.jpg'),
                             tag: 'Athletic'
                           }
                         ].map((item, idx) => (
@@ -3631,7 +3651,7 @@ const MainTabScreen = ({ navigation }: any) => {
                               elevation: 8
                             }}
                           >
-                            <Image source={{ uri: item.img }} style={{ position: 'absolute', width: '100%', height: '100%', opacity: 0.6 }} resizeMode="cover" />
+                            <Image source={typeof item.img === 'string' ? { uri: item.img } : item.img} style={{ position: 'absolute', width: '100%', height: '100%', opacity: 0.6 }} resizeMode="cover" />
                             <View style={{ position: 'absolute', width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.2)' }} />
 
                             <View style={{ padding: 24, flex: 1, justifyContent: 'space-between' }}>
@@ -3722,7 +3742,7 @@ const MainTabScreen = ({ navigation }: any) => {
                             }}
                           >
                             <View style={{ height: 140, backgroundColor: '#f0f0f0' }}>
-                              <Image source={{ uri: program.image }} style={{ width: '100%', height: '100%' }} resizeMode="cover" />
+                              <Image source={typeof program.image === 'string' ? { uri: program.image } : program.image} style={{ width: '100%', height: '100%' }} resizeMode="cover" />
                               <View style={{ position: 'absolute', top: 12, left: 12, flexDirection: 'row' }}>
                                 <View style={{ backgroundColor: 'rgba(255,255,255,0.95)', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 12, marginRight: 6 }}>
                                   <Text style={{ fontSize: 11, fontWeight: '600', color: '#000', fontFamily: 'Lexend' }}>{program.time}</Text>
@@ -3764,14 +3784,14 @@ const MainTabScreen = ({ navigation }: any) => {
                           }}
                         >
                           {[
-                            { title: 'Shoulders', img: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400' },
-                            { title: 'Chest', img: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400' },
-                            { title: 'Thighs', img: 'https://images.unsplash.com/photo-1434682881908-b43d0467b798?w=400' },
-                            { title: 'Hips & Glutes', img: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400' },
-                            { title: 'Calves', img: 'https://images.unsplash.com/photo-1517344884109-1f4cedcb4529?w=400' },
-                            { title: 'Arms', img: 'https://images.unsplash.com/photo-1584466977773-e625c37cdd50?w=400' },
-                            { title: 'Abs', img: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400' },
-                            { title: 'PlankCore', img: 'https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?w=400' },
+                            { title: 'Shoulders', img: require('./assets/shoulder-exercise.jpg') },
+                            { title: 'Chest', img: require('./assets/chest-exercise.jpg') },
+                            { title: 'Thighs', img: require('./assets/thigh-exercise.jpg') },
+                            { title: 'Hips & Glutes', img: require('./assets/hips-glutes-exercise.jpg') },
+                            { title: 'Calves', img: require('./assets/calves-exercise.jpg') },
+                            { title: 'Arms', img: require('./assets/arms-exercise.jpg') },
+                            { title: 'Abs', img: require('./assets/abs-exercise.jpg') },
+                            { title: 'PlankCore', img: require('./assets/plank-core-exercise.jpg') },
                           ].map((item, index) => (
                             <TouchableOpacity
                               key={index}
@@ -3804,7 +3824,7 @@ const MainTabScreen = ({ navigation }: any) => {
                                 shadowRadius: 4,
                                 elevation: 3
                               }}>
-                                <Image source={{ uri: item.img }} style={{ width: '100%', height: '100%' }} resizeMode="cover" />
+                                <Image source={typeof item.img === 'string' ? { uri: item.img } : item.img} style={{ width: '100%', height: '100%' }} resizeMode="cover" />
                                 <View style={{
                                   position: 'absolute',
                                   bottom: 0,
@@ -4990,6 +5010,7 @@ const App = () => {
       setInitialRoute('Login');
     } finally {
       setIsLoading(false);
+      SplashScreen.hide();
     }
   };
 

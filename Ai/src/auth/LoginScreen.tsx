@@ -66,10 +66,7 @@ const LoginScreen = ({ navigation }: any) => {
         }
     };
 
-    const handleAppleLogin = () => {
-        // Placeholder for Apple Login
-        Alert.alert('Coming Soon', 'Apple Sign-In will be available soon!');
-    };
+
 
     return (
         <View style={styles.container}>
@@ -150,13 +147,7 @@ const LoginScreen = ({ navigation }: any) => {
                             )}
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.appleButton} onPress={handleAppleLogin}>
-                            <Image
-                                source={{ uri: 'https://img.icons8.com/ios-filled/50/000000/mac-os.png' }}
-                                style={styles.buttonIcon}
-                            />
-                            <Text style={styles.appleButtonText}>Continue with Apple</Text>
-                        </TouchableOpacity>
+
 
                         <TouchableOpacity
                             style={styles.emailLink}
@@ -339,21 +330,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         marginLeft: 10,
     },
-    appleButton: {
-        backgroundColor: '#F5F5F5', // Light clean button
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingVertical: responsive.isTablet ? 24 : 16,
-        borderRadius: 16, // Squared corners
-    },
-    appleButtonText: {
-        color: '#000',
-        fontSize: responsive.isTablet ? 20 : 16,
-        fontFamily: 'Lexend',
-        fontWeight: '600',
-        marginLeft: 10,
-    },
+
     buttonIcon: {
         width: responsive.isTablet ? 28 : 20,
         height: responsive.isTablet ? 28 : 20,

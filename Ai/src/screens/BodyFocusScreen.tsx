@@ -7,14 +7,14 @@ const { width } = Dimensions.get('window');
 
 // Data for Body Focus Areas
 const BODY_FOCUS_DATA = [
-    { title: 'Shoulders', img: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400' },
-    { title: 'Chest', img: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400' },
-    { title: 'Thighs', img: 'https://images.unsplash.com/photo-1434682881908-b43d0467b798?w=400' },
-    { title: 'Hips & Glutes', img: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400' },
-    { title: 'Calves', img: 'https://images.unsplash.com/photo-1517344884109-1f4cedcb4529?w=400' },
-    { title: 'Arms', img: 'https://images.unsplash.com/photo-1584466977773-e625c37cdd50?w=400' },
-    { title: 'Abs', img: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400' },
-    { title: 'Oblique', img: 'https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?w=400' },
+    { title: 'Shoulders', img: require('../../assets/shoulder-exercise.jpg') },
+    { title: 'Chest', img: require('../../assets/chest-exercise.jpg') },
+    { title: 'Thighs', img: require('../../assets/thigh-exercise.jpg') },
+    { title: 'Hips & Glutes', img: require('../../assets/hips-glutes-exercise.jpg') },
+    { title: 'Calves', img: require('../../assets/calves-exercise.jpg') },
+    { title: 'Arms', img: require('../../assets/arms-exercise.jpg') },
+    { title: 'Abs', img: require('../../assets/abs-exercise.jpg') },
+    { title: 'Oblique', img: require('../../assets/plank-core-exercise.jpg') },
 ];
 
 // Workout Details for each area
@@ -140,7 +140,7 @@ const BodyFocusScreen = () => {
                             onPress={() => handleItemPress(item.title)}
                         >
                             <View style={styles.imageContainer}>
-                                <Image source={{ uri: item.img }} style={styles.image} resizeMode="cover" />
+                                <Image source={typeof item.img === 'string' ? { uri: item.img } : item.img} style={styles.image} resizeMode="cover" />
                                 <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.1)' }} />
                             </View>
                             <Text style={styles.itemTitle}>{item.title}</Text>
