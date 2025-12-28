@@ -323,62 +323,62 @@ const WORKOUT_PROGRAMS = [
   {
     id: 'UpperBodyStrength', title: 'Upper Body Strength', desc: 'Focus on Upper Body.',
     time: '18 min', tag: '3 x 3 sets', category: 'Strength',
-    image: 'https://ik.imagekit.io/an85p0bgo/icons/upper-body-strength.jpg'
+    image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'FullBodyBuilder', title: 'Full-Body Builder', desc: 'Focus on Full Body.',
     time: '18 min', tag: '3 x 3 sets', category: 'Strength',
-    image: 'https://ik.imagekit.io/an85p0bgo/icons/full-body-builder.jpg'
+    image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'HIITExpress', title: 'HIIT Express', desc: 'Fast paced cardio.',
     time: '24 min', tag: '4 x 3 sets', category: 'Cardio',
-    image: 'https://ik.imagekit.io/an85p0bgo/icons/hiit-express.jpg'
+    image: 'https://images.unsplash.com/photo-1601422407692-ec4eeec1d9b3?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'SweatCircuit', title: 'Sweat Circuit', desc: 'Circuit training.',
     time: '24 min', tag: '4 x 3 sets', category: 'Cardio',
-    image: 'https://ik.imagekit.io/an85p0bgo/icons/sweat-circuit.jpg'
+    image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'ChestProgram', title: 'Chest Program', desc: 'Focus on proper form...',
     time: '18 min', tag: '3 x 3 sets', category: 'Strength',
-    image: 'https://cdn.corenexis.com/view/5556365168'
+    image: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'ArmsProgram', title: 'Arms Program', desc: 'Increase weights grad...',
     time: '18 min', tag: '3 x 3 sets', category: 'Strength',
-    image: 'https://cdn.corenexis.com/view/8171825168'
+    image: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'LegsProgram', title: 'Legs Program', desc: 'Build strength and...',
     time: '33 min', tag: '5 x 3 sets', category: 'Lower',
-    image: 'https://cdn.corenexis.com/view/8614713168'
+    image: 'https://images.unsplash.com/photo-1434682881908-b43d0467b798?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'CardioCrusher', title: 'Cardio Crusher', desc: 'High intensity cardio...',
     time: '24 min', tag: '4 x 3 sets', category: 'Cardio',
-    image: 'https://ik.imagekit.io/an85p0bgo/icons/cardio-crusher.jpg'
+    image: 'https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'CardioMax', title: 'Cardio Max', desc: 'All-in-one cardio.',
     time: '30 min', tag: '5 x 3 sets', category: 'Cardio',
-    image: 'https://ik.imagekit.io/an85p0bgo/icons/cardio-max.jpg'
+    image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'CoreCrusher', title: 'Core Crusher', desc: 'Crush your core.',
     time: '24 min', tag: '4 x 3 sets', category: 'Core',
-    image: 'https://ik.imagekit.io/an85p0bgo/icons/core-crusher.jpg'
+    image: 'https://ik.imagekit.io/an85p0bgo/icons/core-crusher-2.jpg'
   },
   {
     id: 'AbsReloaded', title: 'Abs Reloaded', desc: 'Core focused routine.',
     time: '24 min', tag: '4 x 3 sets', category: 'Core',
-    image: 'https://ik.imagekit.io/an85p0bgo/icons/abs-reloaded.jpg'
+    image: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'MobilityFlow', title: 'Mobility Flow', desc: 'Smooth sequence.',
     time: '30 min', tag: '5 x 3 sets', category: 'Mobility',
-    image: 'https://ik.imagekit.io/an85p0bgo/icons/mobility-flow-2.jpg'
+    image: 'https://images.unsplash.com/photo-1552196563-55cd4e45efb3?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'DynamicMobility', title: 'Dynamic Mobility', desc: 'Active range.',
@@ -393,27 +393,27 @@ const WORKOUT_PROGRAMS = [
   {
     id: 'MobilityMax', title: 'Mobility Max', desc: 'Full mobility.',
     time: '6 mins', tag: '10 Exercises', category: 'Mobility',
-    image: 'https://ik.imagekit.io/an85p0bgo/icons/mobility-max.jpg'
+    image: 'https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'GluteBlaster', title: 'Glute Blaster', desc: 'Sculpt your glutes.',
     time: '24 min', tag: '4 x 3 sets', category: 'Lower',
-    image: 'https://ik.imagekit.io/an85p0bgo/icons/glute-blaster-2.jpg'
+    image: 'https://ik.imagekit.io/an85p0bgo/icons/glute-blaster.jpg'
   },
   {
     id: 'SideToSideBurner', title: 'Side to Side Burner', desc: 'Lateral leg work.',
     time: '3 mins', tag: '6 Exercises', category: 'Lower',
-    image: 'https://cdn.corenexis.com/view/4725113168'
+    image: 'https://images.unsplash.com/photo-1590487988256-9ed24133863e?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'LowImpactTorch', title: 'Low Impact Torch', desc: 'Low impact cardio.',
     time: '2.5 mins', tag: '5 Exercises', category: 'Lower',
-    image: 'https://ik.imagekit.io/an85p0bgo/icons/low-impact-torch.jpg'
+    image: 'https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'LowerMax', title: 'Lower Max', desc: 'Ultimate leg day.',
     time: '6 mins', tag: '11 Exercises', category: 'Lower',
-    image: 'https://ik.imagekit.io/an85p0bgo/icons/lower-max.jpg'
+    image: 'https://images.unsplash.com/photo-1590487988256-9ed24133863e?auto=format&fit=crop&w=800&q=80'
   }
 ];
 
@@ -3784,14 +3784,14 @@ const MainTabScreen = ({ navigation }: any) => {
                           }}
                         >
                           {[
-                            { title: 'Shoulders', img: 'https://ik.imagekit.io/an85p0bgo/icons/shoulder-exercise.jpg' },
-                            { title: 'Chest', img: 'https://cdn.corenexis.com/view/4781723168' },
-                            { title: 'Thighs', img: 'https://ik.imagekit.io/an85p0bgo/icons/thigh-exercise.jpg' },
-                            { title: 'Hips & Glutes', img: 'https://ik.imagekit.io/an85p0bgo/icons/hips-glutes-exercise.jpg' },
-                            { title: 'Calves', img: 'https://ik.imagekit.io/an85p0bgo/icons/calves-exercise.jpg' },
-                            { title: 'Arms', img: 'https://cdn.corenexis.com/view/2352672168' },
-                            { title: 'Abs', img: 'https://ik.imagekit.io/an85p0bgo/abs-exercise.jpg' },
-                            { title: 'PlankCore', img: 'https://ik.imagekit.io/an85p0bgo/icons/plank-core-exercise.jpg' },
+                            { title: 'Shoulders', img: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&w=400&q=80' },
+                            { title: 'Chest', img: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=400&q=80' },
+                            { title: 'Thighs', img: 'https://images.unsplash.com/photo-1434682881908-b43d0467b798?auto=format&fit=crop&w=400&q=80' },
+                            { title: 'Hips & Glutes', img: 'https://images.unsplash.com/photo-1576678927484-cc907957088c?auto=format&fit=crop&w=400&q=80' },
+                            { title: 'Calves', img: 'https://images.unsplash.com/photo-1590487988256-9ed24133863e?auto=format&fit=crop&w=400&q=80' },
+                            { title: 'Arms', img: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=400&q=80' },
+                            { title: 'Abs', img: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80' },
+                            { title: 'Oblique', img: 'https://images.unsplash.com/photo-1571019613576-2b22c76fd955?auto=format&fit=crop&w=400&q=80' },
                           ].map((item, index) => (
                             <TouchableOpacity
                               key={index}

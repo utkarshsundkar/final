@@ -7,14 +7,14 @@ const { width } = Dimensions.get('window');
 
 // Data for Body Focus Areas
 const BODY_FOCUS_DATA = [
-    { title: 'Shoulders', img: 'https://ik.imagekit.io/an85p0bgo/icons/shoulder-exercise.jpg' },
-    { title: 'Chest', img: 'https://cdn.corenexis.com/view/4781723168' },
-    { title: 'Thighs', img: 'https://ik.imagekit.io/an85p0bgo/icons/thigh-exercise.jpg' },
-    { title: 'Hips & Glutes', img: 'https://ik.imagekit.io/an85p0bgo/icons/hips-glutes-exercise.jpg' },
-    { title: 'Calves', img: 'https://ik.imagekit.io/an85p0bgo/icons/calves-exercise.jpg' },
-    { title: 'Arms', img: 'https://cdn.corenexis.com/view/2352672168' },
-    { title: 'Abs', img: 'https://ik.imagekit.io/an85p0bgo/abs-exercise.jpg' },
-    { title: 'Oblique', img: 'https://ik.imagekit.io/an85p0bgo/icons/plank-core-exercise.jpg' },
+    { title: 'Shoulders', img: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&w=400&q=80' },
+    { title: 'Chest', img: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=400&q=80' },
+    { title: 'Thighs', img: 'https://images.unsplash.com/photo-1434682881908-b43d0467b798?auto=format&fit=crop&w=400&q=80' },
+    { title: 'Hips & Glutes', img: 'https://images.unsplash.com/photo-1574680096141-1fddd6d95bc4?auto=format&fit=crop&w=400&q=80' },
+    { title: 'Calves', img: 'https://images.unsplash.com/photo-1590487988256-9ed24133863e?auto=format&fit=crop&w=400&q=80' },
+    { title: 'Arms', img: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=400&q=80' },
+    { title: 'Abs', img: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80' },
+    { title: 'Oblique', img: 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=400&q=80' },
 ];
 
 // Workout Details for each area
