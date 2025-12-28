@@ -37,6 +37,9 @@ class AuthService {
 
     // Check if user exists in backend
     async checkUserExists(email: string): Promise<boolean> {
+        // Apple Review Bypass
+        if (email.toLowerCase() === 'test@arthlete.ai') return true;
+
         try {
             console.log(`Checking user existence at: ${BACKEND_URL}/check-email with email: ${email}`);
             const response = await axios.post(`${BACKEND_URL}/check-email`, { email });
@@ -60,6 +63,13 @@ class AuthService {
 
     // Send OTP to email
     async sendEmailOTP(email: string): Promise<{ success: boolean; message: string }> {
+        // Apple Review Bypass
+        if (email.toLowerCase() === 'test@arthlete.ai') {
+            console.log('🍎 Apple Review Bypass: Skipping OTP send for test account');
+            this.stateId = 'apple-bypass-state-id';
+            return { success: true, message: 'OTP sent successfully (Bypass)' };
+        }
+
         try {
             // Use standard endpoint without query params
             const url = AUTH_ENDPOINTS.sendOTP.split('?')[0] + '?env=test';
@@ -98,6 +108,35 @@ class AuthService {
 
     // Verify OTP
     async verifyEmailOTP(email: string, otp: string, username?: string): Promise<{ success: boolean; user?: User; message: string }> {
+        // Apple Review Bypass
+        if (email.toLowerCase() === 'test@arthlete.ai' && otp === '123456') {
+            console.log('🍎 Apple Review Bypass: Verifying test account with hardcoded OTP');
+            try {
+                const backendResponse = await axios.post(`${BACKEND_URL}/auth-mojo`, {
+                    email: email,
+                    name: username || 'Apple Reviewer',
+                    mojoToken: 'apple-bypass-token'
+                });
+
+                const user: User = {
+                    id: backendResponse.data.data.user._id,
+                    email: backendResponse.data.data.user.email,
+                    name: backendResponse.data.data.user.username,
+                    provider: 'email',
+                    onboardingCompleted: backendResponse.data.data.user.onboardingCompleted,
+                    isPremium: backendResponse.data.data.user.isPremium,
+                    isPaid: backendResponse.data.data.user.isPaid,
+                };
+
+                await this.saveUser(user, backendResponse.data.data.accessToken);
+                this.stateId = null;
+                return { success: true, user, message: 'Login successful' };
+            } catch (error) {
+                console.error('Apple Bypass Backend Error:', error);
+                return { success: false, message: 'Apple bypass failed to sync with backend' };
+            }
+        }
+
         if (!this.stateId) {
             return { success: false, message: 'Session expired. Please request OTP again.' };
         }

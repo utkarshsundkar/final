@@ -55,7 +55,7 @@ const ProgressScreen = () => {
                                         >
                                             {isValidDay && (
                                                 <Text style={{
-                                                    fontSize: 10,
+                                                    fontSize: responsive.isTablet ? 16 : 10,
                                                     color: isActive ? '#000' : '#666',
                                                     fontFamily: 'Lexend',
                                                     fontWeight: isToday ? '700' : '400'
@@ -131,7 +131,7 @@ const ProgressScreen = () => {
                     <View style={styles.gridCard}>
                         <Text style={styles.cardLabel}>Total Reps</Text>
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ fontSize: 48, fontWeight: '600', fontFamily: 'Lexend', color: '#000' }}>450</Text>
+                            <Text style={{ fontSize: responsive.isTablet ? 64 : 48, fontWeight: '600', fontFamily: 'Lexend', color: '#000' }}>450</Text>
                         </View>
                     </View>
                 </View>
@@ -163,8 +163,8 @@ const ProgressScreen = () => {
                     <View style={styles.gridCard}>
                         <Text style={styles.cardLabel}>Duration</Text>
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ fontSize: 48, fontWeight: '600', fontFamily: 'Lexend', color: '#000' }}>
-                                45 <Text style={{ fontSize: 18, fontWeight: '500', fontFamily: 'Lexend', color: '#888' }}>min</Text>
+                            <Text style={{ fontSize: responsive.isTablet ? 64 : 48, fontWeight: '600', fontFamily: 'Lexend', color: '#000' }}>
+                                45 <Text style={{ fontSize: responsive.isTablet ? 24 : 18, fontWeight: '500', fontFamily: 'Lexend', color: '#888' }}>min</Text>
                             </Text>
                         </View>
                     </View>
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     contentContainer: {
         padding: 24,
         paddingTop: 24,
-        maxWidth: 600,
+        maxWidth: responsive.isTablet ? 850 : 600,
         alignSelf: 'center',
         width: '100%',
     },
@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Lexend',
     },
     legendValue: {
-        fontSize: 20,
+        fontSize: responsive.isTablet ? 28 : 20,
         fontWeight: '700',
         color: '#000',
         fontFamily: 'Lexend',
@@ -339,7 +339,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Lexend',
     },
     cardBigValue: {
-        fontSize: 32,
+        fontSize: responsive.isTablet ? 42 : 32,
         fontWeight: '600',
         color: '#000',
         fontFamily: 'Lexend',

@@ -79,11 +79,14 @@ android {
         applicationId "com.rnsmkituidemoapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 18
+        versionCode 23
         versionName "1.0"
         manifestPlaceholders = [
             appAuthRedirectScheme: "com.rnsmkituidemoapp"
         ]
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a"
+        }
     }
     signingConfigs {
         debug {
@@ -113,15 +116,7 @@ android {
         }
     }
     
-    // Split APKs by ABI to reduce size
-    splits {
-        abi {
-            reset()
-            enable true
-            universalApk false
-            include "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
-        }
-    }
+
     
     // Bundle configuration to reduce size
     bundle {

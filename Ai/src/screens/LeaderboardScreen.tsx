@@ -54,10 +54,10 @@ const LeaderboardScreen = () => {
     // Placeholder avatar
     const getAvatar = (index: number) => {
         const avatars = [
-            require('../../assets/characters/newton.png'),
-            require('../../assets/characters/elon.png'),
-            require('../../assets/characters/freddie.png'),
-            require('../../assets/characters/sherlock.png'),
+            { uri: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80' },
+            { uri: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=150&q=80' },
+            { uri: 'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?auto=format&fit=crop&w=150&q=80' },
+            { uri: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&w=150&q=80' },
         ];
         return avatars[index % avatars.length];
     };

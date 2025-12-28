@@ -22,13 +22,21 @@ export interface PricingInfo {
 
 export const detectUserRegion = (): 'IN' | 'INTERNATIONAL' => {
     try {
+        // 1. Check Device Country Setting (Most reliable)
+        const deviceCountry = Localization.getCountry();
+        console.log('🌍 Detected device country:', deviceCountry);
+        if (deviceCountry === 'IN') return 'IN';
+
+        // 2. Check Locale Country (Fallback)
         const locales = Localization.getLocales();
-        const countryCode = locales[0]?.countryCode;
+        const localeCountry = locales[0]?.countryCode;
+        console.log('🌍 Detected locale country:', localeCountry);
+        if (localeCountry === 'IN') return 'IN';
 
-        console.log('🌍 Detected country code:', countryCode);
-
-        // Check if user is in India
-        if (countryCode === 'IN') {
+        // 3. Check TimeZone (Safety Net for India)
+        const timeZone = Localization.getTimeZone();
+        console.log('🌍 Detected timezone:', timeZone);
+        if (timeZone && (timeZone === 'Asia/Kolkata' || timeZone === 'Asia/Calcutta' || timeZone.includes('India'))) {
             return 'IN';
         }
 

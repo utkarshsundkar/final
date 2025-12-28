@@ -4,14 +4,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Dodo Payments Configuration
 const DODO_CONFIG = {
-    isTestMode: true, // Set to false for production
+    isTestMode: false, // Set to false for production
     testCheckoutUrl: 'https://test.checkout.dodopayments.com/buy',
     prodCheckoutUrl: 'https://checkout.dodopayments.com/buy',
 
     // Your Dodo Product IDs
     products: {
-        monthly: 'pdt_0NUgZM1XbQRT9991CQhue',  // $10.99 with 50% off + 3 day free trial
-        yearly: 'pdt_0NUgfxxQqueahXs4jIuww'    // $79.99 with 50% off + 3 day free trial
+        monthly: 'pdt_0NUtMSSQ5WJKOIqi4iE6r',  // Live Monthly Plan
+        yearly: 'pdt_0NUtMRhLh7wHqJvBzTQAU'    // Live Yearly Plan
     }
 };
 

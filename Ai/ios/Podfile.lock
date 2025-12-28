@@ -996,7 +996,7 @@ PODS:
     - React
   - react-native-safe-area-context (5.6.2):
     - React-Core
-  - react-native-smkit-ui (2.0.1):
+  - react-native-smkit-ui (2.0.4):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1016,7 +1016,7 @@ PODS:
     - React-utils
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - SMKitUI (= 0.3.7)
+    - SMKitUI (= 1.4.6)
     - Yoga
   - react-native-splash-screen (3.3.0):
     - React-Core
@@ -1320,15 +1320,13 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - SMBase (0.7.3):
-    - SwiftyJSON
-  - SMKit (0.3.9):
-    - SMBase (= 0.7.3)
-  - SMKitUI (0.3.7):
-    - SMKit (= 0.3.9)
+  - SMBase (1.4.9)
+  - SMKit (1.4.6):
+    - SMBase (= 1.4.9)
+  - SMKitUI (1.4.6):
+    - SMKit (= 1.4.6)
     - ZIPFoundation
   - SocketRocket (0.7.0)
-  - SwiftyJSON (5.0.2)
   - Yoga (0.0.0)
   - ZIPFoundation (0.9.20)
 
@@ -1418,7 +1416,6 @@ SPEC REPOS:
     - razorpay-core-pod
     - razorpay-pod
     - SocketRocket
-    - SwiftyJSON
     - ZIPFoundation
 
 EXTERNAL SOURCES:
@@ -1600,7 +1597,7 @@ SPEC CHECKSUMS:
   react-native-image-picker: 6ccc56d6e61dcc6063474571969866aa23854663
   react-native-razorpay: 41a407f4367b5b0e1bba89a77f9cab1918860844
   react-native-safe-area-context: e48706fb09fde89f82e12bfb49b140cfdcb761f7
-  react-native-smkit-ui: f930f48ced33b1c6209ce3e1347a93e069cb3e0b
+  react-native-smkit-ui: 86316b6fc8f3a7afb38046376f8e95e1f45fd016
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   React-nativeconfig: 5d452e509d6fbedc1522e21b566451fc673ac6b7
   React-NativeModulesApple: 6560431301ffdab8df6212cc8c8eff779396d8e0
@@ -1631,14 +1628,13 @@ SPEC CHECKSUMS:
   RNKeychain: efc03c9793994fb2906bcca24db9fc8442275ccd
   RNLocalize: af6a0c20ed114768c09805819b82a47de188f27d
   RNScreens: b5ec99a7b9af5a8a6f23cc88716fe37be27aee97
-  SMBase: c9be88879a5133ce32336bb7b7aebe6171f40d23
-  SMKit: 3a12e106d32ee088ffede6f1b668166a6f067354
-  SMKitUI: d316140b3033bc56f4123e6ed87eb5a3beefd117
+  SMBase: 08d5f5fe052b26d02f0aece183e6df3102308f1c
+  SMKit: 2020bb15e78d5ff41d1f9093a21cd9b358a028a7
+  SMKitUI: 940abdbff7f8d3ccb0621434252845050470332d
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
-  SwiftyJSON: f5b1bf1cd8dd53cd25887ac0eabcfd92301c6a5a
   Yoga: 9ad2c02dbd9811bb5a35fe23081cb0f5d5a3f9dd
   ZIPFoundation: dfd3d681c4053ff7e2f7350bc4e53b5dba3f5351
 
-PODFILE CHECKSUM: 73c0386485aefb4fbec7dedbd7f56273a7b8b7ff
+PODFILE CHECKSUM: 81a62ad6b5906fcd580d493597d693b94d626faf
 
 COCOAPODS: 1.16.2
