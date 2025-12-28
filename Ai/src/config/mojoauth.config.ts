@@ -13,9 +13,9 @@ export const MOJOAUTH_CONFIG = {
             // iOS Client ID
             iosClientId: '912055738866-63pugaqc2m9s04gcv8qg5volltl6u2uo.apps.googleusercontent.com',
             // Android Client ID
-            androidClientId: '912055738866-6br3254spfodrmmeepc43kf7rmu1vesk.apps.googleusercontent.com',
+            androidClientId: '442086232032-t3k39r6k7b0mt1s1gv0h3rl912dg4b08.apps.googleusercontent.com',
             // Web Client ID
-            webClientId: '912055738866-ho32cblfdh4ckfgjvnu5l8n6u2glp8de.apps.googleusercontent.com',
+            webClientId: '442086232032-8bbp723qk05eopbhlpd58b6stg34lmdo.apps.googleusercontent.com',
             redirectUrl: 'com.arthlete.app://oauth/callback',
             scopes: ['openid', 'profile', 'email'],
         },

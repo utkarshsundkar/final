@@ -3456,7 +3456,7 @@ const MainTabScreen = ({ navigation }: any) => {
       category: 'Cardio',
       started: 'Aug 15, 2023',
       goal: '2 000 POINTS',
-      image: 'https://ik.imagekit.io/an85p0bgo/icons/cardio-crusher-2.jpg',
+      image: 'https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=800&q=80',
       bgColor: '#E3F2FD',
       action: () => startChallenge('CardioCrusher')
     },
@@ -3467,7 +3467,7 @@ const MainTabScreen = ({ navigation }: any) => {
       category: 'Strength',
       started: 'Sep 10, 2023',
       goal: '1 800 POINTS',
-      image: 'https://cdn.corenexis.com/view/5821312168',
+      image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=800&q=80',
       bgColor: '#FFFFFF',
       action: () => startChallenge('AbsReloaded')
     }
@@ -3622,7 +3622,7 @@ const MainTabScreen = ({ navigation }: any) => {
                             title: 'Power Plyo',
                             coach: 'coach Steve',
                             duration: '18',
-                            img: 'https://cdn.corenexis.com/view/9923452168',
+                            img: 'https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=800&q=80',
                             tag: 'Athletic'
                           }
                         ].map((item, idx) => (
@@ -4966,7 +4966,7 @@ const App = () => {
     const { GoogleSignin } = require('@react-native-google-signin/google-signin');
     GoogleSignin.configure({
       iosClientId: '912055738866-63pugaqc2m9s04gcv8qg5volltl6u2uo.apps.googleusercontent.com',
-      webClientId: '912055738866-ho32cblfdh4ckfgjvnu5l8n6u2glp8de.apps.googleusercontent.com',
+      webClientId: '442086232032-8bbp723qk05eopbhlpd58b6stg34lmdo.apps.googleusercontent.com',
       offlineAccess: true,
     });
 
