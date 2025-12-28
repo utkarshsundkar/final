@@ -3,7 +3,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native';
 
-const BASE_URL = 'https://final-z80k.onrender.com/api/v2/payment';
+const BASE_URL = 'https://final-cudk.onrender.com/api/v2/payment';
 
 export const RazorpayService = {
     startPayment: async ({

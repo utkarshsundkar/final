@@ -10,7 +10,7 @@ const isAndroid = Platform.OS === 'android';
 
 // Production: 'https://v2-jell.onrender.com/api/v2/users'
 // Production Render URL
-const BACKEND_URL = 'https://final-z80k.onrender.com/api/v2/users';
+const BACKEND_URL = 'https://final-cudk.onrender.com/api/v2/users';
 
 export interface User {
     id: string;

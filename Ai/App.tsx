@@ -656,7 +656,7 @@ const MainTabScreen = ({ navigation }: any) => {
   // Fetch user's leaderboard rank
   const fetchUserRank = async (userId: string) => {
     try {
-      const BACKEND_URL = 'https://final-z80k.onrender.com/api/v2/users';
+      const BACKEND_URL = 'https://final-cudk.onrender.com/api/v2/users';
 
       const response = await axios.get(`${BACKEND_URL}/leaderboard`);
       if (response.data.success) {
@@ -689,7 +689,7 @@ const MainTabScreen = ({ navigation }: any) => {
         return;
       }
 
-      const BACKEND_URL = 'https://final-z80k.onrender.com/api/v2';
+      const BACKEND_URL = 'https://final-cudk.onrender.com/api/v2';
 
       console.log('Finding opponent for user:', user.id);
       console.log('Using URL:', `${BACKEND_URL}/challenges/find-opponent`);
@@ -723,7 +723,7 @@ const MainTabScreen = ({ navigation }: any) => {
   const fetchChallenges = async () => {
     try {
       const token = await AuthService.getAccessToken();
-      const BACKEND_URL = 'https://final-z80k.onrender.com/api/v2';
+      const BACKEND_URL = 'https://final-cudk.onrender.com/api/v2';
 
       const response = await axios.get(`${BACKEND_URL}/challenges/my-challenges`, {
         headers: { Authorization: `Bearer ${token}` }
@@ -741,7 +741,7 @@ const MainTabScreen = ({ navigation }: any) => {
   const createChallenge = async (exercise: string, targetReps: number, timeLimit: number) => {
     try {
       const token = await AuthService.getAccessToken();
-      const BACKEND_URL = 'https://final-z80k.onrender.com/api/v2';
+      const BACKEND_URL = 'https://final-cudk.onrender.com/api/v2';
 
       const response = await axios.post(
         `${BACKEND_URL}/challenges/create`,
@@ -771,7 +771,7 @@ const MainTabScreen = ({ navigation }: any) => {
 
   const fetchNearbyUsers = async () => {
     try {
-      const BACKEND_URL = 'https://final-z80k.onrender.com/api/v2/users';
+      const BACKEND_URL = 'https://final-cudk.onrender.com/api/v2/users';
 
       const response = await axios.get(`${BACKEND_URL}/leaderboard`);
       if (response.data.success && user?.id) {

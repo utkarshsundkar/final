@@ -9,7 +9,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // 🔗 Backend URL - Using local IP for testing
-const BASE_URL = 'https://final-z80k.onrender.com/api/v2/payment';
+const BASE_URL = 'https://final-cudk.onrender.com/api/v2/payment';
 
 // ✅ Correct Native Module (Check both just in case)
 const PayUNative = NativeModules.PayUCheckoutPro || NativeModules.PayUBizSdk;
@@ -128,8 +128,8 @@ export const PayUService = {
                 firstName,
                 email,
                 phone,
-                surl: 'https://final-z80k.onrender.com/api/v2/payment/payu-success',
-                furl: 'https://final-z80k.onrender.com/api/v2/payment/payu-failure',
+                surl: 'https://final-cudk.onrender.com/api/v2/payment/payu-success',
+                furl: 'https://final-cudk.onrender.com/api/v2/payment/payu-failure',
                 environment: '0', // Test mode
                 hash,
             };

@@ -22,7 +22,7 @@ interface DodoPaymentParams {
 }
 
 export class DodoPaymentsService {
-    private static BACKEND_URL = 'https://final-z80k.onrender.com/api/v2';
+    private static BACKEND_URL = 'https://final-cudk.onrender.com/api/v2';
 
     /**
      * Get the checkout URL for a specific plan
