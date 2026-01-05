@@ -79,7 +79,7 @@ android {
         applicationId "com.rnsmkituidemoapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 25
+        versionCode 27
         versionName "1.0"
         manifestPlaceholders = [
             appAuthRedirectScheme: "com.rnsmkituidemoapp"
@@ -116,8 +116,13 @@ android {
         }
     }
     
+    // Packaging options for 16KB page size support
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = false
+        }
+    }
 
-    
     // Bundle configuration to reduce size
     bundle {
         language {
