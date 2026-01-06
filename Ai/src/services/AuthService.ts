@@ -1,5 +1,6 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { appleAuth } from '@invertase/react-native-apple-authentication';
 import * as Keychain from 'react-native-keychain';
 import { authorize } from 'react-native-app-auth';
 import { MOJOAUTH_CONFIG, AUTH_ENDPOINTS } from '../config/mojoauth.config';
@@ -292,7 +293,80 @@ class AuthService {
 
     // Apple Sign In
     async signInWithApple(): Promise<{ success: boolean; user?: User; message: string }> {
-        return { success: false, message: 'Not implemented' };
+        // Only run on iOS for native Apple Sign In
+        if (!isAndroid) {
+            if (!appleAuth.isSupported) {
+                return { success: false, message: 'Apple Sign-In is not supported on this device/simulator.' };
+            }
+
+            try {
+                // 1. Perform request
+                const appleAuthRequestResponse = await appleAuth.performRequest({
+                    requestedOperation: appleAuth.Operation.LOGIN,
+                    requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+                });
+
+                // 2. Check auth state
+                const credentialState = await appleAuth.getCredentialStateForUser(appleAuthRequestResponse.user);
+
+                if (credentialState === appleAuth.State.AUTHORIZED) {
+                    const { identityToken, email, fullName } = appleAuthRequestResponse;
+
+                    // Format name if available
+                    let name = undefined;
+                    if (fullName) {
+                        const parts = [fullName.givenName, fullName.familyName, fullName.middleName];
+                        name = parts.filter(Boolean).join(' ');
+                    }
+
+                    // 3. Sync with Backend
+                    try {
+                        const payload = {
+                            email: email || undefined, // Email might be null on subsequent logins
+                            name: name || undefined, // Name might be null on subsequent logins
+                            mojoToken: identityToken, // Send Identity Token
+                            provider: 'apple'
+                        };
+
+                        console.log('Syncing Apple Login with backend:', BACKEND_URL + '/auth-mojo');
+
+                        const backendResponse = await axios.post(`${BACKEND_URL}/auth-mojo`, payload);
+
+                        const user: User = {
+                            id: backendResponse.data.data.user._id,
+                            email: backendResponse.data.data.user.email,
+                            name: backendResponse.data.data.user.username,
+                            provider: 'apple',
+                            onboardingCompleted: backendResponse.data.data.user.onboardingCompleted || false,
+                        };
+
+                        await this.saveUser(user, backendResponse.data.data.accessToken);
+
+                        return {
+                            success: true,
+                            user,
+                            message: 'Apple sign-in successful',
+                        };
+
+                    } catch (backendError: any) {
+                        console.error('Backend sync failed (Apple):', {
+                            message: backendError.message,
+                            status: backendError.response?.status,
+                            data: backendError.response?.data
+                        });
+                        return { success: false, message: 'Failed to sync with server.' };
+                    }
+                }
+            } catch (error: any) {
+                if (error.code === appleAuth.Error.CANCELED) {
+                    return { success: false, message: 'Sign-in cancelled' };
+                }
+                console.error('Apple Sign-In error:', error);
+                return { success: false, message: 'Apple sign-in failed. Please try again.' };
+            }
+        }
+
+        return { success: false, message: 'Apple Sign-In not supported on this device' };
     }
 
     // Save user and token

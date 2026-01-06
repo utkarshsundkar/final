@@ -68,6 +68,38 @@ const LoginScreen = ({ navigation }: any) => {
 
 
 
+
+
+    const handleAppleLogin = async () => {
+        setLoading(true);
+        try {
+            console.log('🍎 Starting Apple Sign-In...');
+            const result = await AuthService.signInWithApple();
+            console.log('🍎 Apple Sign-In result:', result);
+
+            if (result.success && result.user) {
+                console.log('✅ Apple Sign-In successful');
+                if (!result.user.onboardingCompleted) {
+                    setLoading(false);
+                    navigation.replace('OnboardingGender');
+                } else {
+                    setLoading(false);
+                    navigation.replace('Home');
+                }
+            } else {
+                console.log('❌ Apple Sign-In failed:', result.message);
+                setLoading(false);
+                if (result.message !== 'Sign-in cancelled') {
+                    Alert.alert('Sign-In Failed', result.message);
+                }
+            }
+        } catch (error: any) {
+            console.error('❌ Unexpected error in handleAppleLogin:', error);
+            setLoading(false);
+            Alert.alert('Error', 'An unexpected error occurred');
+        }
+    };
+
     return (
         <View style={styles.container}>
             <SafeAreaView style={styles.safeArea}>
@@ -146,6 +178,26 @@ const LoginScreen = ({ navigation }: any) => {
                                 </>
                             )}
                         </TouchableOpacity>
+
+                        {Platform.OS === 'ios' && (
+                            <TouchableOpacity
+                                style={[styles.appleButton, loading && styles.buttonDisabled]}
+                                onPress={handleAppleLogin}
+                                disabled={loading}
+                            >
+                                {loading ? (
+                                    <ActivityIndicator color="#000" />
+                                ) : (
+                                    <>
+                                        <Image
+                                            source={{ uri: 'https://img.icons8.com/ios-filled/50/000000/mac-os.png' }}
+                                            style={[styles.buttonIcon, { tintColor: '#000' }]}
+                                        />
+                                        <Text style={styles.appleButtonText}>Continue with Apple</Text>
+                                    </>
+                                )}
+                            </TouchableOpacity>
+                        )}
 
 
 
@@ -325,6 +377,24 @@ const styles = StyleSheet.create({
     },
     googleButtonText: {
         color: '#FFF',
+        fontSize: responsive.isTablet ? 20 : 16,
+        fontFamily: 'Lexend',
+        fontWeight: '600',
+        marginLeft: 10,
+    },
+    appleButton: {
+        backgroundColor: '#FFFFFF',
+        borderWidth: 1,
+        borderColor: '#E0E0E0',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: responsive.isTablet ? 24 : 16,
+        borderRadius: 16,
+        marginBottom: 4,
+    },
+    appleButtonText: {
+        color: '#000',
         fontSize: responsive.isTablet ? 20 : 16,
         fontFamily: 'Lexend',
         fontWeight: '600',
