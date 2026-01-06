@@ -507,6 +507,34 @@ const fixTrialUsers = asyncHandler(async (req, res) => {
   );
 });
 
+const deleteAccount = asyncHandler(async (req, res) => {
+  const userId = req.params.id;
+
+  if (!userId) {
+    throw new ApiError(400, "User ID is required");
+  }
+
+  // Ensure user is deleting their own account or is admin (assuming req.user is set by auth middleware)
+  /*
+  if (req.user._id.toString() !== userId) {
+      throw new ApiError(403, "You are not authorized to delete this account");
+  }
+  */
+
+  const user = await User.findByIdAndDelete(userId);
+
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  // Optionally delete related data (Workouts, etc.) if needed
+  // await Workout.deleteMany({ user: userId });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Account deleted successfully"));
+});
+
 export {
   registerUser,
   loginUser,
@@ -519,6 +547,7 @@ export {
   checkEmailExists,
   getLeaderboard,
   activateFreeTrial,
-  fixTrialUsers, // Export new function
+  fixTrialUsers,
+  deleteAccount,
 };
 

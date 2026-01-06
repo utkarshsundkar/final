@@ -1,6 +1,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { appleAuth } from '@invertase/react-native-apple-authentication';
+import { decode as atob } from 'base-64';
 import * as Keychain from 'react-native-keychain';
 import { authorize } from 'react-native-app-auth';
 import { MOJOAUTH_CONFIG, AUTH_ENDPOINTS } from '../config/mojoauth.config';
@@ -321,16 +322,42 @@ class AuthService {
 
                     // 3. Sync with Backend
                     try {
+                        let finalEmail = email;
+
+                        // Apple only sends email/name on the FIRST login. On subsequent logins, 
+                        // we must decode the identityToken to get the email.
+                        if (!finalEmail && identityToken) {
+                            try {
+                                const parts = identityToken.split('.');
+                                if (parts.length === 3) {
+                                    const payload = JSON.parse(atob(parts[1]));
+                                    if (payload && payload.email) {
+                                        finalEmail = payload.email;
+                                        console.log('Extracted email from Apple Identity Token:', finalEmail);
+                                    }
+                                }
+                            } catch (e) {
+                                console.warn('Failed to decode Apple Identity Token locally:', e);
+                            }
+                        }
+
                         const payload = {
-                            email: email || undefined, // Email might be null on subsequent logins
-                            name: name || undefined, // Name might be null on subsequent logins
-                            mojoToken: identityToken, // Send Identity Token
+                            email: finalEmail || undefined,
+                            name: name || undefined,
+                            mojoToken: identityToken,
                             provider: 'apple'
                         };
 
                         console.log('Syncing Apple Login with backend:', BACKEND_URL + '/auth-mojo');
 
                         const backendResponse = await axios.post(`${BACKEND_URL}/auth-mojo`, payload);
+
+                        // DEBUG: Log the full response to verify token path
+                        console.log('Server Payload Response:', JSON.stringify(backendResponse.data, null, 2));
+
+                        if (!backendResponse.data?.data?.accessToken) {
+                            console.error('CRITICAL: Access Token missing in response!', backendResponse.data);
+                        }
 
                         const user: User = {
                             id: backendResponse.data.data.user._id,
@@ -468,6 +495,37 @@ class AuthService {
         }
     }
 
+    async deleteAccount(): Promise<void> {
+        try {
+            const token = await this.getAccessToken();
+            if (!token) {
+                throw new Error('No access token found');
+            }
+
+            const userId = this.user?.id;
+            if (!userId) {
+                throw new Error('No user ID found');
+            }
+
+            console.log('Deleting account for user:', userId);
+
+            // Call backend delete endpoint
+            const response = await axios.delete(`${BACKEND_URL}/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            console.log('Account deleted successfully:', response.data);
+
+            // Clear local data
+            await this.signOut();
+        } catch (error: any) {
+            console.error('Delete account error:', error.response?.data || error.message);
+            throw new Error(error.response?.data?.message || 'Failed to delete account');
+        }
+    }
+
     // --- Listener Support ---
 
     addChangeListener(listener: (user: User | null) => void) {
@@ -485,9 +543,12 @@ class AuthService {
     async refreshUserProfile(): Promise<User | null> {
         try {
             const token = await this.getAccessToken();
-            if (!token) return null;
+            if (!token) {
+                console.log('refreshUserProfile: No access token found. User likely not logged in.');
+                return null;
+            }
 
-            console.log('Refreshing user profile...');
+            console.log('Refreshing user profile with token:', token.substring(0, 10) + '...');
             // Need to strip "/users" from BACKEND_URL to get root "api/v2"? 
             // BACKEND_URL is .../api/v2/users. Route is /current-user. 
             // So calling .../api/v2/users/current-user is correct based on routes file.

@@ -57,8 +57,9 @@ const HeightScreen = ({ navigation }: any) => {
     const ftNum = parseInt(ft);
     const incNum = parseInt(inc);
 
-    const isValidCm = cm && cmNum >= 100 && cmNum <= 250;
-    const isValidFt = ft && inc && ftNum >= 3 && ftNum <= 8 && incNum >= 0 && incNum <= 11;
+    const isValidCm = cm && cmNum >= 130 && cmNum <= 230;
+    // 4'3" is approx 130cm, 7'6" is approx 228cm (close to 230cm)
+    const isValidFt = ft && inc && ((ftNum === 4 && incNum >= 3) || (ftNum > 4 && ftNum < 7) || (ftNum === 7 && incNum <= 6));
 
     const isValid = unit === 'cm' ? isValidCm : isValidFt;
     const isNextDisabled = !isValid;
@@ -66,12 +67,12 @@ const HeightScreen = ({ navigation }: any) => {
     const getValidationMessage = () => {
         if (unit === 'cm') {
             if (!cm) return '';
-            if (cmNum < 100) return 'Height must be at least 100 cm';
-            if (cmNum > 250) return 'Please enter a valid height';
+            if (cmNum < 130 || cmNum > 230) return 'Please enter realistic body measurements to ensure safe fitness recommendations.';
         } else {
             if (!ft || !inc) return '';
-            if (ftNum < 3) return 'Height must be at least 3 feet';
-            if (ftNum > 8) return 'Please enter a valid height';
+            // Simple check for ft range roughly
+            if (ftNum < 4 || (ftNum === 4 && incNum < 3) || ftNum > 7 || (ftNum === 7 && incNum > 6))
+                return 'Please enter realistic body measurements to ensure safe fitness recommendations.';
             if (incNum > 11) return 'Inches must be 0-11';
         }
         return '';

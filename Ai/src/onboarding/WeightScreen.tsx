@@ -10,7 +10,11 @@ const WeightScreen = ({ navigation }: any) => {
 
     const handleNext = async () => {
         if (weight) {
-            await OnboardingService.saveToBackend({ weight: parseInt(weight) });
+            let weightInKg = parseFloat(weight);
+            if (unit === 'lbs') {
+                weightInKg = weightInKg * 0.453592;
+            }
+            await OnboardingService.saveToBackend({ weight: Math.round(weightInKg) });
         }
         navigation.navigate('OnboardingGoalWeight');
     };
@@ -29,14 +33,13 @@ const WeightScreen = ({ navigation }: any) => {
 
     const weightNum = parseFloat(weight);
     const minWeight = unit === 'kg' ? 30 : 66;
-    const maxWeight = unit === 'kg' ? 300 : 660;
+    const maxWeight = unit === 'kg' ? 250 : 551;
     const isValid = weight && weightNum >= minWeight && weightNum <= maxWeight;
     const isNextDisabled = !isValid;
 
     const getValidationMessage = () => {
         if (!weight) return '';
-        if (weightNum < minWeight) return `Weight must be at least ${minWeight} ${unit}`;
-        if (weightNum > maxWeight) return `Please enter a valid weight`;
+        if (weightNum < minWeight || weightNum > maxWeight) return 'Please enter realistic body measurements to ensure safe fitness recommendations.';
         return '';
     };
 

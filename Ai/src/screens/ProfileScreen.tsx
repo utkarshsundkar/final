@@ -11,6 +11,8 @@ import {
     Alert,
     Linking,
     ActionSheetIOS,
+    Modal,
+    TextInput,
 } from 'react-native';
 import { responsive } from '../utils/responsive';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -23,6 +25,8 @@ interface ProfileScreenProps {
 
 const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
     const [user, setUser] = useState<User | null>(null);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [deleteConfirmText, setDeleteConfirmText] = useState('');
 
     useEffect(() => {
         loadUser();
@@ -143,6 +147,32 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
         );
     };
 
+    const handleDeleteAccount = () => {
+        setShowDeleteModal(true);
+    };
+
+    const confirmDelete = async () => {
+        if (deleteConfirmText.toUpperCase() !== 'DELETE') {
+            Alert.alert('Invalid Input', 'Please type DELETE to confirm account deletion.');
+            return;
+        }
+
+        try {
+            setShowDeleteModal(false);
+            // Call delete account API
+            await AuthService.deleteAccount();
+            Alert.alert('Account Deleted', 'Your account has been successfully deleted.');
+            // Navigate to Login screen
+            if (navigation) {
+                navigation.replace('Login');
+            }
+        } catch (error: any) {
+            Alert.alert('Error', error.message || 'Failed to delete account. Please try again.');
+        } finally {
+            setDeleteConfirmText('');
+        }
+    };
+
     return (
         <View style={styles.mainContainer}>
             {/* Header Section */}
@@ -210,6 +240,13 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                         </TouchableOpacity>
 
                         <TouchableOpacity
+                            style={[styles.settingItem, styles.deleteAccountItem]}
+                            onPress={handleDeleteAccount}
+                        >
+                            <Text style={styles.deleteAccountText}>Delete Account</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
                             style={[styles.settingItem, styles.logoutItem]}
                             onPress={handleLogout}
                         >
@@ -218,6 +255,73 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                     </View>
                 </View>
             </ScrollView>
+
+            {/* Delete Account Confirmation Modal */}
+            <Modal
+                visible={showDeleteModal}
+                transparent={true}
+                animationType="fade"
+                onRequestClose={() => {
+                    setShowDeleteModal(false);
+                    setDeleteConfirmText('');
+                }}
+            >
+                <View style={styles.modalOverlay}>
+                    <View style={styles.modalContent}>
+                        <Text style={styles.modalTitle}>Delete Account</Text>
+
+                        <View style={styles.warningBox}>
+                            <Text style={styles.warningIcon}>⚠️</Text>
+                            <Text style={styles.warningText}>
+                                This action cannot be undone. All your data, including workout history, progress, and credits will be permanently deleted.
+                            </Text>
+                        </View>
+
+                        <Text style={styles.confirmLabel}>
+                            Type <Text style={styles.deleteWord}>DELETE</Text> to confirm:
+                        </Text>
+
+                        <TextInput
+                            style={styles.confirmInput}
+                            value={deleteConfirmText}
+                            onChangeText={setDeleteConfirmText}
+                            placeholder="Type DELETE here"
+                            placeholderTextColor="#999"
+                            autoCapitalize="characters"
+                            autoCorrect={false}
+                        />
+
+                        <View style={styles.modalButtons}>
+                            <TouchableOpacity
+                                style={[styles.modalButton, styles.cancelButton]}
+                                onPress={() => {
+                                    setShowDeleteModal(false);
+                                    setDeleteConfirmText('');
+                                }}
+                            >
+                                <Text style={styles.cancelButtonText}>Cancel</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                style={[
+                                    styles.modalButton,
+                                    styles.deleteButton,
+                                    deleteConfirmText.toUpperCase() !== 'DELETE' && styles.deleteButtonDisabled
+                                ]}
+                                onPress={confirmDelete}
+                                disabled={deleteConfirmText.toUpperCase() !== 'DELETE'}
+                            >
+                                <Text style={[
+                                    styles.deleteButtonText,
+                                    deleteConfirmText.toUpperCase() !== 'DELETE' && styles.deleteButtonTextDisabled
+                                ]}>
+                                    Delete Account
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 };
@@ -390,6 +494,112 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: '#FF4444',
         fontFamily: 'Lexend',
+        fontWeight: '400',
+    },
+    deleteAccountItem: {
+        borderBottomWidth: 1,
+        borderBottomColor: '#F0F0F0',
+    },
+    deleteAccountText: {
+        fontSize: 15,
+        color: '#CC0000',
+        fontFamily: 'Lexend',
+        fontWeight: '400',
+    },
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+    },
+    modalContent: {
+        backgroundColor: '#FFF',
+        borderRadius: 20,
+        padding: 24,
+        width: '100%',
+        maxWidth: 400,
+    },
+    modalTitle: {
+        fontSize: 22,
+        fontWeight: '700',
+        color: '#000',
+        fontFamily: 'Lexend',
+        marginBottom: 16,
+        textAlign: 'center',
+    },
+    warningBox: {
+        backgroundColor: '#FFF3CD',
+        borderRadius: 12,
+        padding: 16,
+        marginBottom: 20,
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+    },
+    warningIcon: {
+        fontSize: 24,
+        marginRight: 12,
+    },
+    warningText: {
+        flex: 1,
+        fontSize: 14,
+        color: '#856404',
+        fontFamily: 'Lexend',
+        lineHeight: 20,
+    },
+    confirmLabel: {
+        fontSize: 15,
+        color: '#333',
+        fontFamily: 'Lexend',
+        marginBottom: 12,
+    },
+    deleteWord: {
+        fontWeight: '700',
+        color: '#CC0000',
+    },
+    confirmInput: {
+        borderWidth: 2,
+        borderColor: '#DDD',
+        borderRadius: 12,
+        padding: 14,
+        fontSize: 16,
+        fontFamily: 'Lexend',
+        marginBottom: 24,
+        color: '#000',
+    },
+    modalButtons: {
+        flexDirection: 'row',
+        gap: 12,
+    },
+    modalButton: {
+        flex: 1,
+        paddingVertical: 14,
+        borderRadius: 12,
+        alignItems: 'center',
+    },
+    cancelButton: {
+        backgroundColor: '#F0F0F0',
+    },
+    cancelButtonText: {
+        fontSize: 15,
+        color: '#333',
+        fontFamily: 'Lexend',
+        fontWeight: '600',
+    },
+    deleteButton: {
+        backgroundColor: '#CC0000',
+    },
+    deleteButtonDisabled: {
+        backgroundColor: '#DDD',
+    },
+    deleteButtonText: {
+        fontSize: 15,
+        color: '#FFF',
+        fontFamily: 'Lexend',
+        fontWeight: '600',
+    },
+    deleteButtonTextDisabled: {
+        color: '#999',
     },
 });
 

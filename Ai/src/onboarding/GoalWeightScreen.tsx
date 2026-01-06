@@ -1,11 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Platform } from 'react-native';
 import OnboardingLayout from './OnboardingLayout';
+import OnboardingService from '../services/OnboardingService';
 
 const GoalWeightScreen = ({ navigation }: any) => {
     const [unit, setUnit] = useState<'kg' | 'lbs'>('kg');
     const [goalWeight, setGoalWeight] = useState('');
     const [showValidation, setShowValidation] = useState(false);
+    const [storedData, setStoredData] = useState<{ weight?: number; height?: number }>({});
+
+    useEffect(() => {
+        const loadData = async () => {
+            const data = await OnboardingService.getOnboardingData();
+            if (data) {
+                setStoredData(data);
+            }
+        };
+        loadData();
+    }, []);
 
     const handleNext = () => {
         navigation.navigate('OnboardingActivityLevel');
@@ -25,14 +37,40 @@ const GoalWeightScreen = ({ navigation }: any) => {
 
     const weightNum = parseFloat(goalWeight);
     const minWeight = unit === 'kg' ? 30 : 66;
-    const maxWeight = unit === 'kg' ? 300 : 660;
-    const isValid = goalWeight && weightNum >= minWeight && weightNum <= maxWeight;
+    const maxWeight = unit === 'kg' ? 250 : 551;
+
+    let isSafe = true;
+
+    if (goalWeight && !isNaN(weightNum)) {
+        // Basic range check
+        if (weightNum < minWeight || weightNum > maxWeight) {
+            isSafe = false;
+        } else if (storedData.weight && storedData.height) {
+            // Advanced safety checks
+            const goalKg = unit === 'kg' ? weightNum : weightNum * 0.453592;
+
+            // 1. Goal weight >= 85% of current weight
+            if (goalKg < storedData.weight * 0.85) {
+                isSafe = false;
+            } else {
+                // 2. BMI Check (14 - 45)
+                const heightM = storedData.height / 100;
+                const bmi = goalKg / (heightM * heightM);
+                if (bmi < 14 || bmi > 45) {
+                    isSafe = false;
+                }
+            }
+        }
+    } else {
+        isSafe = false;
+    }
+
+    const isValid = goalWeight && isSafe;
     const isNextDisabled = !isValid;
 
     const getValidationMessage = () => {
         if (!goalWeight) return '';
-        if (weightNum < minWeight) return `Goal weight must be at least ${minWeight} ${unit}`;
-        if (weightNum > maxWeight) return `Please enter a valid goal weight`;
+        if (!isSafe) return 'Please enter realistic body measurements to ensure safe fitness recommendations.';
         return '';
     };
 

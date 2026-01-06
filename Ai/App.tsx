@@ -43,8 +43,15 @@ import {
   LayoutAnimation,
   TouchableWithoutFeedback,
   TextInput,
-  AppState
+  AppState,
+  LogBox
 } from 'react-native';
+
+LogBox.ignoreLogs([
+  'Sending `onAnimatedValueUpdate` with no listeners registered',
+]);
+LogBox.ignoreAllLogs(true);
+
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import {
   configure,
@@ -612,7 +619,7 @@ import ExerciseService from './src/services/ExerciseService';
 // ... (existing imports)
 
 const MainTabScreen = ({ navigation }: any) => {
-  const [didConfig, setDidConfig] = useState(false);
+  // const [didConfig, setDidConfig] = useState(false); // Sency Config moved to App.tsx
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('Active');
   const [showPremiumModal, setShowPremiumModal] = useState(false);
@@ -848,6 +855,7 @@ const MainTabScreen = ({ navigation }: any) => {
   const [showChallengeModal, setShowChallengeModal] = useState(false);
   const [challenges, setChallenges] = useState<any[]>([]);
   const [loadingOpponent, setLoadingOpponent] = useState(false);
+  const [currentWorkoutName, setCurrentWorkoutName] = useState<string | null>(null);
 
   const handleWorkoutCompletion = async (params: any) => {
     console.log('=== WORKOUT COMPLETION START ===');
@@ -914,6 +922,23 @@ const MainTabScreen = ({ navigation }: any) => {
               }
             }
 
+            // Save workout completion if we have a workout name
+            if (currentWorkoutName) {
+              try {
+                console.log(`Saving workout completion for: ${currentWorkoutName}`);
+                const allPerfect = exercises.every((ex: any) => {
+                  const total = ex.reps_performed || ex.reps || ex.totalReps || 0;
+                  const perfect = ex.reps_performed_perfect || ex.perfectReps || ex.repsCorrect || ex.cleanReps || 0;
+                  return total === perfect && total > 0;
+                });
+                await ExerciseService.saveWorkoutCompletion(user.id, currentWorkoutName, exercises, allPerfect);
+                console.log('Workout completion saved successfully');
+                setCurrentWorkoutName(null); // Reset after saving
+              } catch (error) {
+                console.error('Failed to save workout completion:', error);
+              }
+            }
+
             // Refresh user profile to get updated credits
             console.log(`Workout complete! ${totalCreditsEarned} credits earned.`);
             const updatedUser = await AuthService.refreshUserProfile();
@@ -941,9 +966,11 @@ const MainTabScreen = ({ navigation }: any) => {
     console.log('=== WORKOUT COMPLETION END ===');
   };
 
+  /* Sency Config Moved to App.tsx
   useEffect(() => {
     configureSMKitUI();
   }, []);
+  */
 
   useEffect(() => {
     console.log('Setting up Sency event listeners. User:', user?.id);
@@ -957,6 +984,7 @@ const MainTabScreen = ({ navigation }: any) => {
     };
   }, [user]); // Re-subscribe when user changes
 
+  /*
   async function configureSMKitUI() {
     setIsLoading(true);
     try {
@@ -969,18 +997,35 @@ const MainTabScreen = ({ navigation }: any) => {
       Alert.alert('Configure Failed', e.message);
     }
   }
+  */
 
   // SDK UI Customization & Phone Calibration Configuration
   const getModifications = () => {
     return JSON.stringify({
-      primaryColor: 'orange', // Match app theme color (#FF6B35)
+      primaryColor: '#FF6B35',
       phoneCalibration: {
-        enabled: false, // Disable phone calibration screen by default
+        enabled: false,
         autoCalibrate: false,
         calibrationSensitivity: 0.8,
       },
       showProgressBar: true,
       showCounters: true,
+      showSkeleton: true,
+      enableBodyTracking: true,
+      bodyTracking: {
+        enabled: true,
+        showSkeleton: true,
+      },
+      visualFeedback: {
+        enabled: true,
+        showSkeleton: true,
+        showRepetitions: true,
+        showFeedback: true,
+      },
+      skeleton: {
+        show: true,
+        enabled: true,
+      }
     });
   };
 
@@ -1319,6 +1364,17 @@ const MainTabScreen = ({ navigation }: any) => {
 
       console.log(`Starting Daily Kickstart. Level: ${level}, Day: ${day}`);
 
+      // Save workout attempt immediately
+      if (user?.id) {
+        try {
+          console.log('Saving DailyKickstart attempt');
+          await ExerciseService.saveWorkoutCompletion(user.id, 'DailyKickstart', [], false);
+          console.log('DailyKickstart attempt saved');
+        } catch (error) {
+          console.error('Failed to save DailyKickstart attempt:', error);
+        }
+      }
+
       let exercises: any[] = [];
 
       const add = (name: string, secs: number, id: string, sets: number, isRestLast: boolean = true) => {
@@ -1574,9 +1630,25 @@ const MainTabScreen = ({ navigation }: any) => {
     }
   };
 
+
   const startChallenge = async (type: string) => {
+    setIsLoading(true);
     try {
       console.log('startChallenge called with type:', type);
+
+      // Set the current workout name for tracking
+      setCurrentWorkoutName(type);
+
+      // Save workout attempt immediately (even if user exits early)
+      if (user?.id) {
+        try {
+          console.log(`Saving workout attempt for: ${type}`);
+          await ExerciseService.saveWorkoutCompletion(user.id, type, [], false);
+          console.log('Workout attempt saved');
+        } catch (error) {
+          console.error('Failed to save workout attempt:', error);
+        }
+      }
 
       // Get user's fitness level from onboarding to set dynamic threshold
       const onboardingData = await OnboardingService.getOnboardingData();
@@ -3185,6 +3257,8 @@ const MainTabScreen = ({ navigation }: any) => {
     } catch (error) {
       console.error(error);
       Alert.alert("Error", "Could not start workout");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -3224,6 +3298,52 @@ const MainTabScreen = ({ navigation }: any) => {
     };
 
     return workoutDescriptions[experienceLevel]?.[dayOfWeek] || 'Quick 5-minute routine';
+  };
+
+  // --- Stats Component ---
+  const DailyStatsDisplay = () => {
+    const [stats, setStats] = useState({ attempts: 0, perfect: 0 });
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+      const fetchStats = async () => {
+        console.log('DailyStatsDisplay: Fetching stats for DailyKickstart...');
+        try {
+          const data = await ExerciseService.getWorkoutStats('DailyKickstart');
+          console.log('DailyStatsDisplay: Stats received:', data);
+          setStats(data);
+        } catch (error) {
+          console.error('DailyStatsDisplay: Error fetching stats:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      // Fetch once on mount
+      fetchStats();
+    }, []);
+
+    console.log('DailyStatsDisplay: Rendering with stats:', stats, 'loading:', loading);
+
+    if (loading || stats.attempts === 0) {
+      if (stats.attempts === 0 && !loading) {
+        console.log('DailyStatsDisplay: No attempts, hiding component');
+      }
+      return null;
+    }
+
+    return (
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#FFF0E6', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6, marginRight: 12 }}>
+          <Image source={{ uri: 'https://img.icons8.com/ios-filled/50/FF6B35/running.png' }} style={{ width: 12, height: 12, tintColor: '#FF6B35', marginRight: 4 }} />
+          <Text style={{ fontSize: 12, color: '#FF6B35', fontFamily: 'Lexend', fontWeight: '600' }}>{stats.attempts} Attempts</Text>
+        </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#E8F5E9', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6 }}>
+          <Image source={{ uri: 'https://img.icons8.com/ios-filled/50/4CAF50/medal.png' }} style={{ width: 12, height: 12, tintColor: '#4CAF50', marginRight: 4 }} />
+          <Text style={{ fontSize: 12, color: '#4CAF50', fontFamily: 'Lexend', fontWeight: '600' }}>{stats.perfect} Perfect</Text>
+        </View>
+      </View>
+    );
   };
 
   // --- UI Components ---
@@ -3341,21 +3461,17 @@ const MainTabScreen = ({ navigation }: any) => {
         </View>
 
         {/* Avatars Overlay */}
-        <View style={{ position: 'absolute', bottom: 12, left: 16, flexDirection: 'row' }}>
-          {[1, 2, 3].map((i) => (
-            <View key={i} style={{ width: 32, height: 32, borderRadius: 16, borderWidth: 2, borderColor: '#FFF', marginLeft: i > 1 ? -12 : 0, overflow: 'hidden' }}>
-              <Image source={{ uri: `https://randomuser.me/api/portraits/${i % 2 === 0 ? 'women' : 'men'}/${30 + i}.jpg` }} style={{ width: '100%', height: '100%' }} />
-            </View>
-          ))}
-          <View style={{ width: 32, height: 32, borderRadius: 16, backgroundColor: '#1A1A1A', justifyContent: 'center', alignItems: 'center', marginLeft: -12, borderWidth: 2, borderColor: '#FFF' }}>
-            <Text style={{ fontSize: 10, fontWeight: '700', color: '#FFF' }}>+12</Text>
-          </View>
-        </View>
+
       </View>
 
       {/* Content Body - Infographic Style */}
       <View style={{ padding: responsive.isIPad ? 30 : 20 }}>
         {/* Title & Desc */}
+        {/* Workout Stats */}
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
+          <DailyStatsDisplay />
+        </View>
+
         <Text style={{ fontSize: responsive.isIPad ? 28 : 22, fontWeight: '700', color: '#1A1A1A', fontFamily: 'Lexend', marginBottom: 6 }}>{data.title}</Text>
         <Text style={{ fontSize: responsive.isIPad ? 18 : 14, color: '#666', fontFamily: 'Lexend', lineHeight: responsive.isIPad ? 26 : 20, marginBottom: responsive.isIPad ? 32 : 24 }} numberOfLines={2}>
           {data.description}
@@ -3512,16 +3628,9 @@ const MainTabScreen = ({ navigation }: any) => {
                           }}
                         >
 
-                          {/* Avatars */}
-                          <View style={{ flexDirection: 'row', marginBottom: 16 }}>
-                            {[1, 2, 3].map((i) => (
-                              <View key={i} style={[styles.avatarPlaceholder, { width: 32, height: 32, borderRadius: 16, marginLeft: i > 0 ? -10 : 0, borderWidth: 2, borderColor: 'white' }]}>
-                                <Image source={{ uri: `https://randomuser.me/api/portraits/women/${i + 40}.jpg` }} style={styles.avatarImage} />
-                              </View>
-                            ))}
-                            <View style={{ justifyContent: 'center', marginLeft: 12 }}>
-                              <Text style={{ color: '#888', fontSize: 12, fontFamily: 'Lexend' }}>+12 Joined</Text>
-                            </View>
+                          {/* Workout Stats */}
+                          <View style={{ marginBottom: 12 }}>
+                            <DailyStatsDisplay />
                           </View>
 
                           <Text style={[styles.cardTitle, { marginTop: 0, fontSize: responsive.isIPad ? 28 : 20 }]}>Morning Kickstart</Text>
@@ -4965,10 +5074,21 @@ const App = () => {
     // Configure Google Sign-In
     const { GoogleSignin } = require('@react-native-google-signin/google-signin');
     GoogleSignin.configure({
-      iosClientId: '912055738866-63pugaqc2m9s04gcv8qg5volltl6u2uo.apps.googleusercontent.com',
+      iosClientId: '442086232032-9ipualn6jg4ge97djel2gus4ddqsvdjq.apps.googleusercontent.com',
       webClientId: '442086232032-8bbp723qk05eopbhlpd58b6stg34lmdo.apps.googleusercontent.com',
       offlineAccess: true,
     });
+
+    // Configure Sency SDK (Early Init)
+    const configureSDK = async () => {
+      try {
+        var res = await configure("public_live_ENl0bawcspDkVlGFaB");
+        console.log("Sency SDK Configured Globally:", res);
+      } catch (e: any) {
+        console.error("Sency SDK Configuration Failed:", e);
+      }
+    };
+    configureSDK();
 
     const subscription = AppState.addEventListener('change', (nextAppState) => {
       if (nextAppState === 'active') {
