@@ -252,10 +252,23 @@ const getWorkoutStats = asyncHandler(async (req, res) => {
 
   console.log(`Getting stats for workout: "${exercise_name}"`); // DEBUG LOG
 
+  // Define aliases for legacy workout names
+  let searchNames = [new RegExp(`^${exercise_name}$`, 'i')];
+
+  if (exercise_name === 'DailyKickstart') {
+    searchNames.push(new RegExp('^Morning Kickstart$', 'i'));
+  } else if (exercise_name === 'CardioCrusher' || exercise_name === 'Cardio Crusher') {
+    searchNames.push(new RegExp('^CardioCrusher$', 'i'));
+    searchNames.push(new RegExp('^Cardio Crusher$', 'i'));
+  } else if (exercise_name === 'AbsReloaded' || exercise_name === 'Abs Reloaded') {
+    searchNames.push(new RegExp('^AbsReloaded$', 'i'));
+    searchNames.push(new RegExp('^Abs Reloaded$', 'i'));
+  }
+
   const workoutStats = await Workout.aggregate([
     {
       $match: {
-        workout_name: { $regex: new RegExp(`^${exercise_name}$`, 'i') }
+        workout_name: { $in: searchNames }
       }
     },
     {
