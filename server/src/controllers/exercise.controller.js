@@ -240,5 +240,97 @@ const getTotalReps = asyncHandler(async (req, res) => {
   );
 });
 
-export { saveExercise, saveFocusExercise, getUserExercises, updateExerciseProgress, getTotalReps };
+const getWorkoutStats = asyncHandler(async (req, res) => {
+  const { exercise_name } = req.query;
 
+  if (!exercise_name) {
+    throw new ApiError(400, 'exercise_name query parameter is required.');
+  }
+
+  // First try to get workout-level stats (for complete workout programs)
+  const Workout = (await import('../models/workout.model.js')).default;
+
+  const workoutStats = await Workout.aggregate([
+    {
+      $match: { workout_name: exercise_name }
+    },
+    {
+      $group: {
+        _id: null,
+        attempts: { $sum: 1 },
+        perfect: {
+          $sum: {
+            $cond: [{ $eq: ["$is_perfect", true] }, 1, 0]
+          }
+        }
+      }
+    }
+  ]);
+
+  if (workoutStats.length > 0) {
+    const result = workoutStats[0];
+    delete result._id;
+    return res.status(200).json(
+      new ApiResponse(200, result, "Workout stats fetched successfully.")
+    );
+  }
+
+  // Fallback to exercise-level stats if no workout found
+  const stats = await Exercise.aggregate([
+    {
+      $match: { exercise_name: exercise_name }
+    },
+    {
+      $group: {
+        _id: null,
+        attempts: { $sum: 1 },
+        perfect: {
+          $sum: {
+            $cond: [
+              { $eq: ["$reps_performed", "$reps_performed_perfect"] },
+              1,
+              0
+            ]
+          }
+        }
+      }
+    }
+  ]);
+
+  const result = stats.length > 0 ? stats[0] : { attempts: 0, perfect: 0 };
+  delete result._id;
+
+  return res.status(200).json(
+    new ApiResponse(200, result, "Workout stats fetched successfully.")
+  );
+});
+
+const saveWorkoutCompletion = asyncHandler(async (req, res) => {
+  const { userId, workout_name, exercises, is_perfect } = req.body;
+
+  if (!userId || !workout_name) {
+    throw new ApiError(400, 'userId and workout_name are required.');
+  }
+
+  const Workout = (await import('../models/workout.model.js')).default;
+
+  // Count perfect exercises
+  const exerciseArray = exercises || [];
+  const perfectCount = exerciseArray.filter(ex =>
+    ex.reps_performed === ex.reps_performed_perfect
+  ).length;
+
+  const newWorkout = await Workout.create({
+    userId,
+    workout_name,
+    total_exercises: exerciseArray.length,
+    perfect_exercises: perfectCount,
+    is_perfect: is_perfect || (perfectCount === exerciseArray.length && exerciseArray.length > 0),
+  });
+
+  return res.status(201).json(
+    new ApiResponse(201, newWorkout, "Workout completion saved successfully.")
+  );
+});
+
+export { saveExercise, saveFocusExercise, getUserExercises, updateExerciseProgress, getTotalReps, getWorkoutStats, saveWorkoutCompletion };
