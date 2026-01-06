@@ -250,9 +250,13 @@ const getWorkoutStats = asyncHandler(async (req, res) => {
   // First try to get workout-level stats (for complete workout programs)
   const Workout = (await import('../models/workout.model.js')).default;
 
+  console.log(`Getting stats for workout: "${exercise_name}"`); // DEBUG LOG
+
   const workoutStats = await Workout.aggregate([
     {
-      $match: { workout_name: exercise_name }
+      $match: {
+        workout_name: { $regex: new RegExp(`^${exercise_name}$`, 'i') }
+      }
     },
     {
       $group: {
