@@ -1,4 +1,5 @@
 import { getPlan, createOrder, verifyPaymentAndActivate, getUserPlanStatus, startFreeTrial, generatePayUHash, generateDynamicPayUHash, verifyPayUPayment, createDodoPayment, verifyDodoPayment, recordDodoInitiation, handleDodoWebhook, handlePayUSuccess, handlePayUFailure } from "../controllers/payment.controller.js";
+import { validateAppleReceipt, handleAppleWebhook } from "../controllers/appleIAP.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { Router } from "express";
 
@@ -22,6 +23,10 @@ router.route("/create-dodo-payment").post(verifyJWT, createDodoPayment);
 router.route("/verify-dodo-payment").post(verifyJWT, verifyDodoPayment);
 router.route("/record-dodo-initiation").post(verifyJWT, recordDodoInitiation);
 router.route("/dodo-webhook").post(handleDodoWebhook);
+
+// Apple IAP routes
+router.route("/validate-apple-receipt").post(verifyJWT, validateAppleReceipt);
+router.route("/apple-webhook").post(handleAppleWebhook); // No auth - Apple server calls this
 
 
 export default router;

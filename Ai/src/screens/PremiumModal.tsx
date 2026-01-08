@@ -1,8 +1,9 @@
-// Updated: 2025-12-23 14:38
+// Updated: 2026-01-08 - Apple IAP Compliant
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Modal, ScrollView, Platform, ActivityIndicator, SafeAreaView, StatusBar, Alert, NativeEventEmitter, NativeModules, Linking, AppState } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Modal, ScrollView, Platform, ActivityIndicator, SafeAreaView, StatusBar, Alert, Linking, AppState } from 'react-native';
 import { RazorpayService } from '../services/RazorpayService';
 import { DodoPaymentsService } from '../services/DodoPaymentsService';
+import AppleIAPService, { PRODUCT_IDS } from '../services/AppleIAPService';
 import { getPricingForRegion, PricingInfo } from '../utils/pricing';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -70,12 +71,20 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
 
             // Check if user already used trial & fetch latest user details
             fetchUserDetails();
+
+            // Register IAP Success Callback
+            AppleIAPService.setOnPurchaseSuccess(async () => {
+                console.log('🍎 IAP Success Callback Triggered in PremiumModal!');
+                await checkPaymentStatusAndActivate();
+            });
         }
 
         return () => {
             // removeListeners();
             linkingSubscription.remove();
             appStateSubscription.remove();
+            // Clear IAP callback
+            AppleIAPService.setOnPurchaseSuccess(() => { });
         };
     }, [visible]);
 
@@ -207,6 +216,54 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
 
 
     const handlePurchase = async () => {
+        // ⚠️ APP STORE COMPLIANCE: iOS MUST use Apple IAP only
+        if (Platform.OS === 'ios') {
+            await handleApplePurchase();
+            return;
+        }
+
+        // Android can use Razorpay/Dodo
+        await handleAndroidPurchase();
+    };
+
+    /**
+     * Apple IAP Purchase (iOS Only)
+     * Required by App Store Guidelines 3.1.1
+     */
+    const handleApplePurchase = async () => {
+        try {
+            console.log('🍎 Starting Apple IAP purchase...');
+
+            // Initialize IAP if not already done
+            const initialized = await AppleIAPService.initialize();
+            if (!initialized) {
+                Alert.alert('Error', 'Unable to connect to App Store. Please try again.');
+                return;
+            }
+
+            // Get the product ID based on selected plan
+            const productId = selectedPlan === 'monthly'
+                ? PRODUCT_IDS.MONTHLY
+                : PRODUCT_IDS.YEARLY;
+
+            // Start purchase flow
+            await AppleIAPService.purchaseSubscription(productId);
+
+            // Success handling is done in the IAP service listener
+            // which will validate receipt and activate premium
+        } catch (error: any) {
+            console.error('❌ Apple IAP purchase failed:', error);
+            if (error.code !== 'E_USER_CANCELLED') {
+                Alert.alert('Purchase Failed', 'Unable to complete purchase. Please try again.');
+            }
+        }
+    };
+
+    /**
+     * Android Purchase (Razorpay/Dodo)
+     * Only available on Android platform
+     */
+    const handleAndroidPurchase = async () => {
         if (!pricing) return;
 
         const plan = selectedPlan;
@@ -539,6 +596,29 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
                         </TouchableOpacity>
                     )}
 
+                    {/* Restore Purchases Button (iOS Only - Required by App Store) */}
+                    {Platform.OS === 'ios' && (
+                        <TouchableOpacity
+                            style={styles.restorePurchasesButton}
+                            onPress={async () => {
+                                await AppleIAPService.restorePurchases();
+                                // Refresh user profile after restore
+                                await AuthService.refreshUserProfile();
+                                const user = await AuthService.getCurrentUser();
+                                if (user?.isPremium) {
+                                    if (onSuccess) {
+                                        onSuccess();
+                                    } else {
+                                        onClose();
+                                    }
+                                }
+                            }}
+                            activeOpacity={0.7}
+                        >
+                            <Text style={styles.restorePurchasesText}>Restore Purchases</Text>
+                        </TouchableOpacity>
+                    )}
+
 
                 </ScrollView>
             </SafeAreaView>
@@ -800,6 +880,21 @@ const styles = StyleSheet.create({
         color: '#FF6B35',
         fontSize: 18,
         fontWeight: '700',
+        fontFamily: 'Lexend',
+        textAlign: 'center',
+    },
+    restorePurchasesButton: {
+        backgroundColor: 'transparent',
+        paddingVertical: 14,
+        paddingHorizontal: 24,
+        borderRadius: 12,
+        marginTop: 16,
+        alignItems: 'center',
+    },
+    restorePurchasesText: {
+        color: '#666',
+        fontSize: 14,
+        fontWeight: '600',
         fontFamily: 'Lexend',
         textAlign: 'center',
     },
