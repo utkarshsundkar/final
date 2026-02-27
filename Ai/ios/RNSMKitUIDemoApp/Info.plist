@@ -56,7 +56,7 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>TEST</string>
+	<string>Camera access is required to track body movements during workouts and accurately count exercise repetitions.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>

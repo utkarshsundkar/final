@@ -6,7 +6,7 @@ const isAndroid = Platform.OS === 'android';
 
 // Base URL matching AuthService logic
 // Production Render URL
-const BASE_URL = 'https://final-cudk.onrender.com/api/v2';
+const BASE_URL = 'https://final-py2y.onrender.com/api/v2';
 
 const EXERCISE_URL = `${BASE_URL}/exercise`;
 

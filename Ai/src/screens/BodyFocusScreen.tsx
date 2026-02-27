@@ -15,6 +15,7 @@ const BODY_FOCUS_DATA = [
     { title: 'Arms', img: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=400&q=80' },
     { title: 'Abs', img: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80' },
     { title: 'Oblique', img: 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=400&q=80' },
+    { title: 'Yoga', img: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=400&q=80' },
 ];
 
 // Workout Details for each area
@@ -23,81 +24,91 @@ const BODY_FOCUS_DETAILS: Record<string, any> = {
         title: 'Boulder Shoulders',
         description: 'Build broad and strong shoulders with this targeted routine.',
         exercises: [
-            { name: 'Shoulder Taps', detail: '20 reps' },
-            { name: 'Overhead Press', detail: '12 reps' },
-            { name: 'Reverse Sit to Table Top', detail: '12 reps' },
+            { name: 'Shoulder Taps', detail: '20 reps', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+            { name: 'Overhead Press', detail: '12 reps', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+            { name: 'Reverse Sit to Table Top', detail: '12 reps', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
         ]
     },
     'Chest': {
         title: 'Chest Chisel',
         description: 'Sculpt a powerful chest with these classic moves.',
         exercises: [
-            { name: 'Push-ups', detail: '15 reps' },
-            { name: 'Shoulder Taps Plank', detail: '20 reps' },
-            { name: 'High Plank Hold', detail: '30 seconds' },
+            { name: 'Push-ups', detail: '15 reps', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+            { name: 'Shoulder Taps Plank', detail: '20 reps', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+            { name: 'High Plank Hold', detail: '30 seconds', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
         ]
     },
     'Thighs': {
         title: 'Thunder Thighs',
         description: 'Strengthen your quads and hamstrings for powerful legs.',
         exercises: [
-            { name: 'Lunge', detail: '12 reps' },
-            { name: 'Air Squat', detail: '15 reps' },
-            { name: 'Ski Jumps', detail: '20 reps' },
-            { name: 'Jumps', detail: '15 reps' },
-            { name: 'Standing Knee Raise Left', detail: '15 reps' },
-            { name: 'Standing Knee Raise Right', detail: '15 reps' },
+            { name: 'Lunge', detail: '12 reps', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+            { name: 'Air Squat', detail: '15 reps', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+            { name: 'Ski Jumps', detail: '20 reps', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+            { name: 'Jumps', detail: '15 reps', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+            { name: 'Standing Knee Raise Left', detail: '15 reps', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+            { name: 'Standing Knee Raise Right', detail: '15 reps', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
         ]
     },
     'Hips & Glutes': {
         title: 'Glute Gains',
         description: 'Target the glutes and hips for shape and stability.',
         exercises: [
-            { name: 'Glutes Bridge', detail: '15 reps' },
-            { name: 'Skater Hops', detail: '20 reps' },
-            { name: 'Hamstring Mobility', detail: '30 seconds' },
+            { name: 'Glutes Bridge', detail: '15 reps', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+            { name: 'Skater Hops', detail: '20 reps', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+            { name: 'Hamstring Mobility', detail: '30 seconds', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
         ]
     },
     'Calves': {
         title: 'Calf Craze',
         description: 'Don\'t skip calves! Build definition and power.',
         exercises: [
-            { name: 'Standing Calf Raises', detail: '4 x 20 reps' },
-            { name: 'Seated Calf Raises', detail: '3 x 15 reps' },
-            { name: 'Jump Rope', detail: '2 minutes' },
+            { name: 'Standing Calf Raises', detail: '4 x 20 reps', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+            { name: 'Seated Calf Raises', detail: '3 x 15 reps', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+            { name: 'Jump Rope', detail: '2 minutes', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
         ]
     },
     'Arms': {
         title: 'Arm Arsenal',
         description: 'Pump up your biceps and triceps.',
         exercises: [
-            { name: 'Bicep Curls', detail: '3 x 12 reps' },
-            { name: 'Tricep Dips', detail: '3 x 15 reps' },
-            { name: 'Hammer Curls', detail: '3 x 12 reps' },
+            { name: 'Bicep Curls', detail: '3 x 12 reps', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+            { name: 'Tricep Dips', detail: '3 x 15 reps', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+            { name: 'Hammer Curls', detail: '3 x 12 reps', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
         ]
     },
     'Abs': {
         title: 'Core Crusher',
         description: 'Strengthen your core for better stability and abs.',
         exercises: [
-            { name: 'Crunches', detail: '3 x 20 reps' },
-            { name: 'Plank', detail: '60 seconds' },
-            { name: 'Leg Raises', detail: '3 x 15 reps' },
+            { name: 'Crunches', detail: '3 x 20 reps', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+            { name: 'Plank', detail: '60 seconds', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+            { name: 'Leg Raises', detail: '3 x 15 reps', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
         ]
     },
     'Oblique': {
         title: 'Oblique Obliterator',
         description: 'Target the sides of your core for a tapered waist.',
         exercises: [
-            { name: 'Russian Twists', detail: '3 x 20 reps' },
-            { name: 'Side Plank', detail: '45 sec each' },
-            { name: 'Bicycle Crunches', detail: '3 x 20 reps' },
+            { name: 'Russian Twists', detail: '3 x 20 reps', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+            { name: 'Side Plank', detail: '45 sec each', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+            { name: 'Bicycle Crunches', detail: '3 x 20 reps', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+        ]
+    },
+    'Yoga': {
+        title: 'Yoga Flow',
+        description: 'Improve flexibility and mental clarity.',
+        exercises: [
+            { name: 'Yoga - Downward Facing Dog', detail: '60 sec', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+            { name: 'Yoga - Ustrasana', detail: '45 sec', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+            { name: 'Yoga - Janu Shirshasana', detail: '60 sec', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+            { name: 'Yoga - Lotus Pose - Padmasana', detail: '2 min', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
         ]
     },
 };
 
 const BodyFocusScreen = () => {
-    const navigation = useNavigation();
+    const navigation = useNavigation<any>();
     const [selectedWorkout, setSelectedWorkout] = useState<any>(null);
 
     const handleItemPress = (title: string) => {
@@ -187,13 +198,13 @@ const BodyFocusScreen = () => {
                                 style={styles.startButton}
                                 activeOpacity={0.8}
                                 onPress={() => {
-                                    // Close modal and navigate back to Home
-                                    // User will need to tap the body part on Home screen to start workout
+                                    // Navigate directly to the workout session
+                                    const details = selectedWorkout;
                                     setSelectedWorkout(null);
-                                    navigation.goBack();
+                                    navigation.navigate('VideoWorkout', { workout: details });
                                 }}
                             >
-                                <Text style={styles.startButtonText}>Go to Home</Text>
+                                <Text style={styles.startButtonText}>START WORKOUT</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

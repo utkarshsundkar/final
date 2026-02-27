@@ -175,17 +175,6 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
 
     return (
         <View style={styles.mainContainer}>
-            {/* Header Section */}
-            <View style={styles.headerContainer}>
-                <SafeAreaView style={responsive.getContainerStyle()}>
-                    <View style={styles.headerContent}>
-                        <View style={styles.headerLeft}>
-                            <Text style={styles.headerTitle}>PROFILE</Text>
-                        </View>
-                    </View>
-                </SafeAreaView>
-            </View>
-
             {/* Content */}
             <ScrollView style={styles.scrollContent} showsVerticalScrollIndicator={false}>
                 <View style={styles.contentContainer}>
@@ -329,7 +318,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
-        backgroundColor: '#F5F5F5',
+        backgroundColor: '#FFFFFF',
     },
     headerContainer: {
         backgroundColor: '#FFFFFF',
@@ -348,7 +337,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     headerTitle: {
-        fontSize: 18,
+        fontSize: responsive.rf(18),
         color: '#000',
         letterSpacing: 1.5, // Matched
         fontFamily: 'Lexend',
@@ -384,6 +373,7 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         padding: 20,
+        paddingTop: 10,
         paddingBottom: 120,
         ...responsive.getContainerStyle(),
     },
@@ -441,7 +431,7 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     userName: {
-        fontSize: 24,
+        fontSize: responsive.rf(24),
         color: '#000',
         marginBottom: 5,
         fontFamily: 'Lexend',
@@ -463,7 +453,7 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     sectionTitle: {
-        fontSize: 18,
+        fontSize: responsive.rf(18),
         color: '#000',
         marginBottom: 15,
         fontFamily: 'Lexend',
@@ -521,7 +511,7 @@ const styles = StyleSheet.create({
         maxWidth: 400,
     },
     modalTitle: {
-        fontSize: 22,
+        fontSize: responsive.rf(22),
         fontWeight: '700',
         color: '#000',
         fontFamily: 'Lexend',

@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 
 // Production Render URL
-const BASE_URL = 'https://final-cudk.onrender.com/api/v2';
+const BASE_URL = 'https://final-py2y.onrender.com/api/v2';
 
 interface FreeTrialModalProps {
     visible: boolean;

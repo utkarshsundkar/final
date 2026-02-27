@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "442086232032",
+    "project_id": "arthlete-46398",
+    "storage_bucket": "arthlete-46398.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:442086232032:android:5021288a69a763b599a585",
+        "android_client_info": {
+          "package_name": "com.rnsmkituidemoapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "442086232032-t3k39r6k7b0mt1s1gv0h3rl912dg4b08.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rnsmkituidemoapp",
+            "certificate_hash": "0457a8bb576996bf89e8ec808c06b6d86011ff34"
+          }
+        },
+        {
+          "client_id": "442086232032-8bbp723qk05eopbhlpd58b6stg34lmdo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANcrDGAJoE8LAAkxPMnFlarTfrKvXkEwU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "442086232032-8bbp723qk05eopbhlpd58b6stg34lmdo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "442086232032-9ipualn6jg4ge97djel2gus4ddqsvdjq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.arthlete.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

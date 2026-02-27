@@ -6,7 +6,7 @@ import AuthService from '../services/AuthService';
 
 const isAndroid = Platform.OS === 'android';
 // Production Render URL
-const BASE_URL = 'https://final-cudk.onrender.com/api/v2';
+const BASE_URL = 'https://final-py2y.onrender.com/api/v2';
 
 export interface PremiumStatus {
     isPremium: boolean;

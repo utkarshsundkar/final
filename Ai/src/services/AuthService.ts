@@ -12,7 +12,7 @@ const isAndroid = Platform.OS === 'android';
 
 // Production: 'https://v2-jell.onrender.com/api/v2/users'
 // Production Render URL
-const BACKEND_URL = 'https://final-cudk.onrender.com/api/v2/users';
+const BACKEND_URL = 'https://final-py2y.onrender.com/api/v2/users';
 
 export interface User {
     id: string;
@@ -229,25 +229,38 @@ class AuthService {
         }
     }
 
-    // Google Sign In
+    // Google Sign In - Fresh Implementation
     async signInWithGoogle(): Promise<{ success: boolean; user?: User; message: string }> {
+        console.log('--- Google Sign-In Started ---');
         try {
-            await GoogleSignin.hasPlayServices();
+            // Check if Play Services are available
+            await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+
+            // Perfrom Sign-In
+            console.log('Requesting Google Sign-In...');
             const userInfo = await GoogleSignin.signIn();
+            console.log('Google User Info retrieved:', userInfo.data?.user.email);
+
+            // Force token refresh to get a fresh idToken
+            console.log('Retrieving tokens...');
             const tokens = await GoogleSignin.getTokens();
+
+            if (!tokens.idToken) {
+                console.error('No idToken received from Google');
+                return { success: false, message: 'Google did not provide an ID token. Please try again.' };
+            }
 
             // Sync with backend
             try {
                 const payload = {
                     email: userInfo.data?.user.email,
-                    name: userInfo.data?.user.name || userInfo.data?.user.givenName,
+                    name: userInfo.data?.user.name || userInfo.data?.user.givenName || 'Google User',
                     mojoToken: tokens.idToken,
                 };
 
-                console.log('Syncing with backend:', BACKEND_URL + '/auth-mojo');
-                console.log('Payload:', payload);
-
+                console.log('Syncing Google user with backend:', `${BACKEND_URL}/auth-mojo`);
                 const backendResponse = await axios.post(`${BACKEND_URL}/auth-mojo`, payload);
+                console.log('Backend sync successful');
 
                 const user: User = {
                     id: backendResponse.data.data.user._id,
@@ -256,6 +269,8 @@ class AuthService {
                     profilePicture: userInfo.data?.user.photo || undefined,
                     provider: 'google',
                     onboardingCompleted: backendResponse.data.data.user.onboardingCompleted || false,
+                    isPremium: backendResponse.data.data.user.isPremium || false,
+                    isPaid: backendResponse.data.data.user.isPaid || false,
                 };
 
                 await this.saveUser(user, backendResponse.data.data.accessToken);
@@ -266,25 +281,40 @@ class AuthService {
                     message: 'Google sign-in successful',
                 };
             } catch (backendError: any) {
-                console.error('Backend sync failed:', {
+                console.error('Backend sync failed after Google Auth:', {
                     message: backendError.message,
                     status: backendError.response?.status,
-                    data: backendError.response?.data,
-                    url: BACKEND_URL + '/auth-mojo'
+                    data: backendError.response?.data
                 });
-                return { success: false, message: 'Failed to sync with server. Please try again.' };
+                return {
+                    success: false,
+                    message: `Google authenticated correctly, but server sync failed: ${backendError.response?.data?.message || backendError.message}`
+                };
             }
 
         } catch (error: any) {
+            console.error('--- Google Sign-In Error ---');
+            console.error('Code:', error.code);
+            console.error('Message:', error.message);
+
             if (error.code === statusCodes.SIGN_IN_CANCELLED) {
                 return { success: false, message: 'Sign-in cancelled' };
             } else if (error.code === statusCodes.IN_PROGRESS) {
                 return { success: false, message: 'Sign-in already in progress' };
             } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
                 return { success: false, message: 'Google Play Services not available' };
+            } else if (error.code === '12500') {
+                return {
+                    success: false,
+                    message: 'Google Error 12500: Configuration mismatch. Please ensure "Support Email" is set in Firebase and your local google-services.json matches your debug key.'
+                };
+            } else if (error.code === '10') {
+                return {
+                    success: false,
+                    message: 'Google Error 10 (DEVELOPER_ERROR): This usually means the SHA-1 of your app is not registered in the Firebase console.'
+                };
             }
 
-            console.error('Google Sign-In error:', error.message, error.code);
             return {
                 success: false,
                 message: `Google sign-in failed (${error.code || 'unknown'}): ${error.message || 'Please try again.'}`,
@@ -560,6 +590,7 @@ class AuthService {
             if (response.data.data.user) {
                 const u = response.data.data.user;
                 // Merge with existing logic
+                console.log(`[DEBUG] Fetched User: ${u.email} | ID: ${u._id} | Raw Credits: ${u.credits}`);
                 const user: User = {
                     id: u._id || u.id,
                     email: u.email,
@@ -569,7 +600,7 @@ class AuthService {
                     onboardingCompleted: u.onboardingCompleted,
                     isPremium: u.isPremium,
                     isPaid: u.isPaid,
-                    credits: u.credits || 0
+                    credits: (u.credits !== undefined && u.credits !== null) ? Number(u.credits) : 0
                 };
 
                 // Update local storage but reuse token

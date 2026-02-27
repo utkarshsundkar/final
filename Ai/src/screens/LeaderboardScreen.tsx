@@ -14,7 +14,7 @@ const LeaderboardScreen = () => {
     const [loading, setLoading] = useState(true);
 
     const isAndroid = Platform.OS === 'android';
-    const BACKEND_URL = 'https://final-cudk.onrender.com/api/v2/users';
+    const BACKEND_URL = 'https://final-py2y.onrender.com/api/v2/users';
 
     useEffect(() => {
         fetchLeaderboard();

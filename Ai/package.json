@@ -1,6 +1,6 @@
 {
   "name": "RNSMKitUIDemoApp",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -16,7 +16,6 @@
     "@react-native-google-signin/google-signin": "^16.0.0",
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/stack": "^6.4.1",
-    "@sency/react-native-smkit-ui": "^2.0.4",
     "axios": "^1.13.2",
     "base-64": "^1.0.0",
     "jwt-decode": "^4.0.0",
@@ -31,7 +30,8 @@
     "react-native-razorpay": "^2.3.1",
     "react-native-safe-area-context": "^5.6.2",
     "react-native-screens": "^3.37.0",
-    "react-native-splash-screen": "^3.3.0"
+    "react-native-splash-screen": "^3.3.0",
+    "react-native-video": "^5.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

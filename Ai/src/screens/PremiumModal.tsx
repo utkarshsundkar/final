@@ -8,10 +8,11 @@ import { getPricingForRegion, PricingInfo } from '../utils/pricing';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AuthService from '../services/AuthService';
+import { responsive } from '../utils/responsive';
 
 // Localhost configuration
 // Production Configuration
-const BASE_URL = 'https://final-cudk.onrender.com/api/v2';
+const BASE_URL = 'https://final-py2y.onrender.com/api/v2';
 
 interface PremiumModalProps {
     visible: boolean;
@@ -655,7 +656,7 @@ const styles = StyleSheet.create({
         paddingBottom: 40,
     },
     headerTitle: {
-        fontSize: 28,
+        fontSize: responsive.rf(28),
         fontWeight: '700',
         fontFamily: 'Lexend',
         color: '#1A1A1A',
@@ -663,7 +664,7 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     headerSubtitle: {
-        fontSize: 16,
+        fontSize: responsive.rf(16),
         color: '#666',
         fontFamily: 'Lexend',
         textAlign: 'center',
@@ -743,7 +744,7 @@ const styles = StyleSheet.create({
         marginBottom: 4,
     },
     planTitle: {
-        fontSize: 20,
+        fontSize: responsive.rf(20),
         fontWeight: '700',
         fontFamily: 'Lexend',
         color: '#1A1A1A',
@@ -770,7 +771,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
     },
     planPriceAmount: {
-        fontSize: 24,
+        fontSize: responsive.rf(24),
         fontWeight: '700',
         fontFamily: 'Lexend',
         color: '#1A1A1A',

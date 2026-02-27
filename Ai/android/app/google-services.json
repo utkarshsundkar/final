@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "442086232032-k6cm1gnaq8fqc49qjg1d5vcs0khadsvi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rnsmkituidemoapp",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
           "client_id": "442086232032-t3k39r6k7b0mt1s1gv0h3rl912dg4b08.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -37,6 +45,13 @@
             {
               "client_id": "442086232032-8bbp723qk05eopbhlpd58b6stg34lmdo.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "442086232032-9ipualn6jg4ge97djel2gus4ddqsvdjq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.arthlete.app"
+              }
             }
           ]
         }

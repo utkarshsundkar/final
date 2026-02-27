@@ -45,13 +45,6 @@
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
-        <!-- Google Sign-In URL Scheme -->
-        <intent-filter>
-            <action android:name="android.intent.action.VIEW" />
-            <category android:name="android.intent.category.DEFAULT" />
-            <category android:name="android.intent.category.BROWSABLE" />
-            <data android:scheme="com.googleusercontent.apps.912055738866-6br3254spfodrmmeepc43kf7rmu1vesk" />
-        </intent-filter>
         <!-- Deep Link for Payment Return -->
         <intent-filter>
             <action android:name="android.intent.action.VIEW" />

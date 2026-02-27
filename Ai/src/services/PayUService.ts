@@ -9,7 +9,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // 🔗 Backend URL - Using local IP for testing
-const BASE_URL = 'https://final-cudk.onrender.com/api/v2/payment';
+const BASE_URL = 'https://final-py2y.onrender.com/api/v2/payment';
 
 // ✅ Correct Native Module (Check both just in case)
 const PayUNative = NativeModules.PayUCheckoutPro || NativeModules.PayUBizSdk;
