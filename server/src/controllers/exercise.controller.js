@@ -375,11 +375,11 @@ const getUserStatsProgress = asyncHandler(async (req, res) => {
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
 
-  // 1. Monthly Duration (minutes)
+  // 1. Monthly Workouts (with exercises populated)
   const monthlyWorkouts = await Workout.find({
     userId: targetUserId,
     createdAt: { $gte: startOfMonth }
-  });
+  }).populate('exercises').sort({ createdAt: -1 });
 
   // Calculate total minutes. For now, we use a fallback if duration_seconds is 0
   // (Assuming ~10 mins per workout if not tracked yet)
@@ -427,13 +427,11 @@ const getUserStatsProgress = asyncHandler(async (req, res) => {
     }
   }
 
-  // 5. Total Duration (Today)
-  const startOfToday = new Date(now);
-  startOfToday.setHours(0, 0, 0, 0);
-  const todayWorkouts = await Workout.find({
-    userId: targetUserId,
-    createdAt: { $gte: startOfToday }
-  }).populate('exercises');
+  // 5. Filter workouts for today's summary (legacy support/today duration)
+  const todayWorkouts = monthlyWorkouts.filter(w =>
+    new Date(w.createdAt).toDateString() === now.toDateString()
+  );
+
   const todayDuration = todayWorkouts.reduce((acc, curr) => {
     return acc + (curr.duration_seconds > 0 ? curr.duration_seconds / 60 : 13);
   }, 0);
@@ -481,7 +479,7 @@ const getUserStatsProgress = asyncHandler(async (req, res) => {
       activeDays: activeDays,
       yogaDays: yogaDays,
       todayCompletedNames: todayCompletedNames,
-      todayWorkouts: todayWorkouts,
+      monthlyWorkouts: monthlyWorkouts,
       weeklyActivity: weeklyActivity
     }, "User stats summary fetched successfully.")
   );

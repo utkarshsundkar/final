@@ -13,6 +13,7 @@ const ProgressScreen = () => {
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState<any>(null);
     const [expandedWorkoutId, setExpandedWorkoutId] = useState<string | null>(null);
+    const [selectedDay, setSelectedDay] = useState<number>(new Date().getDate());
     const [userLevel, setUserLevel] = useState('intermediate');
     const now = new Date();
     const year = now.getFullYear();
@@ -112,85 +113,109 @@ const ProgressScreen = () => {
                             </View>
                         </View>
 
-                        {/* Today's Exercises Section for Friend */}
-                        {stats?.todayWorkouts && stats.todayWorkouts.length > 0 && (
-                            <View style={{ marginTop: 24 }}>
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                                    <Text style={{ fontSize: 18, fontWeight: '700', color: '#1C1C1E', fontFamily: 'Lexend' }}>Friend's Activity Today</Text>
-                                    <View style={{ backgroundColor: '#E8F5E9', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 8 }}>
-                                        <Text style={{ fontSize: 10, color: '#2E7D32', fontWeight: '800', fontFamily: 'Lexend' }}>COMPLETED</Text>
+                        {/* Activity Section sorted by selected day */}
+                        {(() => {
+                            const filteredWorkouts = stats?.monthlyWorkouts?.filter((w: any) =>
+                                new Date(w.createdAt).getDate() === selectedDay
+                            ) || [];
+
+                            if (filteredWorkouts.length === 0) {
+                                return (
+                                    <View style={{ marginTop: 24, padding: 20, backgroundColor: '#F8F9FB', borderRadius: 20, alignItems: 'center', justifyContent: 'center', borderStyle: 'dashed', borderWidth: 1, borderColor: '#D1D1D6' }}>
+                                        <Text style={{ fontSize: 16, color: '#8E8E93', fontFamily: 'Lexend', fontWeight: '500' }}>
+                                            No activity on {new Date(year, month, selectedDay).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                                        </Text>
+                                    </View>
+                                );
+                            }
+
+                            return (
+                                <View style={{ marginTop: 24 }}>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+                                        <View>
+                                            <Text style={{ fontSize: 18, fontWeight: '700', color: '#1C1C1E', fontFamily: 'Lexend' }}>
+                                                Activity on {new Date(year, month, selectedDay).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                                            </Text>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
+                                                <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#FF6B35', marginRight: 6 }} />
+                                                <Text style={{ fontSize: 12, color: '#8E8E93', fontFamily: 'Lexend' }}>{filteredWorkouts.length} Workouts tracked</Text>
+                                            </View>
+                                        </View>
+                                        <View style={{ backgroundColor: '#E8F5E9', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 10 }}>
+                                            <Text style={{ fontSize: 10, color: '#2E7D32', fontWeight: '800', fontFamily: 'Lexend', textTransform: 'uppercase' }}>COMPLETED</Text>
+                                        </View>
+                                    </View>
+                                    <View style={{ gap: 12 }}>
+                                        {filteredWorkouts.map((workout: any, index: number) => {
+                                            const isExpanded = expandedWorkoutId === workout._id;
+                                            return (
+                                                <View key={workout._id || index} style={{
+                                                    backgroundColor: '#F8F9FB',
+                                                    borderRadius: 20,
+                                                    overflow: 'hidden',
+                                                    borderWidth: 1,
+                                                    borderColor: '#F2F2F7',
+                                                    shadowColor: '#000',
+                                                    shadowOffset: { width: 0, height: 2 },
+                                                    shadowOpacity: 0.02,
+                                                    shadowRadius: 5,
+                                                    elevation: 1,
+                                                }}>
+                                                    <TouchableOpacity
+                                                        onPress={() => setExpandedWorkoutId(isExpanded ? null : workout._id)}
+                                                        activeOpacity={0.7}
+                                                        style={{
+                                                            padding: 16,
+                                                            flexDirection: 'row',
+                                                            alignItems: 'center',
+                                                        }}
+                                                    >
+                                                        <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: '#FFFFFF', justifyContent: 'center', alignItems: 'center', marginRight: 14, borderWidth: 1, borderColor: '#F2F2F7' }}>
+                                                            <Image
+                                                                source={{ uri: 'https://img.icons8.com/ios-filled/50/FF6B35/running.png' }}
+                                                                style={{ width: 22, height: 22, tintColor: '#FF6B35' }}
+                                                            />
+                                                        </View>
+                                                        <View style={{ flex: 1 }}>
+                                                            <Text style={{ fontSize: 16, color: '#1C1C1E', fontFamily: 'Lexend', fontWeight: '600' }}>
+                                                                {workout.workout_name.replace(/([A-Z])/g, ' $1').trim()}
+                                                            </Text>
+                                                            <Text style={{ fontSize: 12, color: '#8E8E93', fontFamily: 'Lexend', marginTop: 2 }}>
+                                                                {workout.total_exercises} Exercises • {workout.is_perfect ? 'Perfect' : `${workout.perfect_exercises}/${workout.total_exercises} Perfect`}
+                                                            </Text>
+                                                        </View>
+                                                        <Image
+                                                            source={{ uri: isExpanded ? 'https://img.icons8.com/ios-filled/50/8E8E93/expand-arrow.png' : 'https://img.icons8.com/ios-filled/50/8E8E93/forward.png' }}
+                                                            style={{ width: 14, height: 14, transform: [{ rotate: isExpanded ? '180deg' : '0deg' }] }}
+                                                        />
+                                                    </TouchableOpacity>
+
+                                                    {isExpanded && workout.exercises && (
+                                                        <View style={{ paddingHorizontal: 16, paddingBottom: 16, paddingTop: 4 }}>
+                                                            <View style={{ height: 1, backgroundColor: '#F2F2F7', marginBottom: 16 }} />
+                                                            <View style={{ gap: 12 }}>
+                                                                {workout.exercises.map((ex: any, idx: number) => (
+                                                                    <View key={ex._id || idx} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                                        <View style={{ flex: 1 }}>
+                                                                            <Text style={{ fontSize: 14, color: '#3A3A3C', fontFamily: 'Lexend', fontWeight: '500' }}>{ex.exercise_name}</Text>
+                                                                        </View>
+                                                                        <View style={{ backgroundColor: ex.reps_performed === ex.reps_performed_perfect ? '#E8F5E9' : '#FFF3E0', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6 }}>
+                                                                            <Text style={{ fontSize: 13, color: ex.reps_performed === ex.reps_performed_perfect ? '#2E7D32' : '#E65100', fontFamily: 'Lexend', fontWeight: '700' }}>
+                                                                                {ex.reps_performed_perfect}/{ex.reps_performed} Reps
+                                                                            </Text>
+                                                                        </View>
+                                                                    </View>
+                                                                ))}
+                                                            </View>
+                                                        </View>
+                                                    )}
+                                                </View>
+                                            );
+                                        })}
                                     </View>
                                 </View>
-                                <View style={{ gap: 10 }}>
-                                    {stats.todayWorkouts.map((workout: any, index: number) => {
-                                        const isExpanded = expandedWorkoutId === workout._id;
-                                        return (
-                                            <View key={workout._id || index} style={{
-                                                backgroundColor: '#F8F9FB',
-                                                borderRadius: 20,
-                                                overflow: 'hidden',
-                                                borderWidth: 1,
-                                                borderColor: '#F2F2F7',
-                                                shadowColor: '#000',
-                                                shadowOffset: { width: 0, height: 2 },
-                                                shadowOpacity: 0.02,
-                                                shadowRadius: 5,
-                                                elevation: 1,
-                                            }}>
-                                                <TouchableOpacity
-                                                    onPress={() => setExpandedWorkoutId(isExpanded ? null : workout._id)}
-                                                    activeOpacity={0.7}
-                                                    style={{
-                                                        padding: 16,
-                                                        flexDirection: 'row',
-                                                        alignItems: 'center',
-                                                    }}
-                                                >
-                                                    <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: '#FFFFFF', justifyContent: 'center', alignItems: 'center', marginRight: 14, borderWidth: 1, borderColor: '#F2F2F7' }}>
-                                                        <Image
-                                                            source={{ uri: 'https://img.icons8.com/ios-filled/50/FF6B35/running.png' }}
-                                                            style={{ width: 22, height: 22, tintColor: '#FF6B35' }}
-                                                        />
-                                                    </View>
-                                                    <View style={{ flex: 1 }}>
-                                                        <Text style={{ fontSize: 16, color: '#1C1C1E', fontFamily: 'Lexend', fontWeight: '600' }}>
-                                                            {workout.workout_name.replace(/([A-Z])/g, ' $1').trim()}
-                                                        </Text>
-                                                        <Text style={{ fontSize: 12, color: '#8E8E93', fontFamily: 'Lexend', marginTop: 2 }}>
-                                                            {workout.total_exercises} Exercises • {workout.is_perfect ? 'Perfect' : `${workout.perfect_exercises}/${workout.total_exercises} Perfect`}
-                                                        </Text>
-                                                    </View>
-                                                    <Image
-                                                        source={{ uri: isExpanded ? 'https://img.icons8.com/ios-filled/50/8E8E93/expand-arrow.png' : 'https://img.icons8.com/ios-filled/50/8E8E93/forward.png' }}
-                                                        style={{ width: 14, height: 14, transform: [{ rotate: isExpanded ? '180deg' : '0deg' }] }}
-                                                    />
-                                                </TouchableOpacity>
-
-                                                {isExpanded && workout.exercises && (
-                                                    <View style={{ paddingHorizontal: 16, paddingBottom: 16, paddingTop: 4 }}>
-                                                        <View style={{ height: 1, backgroundColor: '#F2F2F7', marginBottom: 16 }} />
-                                                        <View style={{ gap: 12 }}>
-                                                            {workout.exercises.map((ex: any, idx: number) => (
-                                                                <View key={ex._id || idx} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                                    <View style={{ flex: 1 }}>
-                                                                        <Text style={{ fontSize: 14, color: '#3A3A3C', fontFamily: 'Lexend', fontWeight: '500' }}>{ex.exercise_name}</Text>
-                                                                    </View>
-                                                                    <View style={{ backgroundColor: ex.reps_performed === ex.reps_performed_perfect ? '#E8F5E9' : '#FFF3E0', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6 }}>
-                                                                        <Text style={{ fontSize: 13, color: ex.reps_performed === ex.reps_performed_perfect ? '#2E7D32' : '#E65100', fontFamily: 'Lexend', fontWeight: '700' }}>
-                                                                            {ex.reps_performed_perfect}/{ex.reps_performed} Reps
-                                                                        </Text>
-                                                                    </View>
-                                                                </View>
-                                                            ))}
-                                                        </View>
-                                                    </View>
-                                                )}
-                                            </View>
-                                        );
-                                    })}
-                                </View>
-                            </View>
-                        )}
+                            );
+                        })()}
                     </View>
                 )}
 
@@ -221,13 +246,17 @@ const ProgressScreen = () => {
                                         const isYoga = isValidDay && yogaDays.includes(dayNumber);
                                         const isToday = isValidDay && dayNumber === now.getDate();
 
+                                        const isSelected = isValidDay && dayNumber === selectedDay;
+
                                         return (
-                                            <View
+                                            <TouchableOpacity
                                                 key={col}
+                                                disabled={!isValidDay}
+                                                onPress={() => setSelectedDay(dayNumber)}
                                                 style={[
                                                     styles.activityGridBox,
                                                     isValidDay && (isActive ? { backgroundColor: '#FF6B35' } : { backgroundColor: '#333' }),
-                                                    isValidDay && isToday && { borderColor: '#FFFFFF', borderWidth: 2, backgroundColor: isActive ? '#FF6B35' : '#333' },
+                                                    isValidDay && isSelected && { borderColor: '#FFFFFF', borderWidth: 2 },
                                                     !isValidDay && { backgroundColor: 'transparent' }
                                                 ]}
                                             >
@@ -253,7 +282,7 @@ const ProgressScreen = () => {
                                                         )}
                                                     </>
                                                 )}
-                                            </View>
+                                            </TouchableOpacity>
                                         );
                                     })}
                                 </View>
