@@ -1,5 +1,5 @@
 import express from 'express';
-import { getUserExercises, saveExercise, saveFocusExercise, updateExerciseProgress, getTotalReps, getWorkoutStats, saveWorkoutCompletion } from '../controllers/exercise.controller.js';
+import { getUserExercises, saveExercise, saveFocusExercise, updateExerciseProgress, getTotalReps, getWorkoutStats, saveWorkoutCompletion, getUserStatsProgress } from '../controllers/exercise.controller.js';
 
 const router = express.Router();
 
