@@ -26,7 +26,7 @@ export interface User {
     trialActivated?: boolean;
     credits?: number;
     userType?: 'NORMAL' | 'FRIEND';
-    friendOf?: string;
+    friendOf?: any; // can be ID (string) or populated object
 }
 
 class AuthService {

@@ -33,7 +33,12 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
     }, []);
 
     const loadUser = async () => {
-        let currentUser = await AuthService.getCurrentUser();
+        // Use refreshUserProfile to get latest data (including populated friendOf)
+        let currentUser = await AuthService.refreshUserProfile();
+        if (!currentUser) {
+            currentUser = await AuthService.getCurrentUser();
+        }
+
         try {
             const storedImage = await AsyncStorage.getItem('profile_picture');
             if (storedImage && currentUser) {
@@ -197,7 +202,35 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
                         <Text style={styles.userEmail}>{user?.email || 'No email'}</Text>
                     </View>
 
-                    {/* Stats Cards - Keeping Static for now or fetch later */}
+                    {/* Friend Link - Showing who they are following */}
+                    {user?.userType === 'FRIEND' && user?.friendOf && (
+                        <View style={styles.friendLinkCard}>
+                            <View style={styles.friendLinkHeader}>
+                                <View style={styles.linkCircle}>
+                                    <Image
+                                        source={{ uri: 'https://img.icons8.com/ios-filled/50/FF8C42/link.png' }}
+                                        style={styles.linkIcon}
+                                    />
+                                </View>
+                                <Text style={styles.friendLinkLabel}>LINKED FRIEND</Text>
+                            </View>
+                            <View style={styles.friendLinkContent}>
+                                <View style={styles.friendAvatarSmall}>
+                                    <Text style={styles.avatarInitial}>
+                                        {(typeof user.friendOf === 'object' ? (user.friendOf.username || user.friendOf.email) : 'U')[0].toUpperCase()}
+                                    </Text>
+                                </View>
+                                <View style={{ flex: 1 }}>
+                                    <Text style={styles.friendName}>
+                                        {typeof user.friendOf === 'object' ? user.friendOf.username : 'Linked User'}
+                                    </Text>
+                                    <Text style={styles.friendEmail}>
+                                        {typeof user.friendOf === 'object' ? user.friendOf.email : 'View performance and stats'}
+                                    </Text>
+                                </View>
+                            </View>
+                        </View>
+                    )}
 
 
                     {/* Settings Options */}
@@ -439,6 +472,78 @@ const styles = StyleSheet.create({
     userEmail: {
         fontSize: 14,
         color: '#666',
+        fontFamily: 'Lexend',
+    },
+    friendLinkCard: {
+        backgroundColor: '#FFF',
+        borderRadius: 20,
+        padding: 16,
+        marginBottom: 20,
+        borderWidth: 1,
+        borderColor: '#F2F2F7',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.05,
+        shadowRadius: 10,
+        elevation: 2,
+    },
+    friendLinkHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 12,
+    },
+    linkCircle: {
+        width: 24,
+        height: 24,
+        borderRadius: 12,
+        backgroundColor: '#FFF5F0',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 8,
+    },
+    linkIcon: {
+        width: 14,
+        height: 14,
+        tintColor: '#FF8C42',
+    },
+    friendLinkLabel: {
+        fontSize: 11,
+        fontWeight: '800',
+        color: '#FF8C42',
+        fontFamily: 'Lexend',
+        letterSpacing: 1,
+    },
+    friendLinkContent: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#F8F9FB',
+        padding: 12,
+        borderRadius: 15,
+    },
+    friendAvatarSmall: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        backgroundColor: '#FF8C42',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 12,
+    },
+    avatarInitial: {
+        color: '#FFF',
+        fontSize: 18,
+        fontWeight: '700',
+        fontFamily: 'Lexend',
+    },
+    friendName: {
+        fontSize: 15,
+        fontWeight: '600',
+        color: '#1C1C1E',
+        fontFamily: 'Lexend',
+    },
+    friendEmail: {
+        fontSize: 12,
+        color: '#8E8E93',
         fontFamily: 'Lexend',
     },
 

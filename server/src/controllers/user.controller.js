@@ -258,7 +258,12 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 
 
 const getCurrentUser = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id).populate('premium');
+  const user = await User.findById(req.user._id)
+    .populate('premium')
+    .populate({
+      path: 'friendOf',
+      select: 'username email'
+    });
 
   if (!user) {
     throw new ApiError(404, "User not found");
