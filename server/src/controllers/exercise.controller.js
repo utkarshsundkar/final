@@ -455,6 +455,10 @@ const getUserStatsProgress = asyncHandler(async (req, res) => {
       .map(w => new Date(w.createdAt).getDate())
   ));
 
+  const todayCompletedNames = Array.from(new Set(
+    todayWorkouts.map(w => w.workout_name)
+  ));
+
   return res.status(200).json(
     new ApiResponse(200, {
       monthlyMinutes: Math.round(totalMinutesMonth),
@@ -464,6 +468,7 @@ const getUserStatsProgress = asyncHandler(async (req, res) => {
       todayDuration: Math.round(todayDuration) || 0,
       activeDays: activeDays,
       yogaDays: yogaDays,
+      todayCompletedNames: todayCompletedNames,
       weeklyActivity: weeklyActivity
     }, "User stats summary fetched successfully.")
   );

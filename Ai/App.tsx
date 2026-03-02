@@ -1097,15 +1097,28 @@ const MainTabScreen = ({ navigation }: any) => {
   const [showChallengeModal, setShowChallengeModal] = useState(false);
   const [challenges, setChallenges] = useState<any[]>([]);
   const [currentWorkoutName, setCurrentWorkoutName] = useState<string | null>(null);
+  const [todayCompletions, setTodayCompletions] = useState<string[]>([]);
+
+  const fetchTodayStats = async (userId: string) => {
+    try {
+      const data = await ExerciseService.getProgressSummary(userId);
+      if (data?.todayCompletedNames) {
+        setTodayCompletions(data.todayCompletedNames);
+      }
+    } catch (error) {
+      console.error('Failed to fetch today stats:', error);
+    }
+  };
 
   useEffect(() => {
     // Initial fetch
     AuthService.getCurrentUser().then(u => {
       setUser(u);
       setIsPremium(!!(u?.isPremium || u?.isPaid));
-      // Fetch user rank
+      // Fetch user rank and today stats
       if (u?.id) {
         fetchUserRank(u.id);
+        fetchTodayStats(u.id);
       }
     });
 
@@ -1127,6 +1140,9 @@ const MainTabScreen = ({ navigation }: any) => {
         console.log('MainTabScreen: Focus refreshed user', { isPremium: u?.isPremium });
         setUser(u);
         setIsPremium(!!(u?.isPremium || u?.isPaid));
+        if (u?.id) {
+          fetchTodayStats(u.id);
+        }
       });
     }, [])
   );
@@ -1433,8 +1449,9 @@ const MainTabScreen = ({ navigation }: any) => {
             if (updatedUser) {
               setUser(updatedUser);
               console.log('Credits updated:', updatedUser.credits);
-              // Refresh rank as well
+              // Refresh rank and today stats
               fetchUserRank(updatedUser.id);
+              fetchTodayStats(updatedUser.id);
             } else {
               console.log('Failed to refresh user profile');
             }
@@ -2231,56 +2248,70 @@ const MainTabScreen = ({ navigation }: any) => {
                     {[
                       { name: 'Warmup', duration: '10 min' },
                       { name: getDailyWorkoutDescription(), duration: '20 min' },
-                    ].map((session, idx) => (
-                      <TouchableOpacity
-                        key={idx}
-                        activeOpacity={0.7}
-                        onPress={() => {
-                          if (isPremium) {
-                            if (session.name === 'Warmup') {
-                              setCurrentWorkoutName('Warmup');
-                              navigation.navigate('VideoWorkout', {
-                                workout: {
-                                  title: 'Warmup',
-                                  exercises: [
-                                    { isHeader: true, title: 'Warm-up' },
-                                    { name: 'Standing Knee Raise', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185582/warm_up-_standing_knee_raise_iodwnw.mp4' },
-                                    { name: 'Kickup Jumping Jacks', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185581/warm_up_-_kick_up_jumping_jacks_ivb6lt.mp4' },
-                                    { name: 'Wrist Circles', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185584/Warm_up_-_Wrist_Circles_vgj6vg.mp4' },
-                                    { name: 'Knee Rotations', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185581/warm_up_-_knee_rotations_dzrjqs.mp4' }
-                                  ]
-                                }
-                              });
+                    ].map((session, idx) => {
+                      const isDone = todayCompletions.includes(session.name);
+                      return (
+                        <TouchableOpacity
+                          key={idx}
+                          activeOpacity={0.7}
+                          onPress={() => {
+                            if (isPremium) {
+                              if (session.name === 'Warmup') {
+                                setCurrentWorkoutName('Warmup');
+                                navigation.navigate('VideoWorkout', {
+                                  workout: {
+                                    title: 'Warmup',
+                                    exercises: [
+                                      { isHeader: true, title: 'Warm-up' },
+                                      { name: 'Standing Knee Raise', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185582/warm_up-_standing_knee_raise_iodwnw.mp4' },
+                                      { name: 'Kickup Jumping Jacks', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185581/warm_up_-_kick_up_jumping_jacks_ivb6lt.mp4' },
+                                      { name: 'Wrist Circles', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185584/Warm_up_-_Wrist_Circles_vgj6vg.mp4' },
+                                      { name: 'Knee Rotations', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185581/warm_up_-_knee_rotations_dzrjqs.mp4' }
+                                    ]
+                                  }
+                                });
+                              } else {
+                                showDailyKickstartDetails();
+                              }
                             } else {
-                              showDailyKickstartDetails();
+                              setShowPremiumModal(true);
                             }
-                          } else {
-                            setShowPremiumModal(true);
-                          }
-                        }}
-                        style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          paddingHorizontal: 20,
-                          paddingVertical: 14,
-                          borderBottomWidth: idx === 0 ? 1 : 0,
-                          borderBottomColor: '#F2F2F7',
-                        }}
-                      >
-                        <Text style={{ fontSize: 16, color: '#1C1C1E', fontFamily: 'Lexend', fontWeight: '500' }}>
-                          {session.name}
-                        </Text>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-                          <Text style={{ fontSize: 14, color: '#8E8E93', fontFamily: 'Lexend' }}>{session.duration}</Text>
-                          <Image
-                            source={{ uri: 'https://img.icons8.com/ios-filled/50/FF6B35/play--v1.png' }}
-                            style={{ width: 14, height: 14 }}
-                            resizeMode="contain"
-                          />
-                        </View>
-                      </TouchableOpacity>
-                    ))}
+                          }}
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            paddingHorizontal: 20,
+                            paddingVertical: 14,
+                            borderBottomWidth: idx === 0 ? 1 : 0,
+                            borderBottomColor: '#F2F2F7',
+                            opacity: isDone ? 0.6 : 1,
+                          }}
+                        >
+                          <Text style={{
+                            fontSize: 16,
+                            color: isDone ? '#8E8E93' : '#1C1C1E',
+                            fontFamily: 'Lexend',
+                            fontWeight: '500',
+                            textDecorationLine: isDone ? 'line-through' : 'none'
+                          }}>
+                            {session.name}
+                          </Text>
+                          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                            <Text style={{ fontSize: 14, color: '#8E8E93', fontFamily: 'Lexend' }}>{session.duration}</Text>
+                            <Image
+                              source={{
+                                uri: isDone
+                                  ? 'https://img.icons8.com/ios-filled/50/4CAF50/checkmark.png'
+                                  : 'https://img.icons8.com/ios-filled/50/FF6B35/play--v1.png'
+                              }}
+                              style={{ width: 14, height: 14, tintColor: isDone ? '#4CAF50' : '#FF6B35' }}
+                              resizeMode="contain"
+                            />
+                          </View>
+                        </TouchableOpacity>
+                      );
+                    })}
                   </TouchableOpacity>
 
                   {/* ── Today's Meditation Card ── */}
@@ -2318,20 +2349,63 @@ const MainTabScreen = ({ navigation }: any) => {
                       <Text style={{ fontSize: 13, color: '#3A86FF', fontFamily: 'Lexend', fontWeight: Platform.OS === 'android' ? 'bold' : '700', marginBottom: 6, letterSpacing: 0.5 }}>
                         TODAY'S MINDFULNESS
                       </Text>
-                      <Text style={{ fontSize: 19, fontWeight: Platform.OS === 'android' ? '900' : '800', color: '#1C1C1E', fontFamily: 'Lexend', marginBottom: 4 }}>
+                      <Text style={{
+                        fontSize: 19,
+                        fontWeight: Platform.OS === 'android' ? '900' : '800',
+                        color: todayCompletions.includes(getDailyMeditationDetails().title) ? '#8E8E93' : '#1C1C1E',
+                        fontFamily: 'Lexend',
+                        marginBottom: 4,
+                        textDecorationLine: todayCompletions.includes(getDailyMeditationDetails().title) ? 'line-through' : 'none'
+                      }}>
                         {getDailyMeditationDetails().title}
                       </Text>
                       <Text style={{ fontSize: 14, color: '#8E8E93', fontFamily: 'Lexend' }}>
                         {getDailyMeditationDetails().description} • {getDailyMeditationDetails().time}
                       </Text>
                     </View>
-                    <View style={{ width: 48, height: 48, borderRadius: 24, backgroundColor: '#E1EFFF', justifyContent: 'center', alignItems: 'center' }}>
-                      <Image
-                        source={{ uri: 'https://img.icons8.com/ios-filled/50/ffffff/yoga.png' }}
-                        style={{ width: 32, height: 32, tintColor: '#3A86FF', zIndex: 10 }}
-                        resizeMode="contain"
-                        fadeDuration={0}
-                      />
+                    <View style={{ position: 'relative' }}>
+                      <View style={{
+                        width: 48,
+                        height: 48,
+                        borderRadius: 24,
+                        backgroundColor: todayCompletions.includes(getDailyMeditationDetails().title) ? '#E8F5E9' : '#E1EFFF',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        opacity: todayCompletions.includes(getDailyMeditationDetails().title) ? 0.8 : 1
+                      }}>
+                        <Image
+                          source={{
+                            uri: todayCompletions.includes(getDailyMeditationDetails().title)
+                              ? 'https://img.icons8.com/ios-filled/50/4CAF50/yoga.png'
+                              : 'https://img.icons8.com/ios-filled/50/ffffff/yoga.png'
+                          }}
+                          style={{
+                            width: 32,
+                            height: 32,
+                            tintColor: todayCompletions.includes(getDailyMeditationDetails().title) ? '#4CAF50' : '#3A86FF',
+                            zIndex: 10
+                          }}
+                          resizeMode="contain"
+                          fadeDuration={0}
+                        />
+                      </View>
+                      {todayCompletions.includes(getDailyMeditationDetails().title) && (
+                        <View style={{
+                          position: 'absolute',
+                          right: -4,
+                          top: -4,
+                          backgroundColor: '#FFFFFF',
+                          borderRadius: 10,
+                          padding: 2,
+                          borderWidth: 1.5,
+                          borderColor: '#4CAF50'
+                        }}>
+                          <Image
+                            source={{ uri: 'https://img.icons8.com/ios-filled/50/4CAF50/checkmark.png' }}
+                            style={{ width: 12, height: 12, tintColor: '#4CAF50' }}
+                          />
+                        </View>
+                      )}
                     </View>
                   </TouchableOpacity>
 
