@@ -45,7 +45,10 @@ const LoginScreen = ({ navigation }: any) => {
                 console.log('✅ Google Sign-In successful, user:', result.user);
 
                 // Check if user needs to complete onboarding
-                if (!result.user.onboardingCompleted) {
+                if (result.user.userType === 'FRIEND') {
+                    setLoading(false);
+                    navigation.replace('Home');
+                } else if (!result.user.onboardingCompleted) {
                     console.log('📝 Navigating to onboarding...');
                     setLoading(false);
                     navigation.replace('OnboardingGender');
@@ -79,7 +82,10 @@ const LoginScreen = ({ navigation }: any) => {
 
             if (result.success && result.user) {
                 console.log('✅ Apple Sign-In successful');
-                if (!result.user.onboardingCompleted) {
+                if (result.user.userType === 'FRIEND') {
+                    setLoading(false);
+                    navigation.replace('Home');
+                } else if (!result.user.onboardingCompleted) {
                     setLoading(false);
                     navigation.replace('OnboardingGender');
                 } else {

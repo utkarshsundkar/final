@@ -1130,6 +1130,9 @@ const MainTabScreen = ({ navigation }: any) => {
         fetchUserRank(u.id);
         fetchTodayStats(u.id);
       }
+      if (u?.userType === 'FRIEND') {
+        setActiveNav('Progress');
+      }
     });
 
     // Subscribe to updates

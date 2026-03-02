@@ -185,14 +185,17 @@ class AuthService {
 
                     console.log('Backend Sync Success:', backendResponse.data);
 
+                    const u = backendResponse.data.data.user;
                     const user: User = {
-                        id: backendResponse.data.data.user._id, // Use Backend ID
-                        email: backendResponse.data.data.user.email,
-                        name: backendResponse.data.data.user.username,
+                        id: u._id, // Use Backend ID
+                        email: u.email,
+                        name: u.username,
                         provider: 'email',
-                        onboardingCompleted: backendResponse.data.data.user.onboardingCompleted,
-                        isPremium: backendResponse.data.data.user.isPremium,
-                        isPaid: backendResponse.data.data.user.isPaid,
+                        onboardingCompleted: u.onboardingCompleted,
+                        isPremium: u.isPremium,
+                        isPaid: u.isPaid,
+                        userType: u.userType,
+                        friendOf: u.friendOf
                     };
 
                     // Save BACKEND Access Token
@@ -268,15 +271,18 @@ class AuthService {
                 const backendResponse = await axios.post(`${BACKEND_URL}/auth-mojo`, payload);
                 console.log('Backend sync successful');
 
+                const u = backendResponse.data.data.user;
                 const user: User = {
-                    id: backendResponse.data.data.user._id,
-                    email: backendResponse.data.data.user.email,
-                    name: backendResponse.data.data.user.username,
+                    id: u._id,
+                    email: u.email,
+                    name: u.username,
                     profilePicture: userInfo.data?.user.photo || undefined,
                     provider: 'google',
-                    onboardingCompleted: backendResponse.data.data.user.onboardingCompleted || false,
-                    isPremium: backendResponse.data.data.user.isPremium || false,
-                    isPaid: backendResponse.data.data.user.isPaid || false,
+                    onboardingCompleted: u.onboardingCompleted || false,
+                    isPremium: u.isPremium || false,
+                    isPaid: u.isPaid || false,
+                    userType: u.userType,
+                    friendOf: u.friendOf
                 };
 
                 await this.saveUser(user, backendResponse.data.data.accessToken);
@@ -395,12 +401,15 @@ class AuthService {
                             console.error('CRITICAL: Access Token missing in response!', backendResponse.data);
                         }
 
+                        const u = backendResponse.data.data.user;
                         const user: User = {
-                            id: backendResponse.data.data.user._id,
-                            email: backendResponse.data.data.user.email,
-                            name: backendResponse.data.data.user.username,
+                            id: u._id,
+                            email: u.email,
+                            name: u.username,
                             provider: 'apple',
-                            onboardingCompleted: backendResponse.data.data.user.onboardingCompleted || false,
+                            onboardingCompleted: u.onboardingCompleted || false,
+                            userType: u.userType,
+                            friendOf: u.friendOf
                         };
 
                         await this.saveUser(user, backendResponse.data.data.accessToken);
@@ -464,7 +473,11 @@ class AuthService {
         try {
             const userString = await AsyncStorage.getItem('user');
             if (userString) {
-                this.user = JSON.parse(userString);
+                const u = JSON.parse(userString);
+                // Ensure defaults
+                u.userType = u.userType || 'NORMAL';
+                u.friendOf = u.friendOf || null;
+                this.user = u;
                 return this.user;
             }
         } catch (error) {

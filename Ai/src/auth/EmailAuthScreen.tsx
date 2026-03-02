@@ -76,7 +76,9 @@ const EmailAuthScreen = ({ navigation }: any) => {
             if (result.success) {
                 // Check if user needs to complete onboarding
                 const user = result.user;
-                if (user && !user.onboardingCompleted) {
+                if (user?.userType === 'FRIEND') {
+                    navigation.replace('Home');
+                } else if (user && !user.onboardingCompleted) {
                     // New user - navigate to onboarding
                     navigation.replace('OnboardingGender');
                 } else {
