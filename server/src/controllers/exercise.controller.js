@@ -427,9 +427,9 @@ const getUserStatsProgress = asyncHandler(async (req, res) => {
     new ApiResponse(200, {
       monthlyMinutes: Math.round(totalMinutesMonth),
       weeklyDays: uniqueDaysThisWeek,
-      completionRate: avgCompletionRate || 92, // Fallback to realistic number if 0
+      completionRate: avgCompletionRate || 0,
       streak: currentStreak,
-      todayDuration: Math.round(todayDuration) || 45, // Fallback to realistic number if 0
+      todayDuration: Math.round(todayDuration) || 0,
       activeDays: activeDays
     }, "User stats summary fetched successfully.")
   );
