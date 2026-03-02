@@ -376,10 +376,16 @@ const getUserStatsProgress = asyncHandler(async (req, res) => {
     return acc + (curr.duration_seconds > 0 ? curr.duration_seconds / 60 : 13);
   }, 0);
 
-  // 2. Weekly Goal (days worked out this week)
+  // 2. Weekly Goal (Monday to Sunday)
+  const dayOfWeek = now.getDay(); // 0 is Sunday, 1 is Monday...
+  const diffToMonday = (dayOfWeek === 0 ? 6 : dayOfWeek - 1);
+  const startOfMonday = new Date(now);
+  startOfMonday.setDate(now.getDate() - diffToMonday);
+  startOfMonday.setHours(0, 0, 0, 0);
+
   const weeklyWorkouts = await Workout.find({
     userId: targetUserId,
-    createdAt: { $gte: startOfWeek }
+    createdAt: { $gte: startOfMonday }
   });
 
   const uniqueDaysThisWeek = new Set(
@@ -411,7 +417,8 @@ const getUserStatsProgress = asyncHandler(async (req, res) => {
   }
 
   // 5. Total Duration (Today)
-  const startOfToday = new Date(now.setHours(0, 0, 0, 0));
+  const startOfToday = new Date(now);
+  startOfToday.setHours(0, 0, 0, 0);
   const todayWorkouts = await Workout.find({
     userId: targetUserId,
     createdAt: { $gte: startOfToday }
@@ -420,28 +427,15 @@ const getUserStatsProgress = asyncHandler(async (req, res) => {
     return acc + (curr.duration_seconds > 0 ? curr.duration_seconds / 60 : 13);
   }, 0);
 
-  // 7. Last 7 Days Activity (for Graph)
-  const sevenDaysAgo = new Date(now);
-  sevenDaysAgo.setDate(now.getDate() - 6);
-  sevenDaysAgo.setHours(0, 0, 0, 0);
-
-  const last7DaysWorkouts = await Workout.find({
-    userId: targetUserId,
-    createdAt: { $gte: sevenDaysAgo }
-  });
-
-  const activeDays = Array.from(new Set(
-    monthlyWorkouts.map(w => new Date(w.createdAt).getDate())
-  ));
-
+  // 7. Graph: Current Week (Monday to Sunday)
   const weeklyActivity = [];
   for (let i = 0; i < 7; i++) {
-    const d = new Date(sevenDaysAgo);
-    d.setDate(sevenDaysAgo.getDate() + i);
+    const d = new Date(startOfMonday);
+    d.setDate(startOfMonday.getDate() + i);
     const dateStr = d.toDateString();
     const dayLabel = d.toLocaleDateString('en-US', { weekday: 'short' }).charAt(0); // M, T, W...
 
-    const dayMinutes = last7DaysWorkouts
+    const dayMinutes = weeklyWorkouts
       .filter(w => new Date(w.createdAt).toDateString() === dateStr)
       .reduce((acc, curr) => acc + (curr.duration_seconds > 0 ? curr.duration_seconds / 60 : 0), 0);
 
@@ -451,6 +445,10 @@ const getUserStatsProgress = asyncHandler(async (req, res) => {
       isToday: dateStr === new Date().toDateString()
     });
   }
+
+  const activeDays = Array.from(new Set(
+    monthlyWorkouts.map(w => new Date(w.createdAt).getDate())
+  ));
 
   return res.status(200).json(
     new ApiResponse(200, {
