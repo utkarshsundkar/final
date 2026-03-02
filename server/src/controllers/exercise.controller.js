@@ -1,6 +1,7 @@
 import Exercise from '../models/exercise.model.js';
 import FocusSession from '../models/focusSession.model.js';
 import { User } from '../models/user.model.js';
+import Workout from '../models/workout.model.js';
 import { ApiError } from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
@@ -328,8 +329,6 @@ const saveWorkoutCompletion = asyncHandler(async (req, res) => {
   if (!userId || !workout_name) {
     throw new ApiError(400, 'userId and workout_name are required.');
   }
-
-  const Workout = (await import('../models/workout.model.js')).default;
 
   // Count perfect exercises
   const exerciseArray = exercises || [];
