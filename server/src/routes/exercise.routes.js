@@ -11,5 +11,6 @@ router.patch('/update', updateExerciseProgress);
 router.get('/getAll/:userId', getUserExercises);
 router.get('/total-reps', getTotalReps);
 router.get('/stats', getWorkoutStats);
+router.get('/progress-summary', getUserStatsProgress);
 
 export default router;
