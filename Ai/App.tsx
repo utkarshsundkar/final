@@ -677,7 +677,7 @@ const BottomNavBar = React.memo(({ activeNav, setActiveNav, userType }: { active
     { id: 'Home', activeIcon: 'https://img.icons8.com/ios-filled/50/ffffff/home.png', inactiveIcon: 'https://img.icons8.com/ios/50/ffffff/home.png', label: 'Home' },
     { id: 'Progress', activeIcon: 'https://img.icons8.com/ios-filled/50/ffffff/graph.png', inactiveIcon: 'https://img.icons8.com/ios/50/ffffff/graph.png', label: 'Progress' },
     { id: 'Profile', activeIcon: 'https://img.icons8.com/ios-filled/50/ffffff/user.png', inactiveIcon: 'https://img.icons8.com/ios/50/ffffff/user.png', label: 'Profile' },
-  ].filter(item => userType === 'FRIEND' ? item.id === 'Progress' : true);
+  ].filter(item => userType === 'FRIEND' ? (item.id === 'Progress' || item.id === 'Profile') : true);
 
   return (
     <View style={{
@@ -2152,7 +2152,7 @@ const MainTabScreen = ({ navigation }: any) => {
           <SafeAreaView style={{ flex: 1, backgroundColor: '#FF6B35' }} edges={['top', 'left', 'right']}>
 
             {/* Main Content Area based on Active Nav */}
-            {activeNav === 'Home' ? (
+            {(activeNav === 'Home' && user?.userType !== 'FRIEND') ? (
               <View style={{ flex: 1, backgroundColor: '#FF6B35' }}>
                 {/* ── Header sits on the colored background ── */}
                 <View style={{ paddingHorizontal: 20, paddingTop: 10, paddingBottom: 16 }}>
@@ -2412,7 +2412,7 @@ const MainTabScreen = ({ navigation }: any) => {
                   </View>
                 </ScrollView>
               </View>
-            ) : activeNav === 'Workout' ? (
+            ) : (activeNav === 'Workout' && user?.userType !== 'FRIEND') ? (
               <View style={{ flex: 1, backgroundColor: '#FF6B35' }}>
                 {/* ── Header sits on the colored background ── */}
                 <View style={{ paddingHorizontal: 20, paddingTop: 10, paddingBottom: 16 }}>
@@ -2633,7 +2633,7 @@ const MainTabScreen = ({ navigation }: any) => {
                   </TouchableOpacity>
                 </ScrollView>
               </View>
-            ) : activeNav === 'Progress' ? (
+            ) : (activeNav === 'Progress' || (user?.userType === 'FRIEND' && activeNav !== 'Profile')) ? (
               <View style={{ flex: 1, backgroundColor: '#FF6B35' }}>
                 {/* ── Header sits on the colored background ── */}
                 <View style={{ paddingHorizontal: 20, paddingTop: 10, paddingBottom: 16 }}>
