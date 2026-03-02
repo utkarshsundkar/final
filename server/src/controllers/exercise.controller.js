@@ -418,10 +418,33 @@ const getUserStatsProgress = asyncHandler(async (req, res) => {
     return acc + (curr.duration_seconds > 0 ? curr.duration_seconds / 60 : 13);
   }, 0);
 
-  // 6. Active Days for Grid (this month)
-  const activeDays = Array.from(new Set(
-    monthlyWorkouts.map(w => new Date(w.createdAt).getDate())
-  ));
+  // 7. Last 7 Days Activity (for Graph)
+  const sevenDaysAgo = new Date(now);
+  sevenDaysAgo.setDate(now.getDate() - 6);
+  sevenDaysAgo.setHours(0, 0, 0, 0);
+
+  const last7DaysWorkouts = await Workout.find({
+    userId,
+    createdAt: { $gte: sevenDaysAgo }
+  });
+
+  const weeklyActivity = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(sevenDaysAgo);
+    d.setDate(sevenDaysAgo.getDate() + i);
+    const dateStr = d.toDateString();
+    const dayLabel = d.toLocaleDateString('en-US', { weekday: 'short' }).charAt(0); // M, T, W...
+
+    const dayMinutes = last7DaysWorkouts
+      .filter(w => new Date(w.createdAt).toDateString() === dateStr)
+      .reduce((acc, curr) => acc + (curr.duration_seconds > 0 ? curr.duration_seconds / 60 : 0), 0);
+
+    weeklyActivity.push({
+      label: dayLabel,
+      value: Math.round(dayMinutes),
+      isToday: dateStr === new Date().toDateString()
+    });
+  }
 
   return res.status(200).json(
     new ApiResponse(200, {
@@ -430,7 +453,8 @@ const getUserStatsProgress = asyncHandler(async (req, res) => {
       completionRate: avgCompletionRate || 0,
       streak: currentStreak,
       todayDuration: Math.round(todayDuration) || 0,
-      activeDays: activeDays
+      activeDays: activeDays,
+      weeklyActivity: weeklyActivity
     }, "User stats summary fetched successfully.")
   );
 });
