@@ -342,7 +342,8 @@ const saveWorkoutCompletion = asyncHandler(async (req, res) => {
     total_exercises: exerciseArray.length,
     perfect_exercises: perfectCount,
     is_perfect: is_perfect || (perfectCount === exerciseArray.length && exerciseArray.length > 0),
-    duration_seconds: duration_seconds || (exerciseArray.length * 120) // approx 2 min per ex if missing
+    duration_seconds: duration_seconds || (exerciseArray.length * 120), // approx 2 min per ex if missing
+    exercises: exerciseArray.map(ex => ex.id || ex._id).filter(id => id) // Added linking
   });
 
   return res.status(201).json(
@@ -432,7 +433,7 @@ const getUserStatsProgress = asyncHandler(async (req, res) => {
   const todayWorkouts = await Workout.find({
     userId: targetUserId,
     createdAt: { $gte: startOfToday }
-  });
+  }).populate('exercises');
   const todayDuration = todayWorkouts.reduce((acc, curr) => {
     return acc + (curr.duration_seconds > 0 ? curr.duration_seconds / 60 : 13);
   }, 0);
@@ -480,6 +481,7 @@ const getUserStatsProgress = asyncHandler(async (req, res) => {
       activeDays: activeDays,
       yogaDays: yogaDays,
       todayCompletedNames: todayCompletedNames,
+      todayWorkouts: todayWorkouts,
       weeklyActivity: weeklyActivity
     }, "User stats summary fetched successfully.")
   );

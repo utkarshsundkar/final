@@ -1425,6 +1425,7 @@ const MainTabScreen = ({ navigation }: any) => {
 
           if (Array.isArray(exercises)) {
             console.log(`Processing ${exercises.length} exercises...`);
+            const savedExercises: any[] = [];
             for (const ex of exercises) {
               // Sency SDK uses these exact field names
               const name = ex.exercise_info?.exercise_id || ex.name || ex.exercise || ex.exerciseName || "Unknown";
@@ -1437,6 +1438,13 @@ const MainTabScreen = ({ navigation }: any) => {
                 console.log(`Calling saveExercise for ${name}...`);
                 const result = await ExerciseService.saveExercise(user.id, name, total, perfect);
                 console.log('Save result:', result);
+                if (result?.data?.exercise?._id) {
+                  savedExercises.push({
+                    id: result.data.exercise._id,
+                    reps_performed: total,
+                    reps_performed_perfect: perfect
+                  });
+                }
                 totalCreditsEarned += perfect;
               }
             }
@@ -1450,7 +1458,8 @@ const MainTabScreen = ({ navigation }: any) => {
                   const perfect = ex.reps_performed_perfect || ex.perfectReps || ex.repsCorrect || ex.cleanReps || 0;
                   return total === perfect && total > 0;
                 });
-                await ExerciseService.saveWorkoutCompletion(user.id, currentWorkoutName, exercises, allPerfect);
+                // Pass the savedExercises with IDs instead of raw exercises
+                await ExerciseService.saveWorkoutCompletion(user.id, currentWorkoutName, savedExercises.length > 0 ? savedExercises : exercises, allPerfect);
                 console.log('Workout completion saved successfully');
                 setCurrentWorkoutName(null); // Reset after saving
               } catch (error) {
