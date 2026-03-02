@@ -111,6 +111,16 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    userType: {
+      type: String,
+      enum: ['NORMAL', 'FRIEND'],
+      default: 'NORMAL',
+    },
+    friendOf: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
   },
   {
     timestamps: true,

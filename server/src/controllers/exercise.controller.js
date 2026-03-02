@@ -357,7 +357,18 @@ const getUserStatsProgress = asyncHandler(async (req, res) => {
     throw new ApiError(400, "userId is required");
   }
 
-  const targetUserId = new mongoose.Types.ObjectId(userId);
+  // Check if this user is a FRIEND type
+  const requestUser = await User.findById(userId);
+  if (!requestUser) {
+    throw new ApiError(404, "Requesting user not found");
+  }
+
+  let finalTargetId = userId;
+  if (requestUser.userType === 'FRIEND' && requestUser.friendOf) {
+    finalTargetId = requestUser.friendOf;
+  }
+
+  const targetUserId = new mongoose.Types.ObjectId(finalTargetId);
 
   const now = new Date();
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);

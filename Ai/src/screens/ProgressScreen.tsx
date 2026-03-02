@@ -11,6 +11,7 @@ const { width } = Dimensions.get('window');
 const ProgressScreen = () => {
     const [stats, setStats] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState<any>(null);
     const [userLevel, setUserLevel] = useState('intermediate');
     const now = new Date();
     const year = now.getFullYear();
@@ -20,10 +21,11 @@ const ProgressScreen = () => {
 
     const fetchStats = async () => {
         try {
-            const user = await AuthService.getCurrentUser();
-            if (user?.id) {
+            const currentUser = await AuthService.getCurrentUser();
+            setUser(currentUser);
+            if (currentUser?.id) {
                 const [data, onboarding] = await Promise.all([
-                    ExerciseService.getProgressSummary(user.id),
+                    ExerciseService.getProgressSummary(currentUser.id),
                     OnboardingService.getOnboardingData()
                 ]);
 
@@ -78,6 +80,32 @@ const ProgressScreen = () => {
     return (
         <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
+
+                {/* Friend Account Indicator */}
+                {user?.userType === 'FRIEND' && (
+                    <View style={{
+                        backgroundColor: '#FFF5F0',
+                        borderRadius: 16,
+                        padding: 16,
+                        marginBottom: 20,
+                        borderWidth: 1,
+                        borderColor: '#FF8C42',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        gap: 12
+                    }}>
+                        <View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: '#FF8C42', justifyContent: 'center', alignItems: 'center' }}>
+                            <Image
+                                source={{ uri: 'https://img.icons8.com/ios-filled/50/FFFFFF/goal.png' }}
+                                style={{ width: 22, height: 22 }}
+                            />
+                        </View>
+                        <View>
+                            <Text style={{ fontSize: 13, color: '#FF8C42', fontFamily: 'Lexend', fontWeight: '700' }}>FRIEND ACCOUNT</Text>
+                            <Text style={{ fontSize: 15, color: '#1A1A1A', fontFamily: 'Lexend', fontWeight: '500' }}>Viewing linked friend's metrics</Text>
+                        </View>
+                    </View>
+                )}
 
 
                 {/* Activity Grid Card */}

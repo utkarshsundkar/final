@@ -324,7 +324,7 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
 
 // MojoAuthController: Handles both Registration and Login for OTP users
 const mojoAuthLogin = asyncHandler(async (req, res) => {
-  const { email, name, mojoToken } = req.body;
+  const { email, name, mojoToken, userType, friendUsername } = req.body;
 
   if (!email) {
     throw new ApiError(400, "Email is required");
@@ -336,16 +336,25 @@ const mojoAuthLogin = asyncHandler(async (req, res) => {
   if (!user) {
     // 2. Register New User
     const baseUsername = email.split("@")[0];
-    // Sanitize username: remove spaces and special chars, replace with underscores
     const sanitizedName = name
       ? name.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase()
       : baseUsername;
-    const username = sanitizedName + Math.floor(Math.random() * 1000); // Add random number for uniqueness
+    const username = sanitizedName + Math.floor(Math.random() * 1000);
+
+    let friendOf = null;
+    if (userType === 'FRIEND' && friendUsername) {
+      const friend = await User.findOne({ username: friendUsername });
+      if (!friend) {
+        throw new ApiError(404, "Friend username not found");
+      }
+      friendOf = friend._id;
+    }
 
     user = await User.create({
       username,
       email,
-      // No password for OTP/Google users
+      userType: userType || 'NORMAL',
+      friendOf,
     });
   }
 

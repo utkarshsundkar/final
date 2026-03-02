@@ -22,6 +22,8 @@ const { width, height } = Dimensions.get('window');
 const SignupScreen = ({ navigation }: any) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
+    const [friendUsername, setFriendUsername] = useState('');
+    const [userType, setUserType] = useState<'NORMAL' | 'FRIEND'>('NORMAL');
     const [otp, setOtp] = useState('');
     const [otpSent, setOtpSent] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -29,6 +31,11 @@ const SignupScreen = ({ navigation }: any) => {
     const handleSignup = async () => {
         if (!email || !name) {
             Alert.alert('Error', 'Please enter your name and email');
+            return;
+        }
+
+        if (userType === 'FRIEND' && !friendUsername) {
+            Alert.alert('Error', "Please enter the friend's username you'd like to follow.");
             return;
         }
 
@@ -53,13 +60,17 @@ const SignupScreen = ({ navigation }: any) => {
                 return;
             }
 
-            const result = await AuthService.verifyEmailOTP(email, otp, name);
+            const result = await AuthService.verifyEmailOTP(email, otp, name, userType, friendUsername);
             setLoading(false);
 
             if (result.success) {
                 Alert.alert('Success', 'Account created successfully!');
                 // Navigate to onboarding flow after signup
-                navigation.navigate('OnboardingGender');
+                if (userType === 'FRIEND') {
+                    navigation.replace('Home'); // Friends skip normal onboarding?
+                } else {
+                    navigation.navigate('OnboardingGender');
+                }
             } else {
                 Alert.alert('Error', result.message);
             }
@@ -98,18 +109,79 @@ const SignupScreen = ({ navigation }: any) => {
                         {/* Form */}
                         <View style={styles.formContainer}>
 
+                            {/* Account Type Selector */}
+                            <View style={{ flexDirection: 'row', backgroundColor: '#F0F0F0', borderRadius: 16, padding: 4, marginBottom: 24 }}>
+                                <TouchableOpacity
+                                    onPress={() => !otpSent && setUserType('NORMAL')}
+                                    style={{
+                                        flex: 1,
+                                        paddingVertical: 12,
+                                        borderRadius: 12,
+                                        backgroundColor: userType === 'NORMAL' ? '#FFF' : 'transparent',
+                                        alignItems: 'center',
+                                        shadowColor: userType === 'NORMAL' ? '#000' : 'transparent',
+                                        shadowOffset: { width: 0, height: 2 },
+                                        shadowOpacity: 0.1,
+                                        shadowRadius: 4,
+                                        elevation: 2
+                                    }}
+                                    disabled={otpSent}
+                                >
+                                    <Text style={{ fontSize: 13, fontFamily: 'Lexend', fontWeight: userType === 'NORMAL' ? '700' : '500', color: userType === 'NORMAL' ? '#FF8C42' : '#888' }}>Standard</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() => !otpSent && setUserType('FRIEND')}
+                                    style={{
+                                        flex: 1,
+                                        paddingVertical: 12,
+                                        borderRadius: 12,
+                                        backgroundColor: userType === 'FRIEND' ? '#FFF' : 'transparent',
+                                        alignItems: 'center',
+                                        shadowColor: userType === 'FRIEND' ? '#000' : 'transparent',
+                                        shadowOffset: { width: 0, height: 2 },
+                                        shadowOpacity: 0.1,
+                                        shadowRadius: 4,
+                                        elevation: 2
+                                    }}
+                                    disabled={otpSent}
+                                >
+                                    <Text style={{ fontSize: 13, fontFamily: 'Lexend', fontWeight: userType === 'FRIEND' ? '700' : '500', color: userType === 'FRIEND' ? '#FF8C42' : '#888' }}>Friend</Text>
+                                </TouchableOpacity>
+                            </View>
+
                             <View style={styles.inputShadowContainer}>
-                                <Text style={styles.label}>USERNAME</Text>
+                                <Text style={styles.label}>YOUR NAME</Text>
                                 <TextInput
                                     style={styles.input}
-                                    placeholder="Choose a username"
+                                    placeholder="Enter your name"
                                     placeholderTextColor="#CCC"
                                     value={name}
                                     onChangeText={setName}
-                                    editable={!otpSent} // Disable if OTP sent
-                                    autoCapitalize="none"
+                                    editable={!otpSent}
+                                    autoCapitalize="words"
                                 />
                             </View>
+
+                            {userType === 'FRIEND' && (
+                                <View style={[styles.inputShadowContainer, { borderColor: '#FF8C42', borderWidth: 1 }]}>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                        <Text style={[styles.label, { color: '#FF8C42' }]}>FRIEND'S USERNAME</Text>
+                                        <Image
+                                            source={{ uri: 'https://img.icons8.com/ios-filled/50/FF8C42/goal.png' }}
+                                            style={{ width: 14, height: 14, marginBottom: 5 }}
+                                        />
+                                    </View>
+                                    <TextInput
+                                        style={styles.input}
+                                        placeholder="Username of person to follow"
+                                        placeholderTextColor="#CCC"
+                                        value={friendUsername}
+                                        onChangeText={setFriendUsername}
+                                        editable={!otpSent}
+                                        autoCapitalize="none"
+                                    />
+                                </View>
+                            )}
 
                             <View style={styles.inputShadowContainer}>
                                 <Text style={styles.label}>EMAIL ADDRESS</Text>

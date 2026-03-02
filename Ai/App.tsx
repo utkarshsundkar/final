@@ -362,6 +362,16 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
       { name: 'Shoulder stand', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185512/Shoulder_stand_qrkpq5.mp4' },
     ]
   },
+  'UpperBodyPower': {
+    id: 'UpperBodyPower',
+    title: 'Upper Body Power',
+    description: 'Elite strength circuit for upper body dominance - 3 sets',
+    exercises: [
+      { name: 'Pushups', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+      { name: 'Shoulder Press', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Pushups', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+    ]
+  },
 };
 
 const WORKOUT_PROGRAMS = [
@@ -662,12 +672,12 @@ const SlideButton = ({ onSlideSuccess }: { onSlideSuccess: () => void }) => {
 const WORKOUT_FILTERS = ['Strength', 'Cardio', 'Core', 'Mobility', 'Lower'];
 
 // --- Helper Components ---
-const BottomNavBar = React.memo(({ activeNav, setActiveNav }: { activeNav: string; setActiveNav: (val: string) => void }) => {
+const BottomNavBar = React.memo(({ activeNav, setActiveNav, userType }: { activeNav: string; setActiveNav: (val: string) => void; userType?: string }) => {
   const navItems = [
     { id: 'Home', activeIcon: 'https://img.icons8.com/ios-filled/50/ffffff/home.png', inactiveIcon: 'https://img.icons8.com/ios/50/ffffff/home.png', label: 'Home' },
     { id: 'Progress', activeIcon: 'https://img.icons8.com/ios-filled/50/ffffff/graph.png', inactiveIcon: 'https://img.icons8.com/ios/50/ffffff/graph.png', label: 'Progress' },
     { id: 'Profile', activeIcon: 'https://img.icons8.com/ios-filled/50/ffffff/user.png', inactiveIcon: 'https://img.icons8.com/ios/50/ffffff/user.png', label: 'Profile' },
-  ];
+  ].filter(item => userType === 'FRIEND' ? item.id === 'Progress' : true);
 
   return (
     <View style={{
@@ -743,7 +753,7 @@ const VideoWorkoutScreen = ({ navigation, route }: any) => {
   useEffect(() => {
     if (!isResting) {
       // Find the first index where this specific exercise appears in the workout list
-      const firstOccurrenceIndex = exercises.findIndex(ex => ex.name === currentExercise?.name);
+      const firstOccurrenceIndex = exercises.findIndex((ex: any) => ex.name === currentExercise?.name);
 
       // It's the "First Set" if this is the first time we see this name in the list, 
       // or if it's explicitly labeled as Set 1/1st Set.
@@ -1133,7 +1143,6 @@ const MainTabScreen = ({ navigation }: any) => {
     return () => AuthService.removeChangeListener(listener);
   }, []);
 
-  // Refresh user data when screen comes into focus
   useFocusEffect(
     useCallback(() => {
       AuthService.getCurrentUser().then(u => {
@@ -1142,6 +1151,9 @@ const MainTabScreen = ({ navigation }: any) => {
         setIsPremium(!!(u?.isPremium || u?.isPaid));
         if (u?.id) {
           fetchTodayStats(u.id);
+        }
+        if (u?.userType === 'FRIEND') {
+          setActiveNav('Progress');
         }
       });
     }, [])
@@ -2132,31 +2144,6 @@ const MainTabScreen = ({ navigation }: any) => {
   // --- New Screens Imported ---
 
   // --- Data ---
-  const CHALLENGES = [
-    {
-      id: 'CardioCrusher',
-      title: 'Cardio Crusher',
-      description: 'Morning workout with high intensity cardio.',
-      category: 'Cardio',
-      started: 'Aug 15, 2023',
-      goal: '2 000 POINTS',
-      image: 'https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=800&q=80',
-      bgColor: '#E3F2FD',
-      action: () => startChallenge('CardioCrusher')
-    },
-    {
-      id: 'AbsReloaded',
-      title: 'Abs Reloaded',
-      description: 'Core focused routine for defined abs.',
-      category: 'Strength',
-      started: 'Sep 10, 2023',
-      goal: '1 800 POINTS',
-      image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=800&q=80',
-      bgColor: '#FFFFFF',
-      action: () => startChallenge('AbsReloaded')
-    }
-  ];
-
   return (
     <WorkoutProvider startWorkout={startChallenge}>
       <SafeAreaProvider>
@@ -2209,7 +2196,7 @@ const MainTabScreen = ({ navigation }: any) => {
                           marginBottom: 8,
                           letterSpacing: 1
                         }}>
-                          PROGRAM DAY {new Date().getDay() || 7} OF 28
+                          PROGRAM DAY {new Date().getDay() || 7}
                         </Text>
                         <Text style={{
                           fontSize: responsive.rf(26),
@@ -2408,76 +2395,6 @@ const MainTabScreen = ({ navigation }: any) => {
                       )}
                     </View>
                   </TouchableOpacity>
-
-                  {/* ── Latest Programs ── */}
-                  <Text style={{
-                    fontSize: 20,
-                    fontWeight: '700',
-                    color: '#1C1C1E',
-                    fontFamily: 'Lexend',
-                    paddingHorizontal: 16,
-                    marginBottom: 14,
-                  }}>
-                    Challenges
-                  </Text>
-                  <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={{ paddingHorizontal: 16, gap: 12 }}
-                    style={{ marginBottom: 28 }}
-                  >
-                    {[
-                      { id: 'CardioCrusher', title: 'Cardio Crusher', tag: 'New · 6 sessions', author: 'Coach Sarah', img: 'https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=400&q=80', icon: 'https://img.icons8.com/ios-filled/50/FFFFFF/running.png' },
-                      { id: 'FatBurnHIIT', title: 'Fat Burn HIIT', tag: 'HIIT · 4 sessions', author: 'Coach Sarah', img: 'https://images.unsplash.com/photo-1601422407692-ec4eeec1d9b3?auto=format&fit=crop&w=400&q=80', icon: 'https://img.icons8.com/ios-filled/50/FFFFFF/fire-element.png' },
-                      { id: 'Shoulders', title: 'Shoulder Builder', tag: 'Strength · 6 sessions', author: 'Coach Alex', img: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&w=400&q=80', icon: 'https://img.icons8.com/ios-filled/50/FFFFFF/dumbbell.png' },
-                      { id: 'LowerBody', title: 'Leg Day Special', tag: 'Lower · 5 sessions', author: 'Coach Laura', img: 'https://images.unsplash.com/photo-1434682881908-b43d0467b798?auto=format&fit=crop&w=400&q=80', icon: 'https://img.icons8.com/ios-filled/50/FFFFFF/squats.png' },
-                    ].map((item, idx) => (
-                      <View
-                        key={idx}
-                        style={{
-                          width: 200,
-                          marginVertical: 4, // Space for shadow to breathe
-                          backgroundColor: '#FFFFFF',
-                          borderRadius: 18,
-                          shadowColor: '#000',
-                          shadowOffset: { width: 0, height: 2 },
-                          shadowOpacity: 0.08,
-                          shadowRadius: 8,
-                          elevation: 4,
-                        }}
-                      >
-                        <TouchableOpacity
-                          activeOpacity={0.93}
-                          onPress={() => {
-                            if (!isPremium) { setShowPremiumModal(true); return; }
-                            const details = WORKOUT_DETAILS_DATA[item.id];
-                            if (details) setSelectedWorkout(details);
-                            else startChallenge(item.id);
-                          }}
-                          style={{ flex: 1, borderRadius: 18, overflow: 'hidden' }}
-                        >
-                          <View style={{ height: 120, backgroundColor: '#f0f0f0' }}>
-                            <Image
-                              source={{ uri: item.img }}
-                              style={{ width: '100%', height: '100%' }}
-                              resizeMode="cover"
-                            />
-                          </View>
-                          <View style={{ padding: 14 }}>
-                            <Text style={{ fontSize: 12, color: '#FF6B35', fontFamily: 'Lexend', fontWeight: '600', marginBottom: 4 }}>
-                              {item.tag}
-                            </Text>
-                            <Text style={{ fontSize: 15, fontWeight: '700', color: '#1C1C1E', fontFamily: 'Lexend', marginBottom: 2 }}>
-                              {item.title}
-                            </Text>
-                            <Text style={{ fontSize: 13, color: '#8E8E93', fontFamily: 'Lexend' }}>
-                              {item.author}
-                            </Text>
-                          </View>
-                        </TouchableOpacity>
-                      </View>
-                    ))}
-                  </ScrollView>
 
                   {/* ── Test Mode / Preview ── */}
                   <TouchableOpacity
@@ -2739,7 +2656,7 @@ const MainTabScreen = ({ navigation }: any) => {
                 </View>
               </View>
             )}
-            <BottomNavBar activeNav={activeNav} setActiveNav={setActiveNav} />
+            <BottomNavBar activeNav={activeNav} setActiveNav={setActiveNav} userType={user?.userType} />
           </SafeAreaView>
 
           {

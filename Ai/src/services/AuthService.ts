@@ -25,6 +25,8 @@ export interface User {
     isPaid?: boolean;
     trialActivated?: boolean;
     credits?: number;
+    userType?: 'NORMAL' | 'FRIEND';
+    friendOf?: string;
 }
 
 class AuthService {
@@ -109,7 +111,7 @@ class AuthService {
     }
 
     // Verify OTP
-    async verifyEmailOTP(email: string, otp: string, username?: string): Promise<{ success: boolean; user?: User; message: string }> {
+    async verifyEmailOTP(email: string, otp: string, username?: string, userType?: string, friendUsername?: string): Promise<{ success: boolean; user?: User; message: string }> {
         // Apple Review Bypass
         if (email.toLowerCase() === 'test@arthlete.ai' && otp === '123456') {
             console.log('🍎 Apple Review Bypass: Verifying test account with hardcoded OTP');
@@ -117,7 +119,9 @@ class AuthService {
                 const backendResponse = await axios.post(`${BACKEND_URL}/auth-mojo`, {
                     email: email,
                     name: username || 'Apple Reviewer',
-                    mojoToken: 'apple-bypass-token'
+                    mojoToken: 'apple-bypass-token',
+                    userType,
+                    friendUsername
                 });
 
                 const user: User = {
@@ -174,7 +178,9 @@ class AuthService {
                     const backendResponse = await axios.post(`${BACKEND_URL}/auth-mojo`, {
                         email: response.data.user?.identifier || email,
                         name: username || response.data.user?.first_name || 'User',
-                        mojoToken: mojoAccessToken
+                        mojoToken: mojoAccessToken,
+                        userType,
+                        friendUsername
                     });
 
                     console.log('Backend Sync Success:', backendResponse.data);
@@ -600,7 +606,9 @@ class AuthService {
                     onboardingCompleted: u.onboardingCompleted,
                     isPremium: u.isPremium,
                     isPaid: u.isPaid,
-                    credits: (u.credits !== undefined && u.credits !== null) ? Number(u.credits) : 0
+                    credits: (u.credits !== undefined && u.credits !== null) ? Number(u.credits) : 0,
+                    userType: u.userType,
+                    friendOf: u.friendOf
                 };
 
                 // Update local storage but reuse token
