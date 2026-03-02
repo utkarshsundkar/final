@@ -28,6 +28,10 @@ import HealthConditionsScreen from './src/onboarding/HealthConditionsScreen';
 import MotivationScreen from './src/onboarding/MotivationScreen';
 import PostOnboardingScreen from './src/screens/PostOnboardingScreen';
 import PrivacyScreen from './src/screens/PrivacyScreen';
+import BodyFocusScreen from './src/screens/BodyFocusScreen';
+import { WorkoutProvider } from './src/context/WorkoutContext';
+import ExerciseService from './src/services/ExerciseService';
+// import WorkoutVideoPip from './src/components/WorkoutVideoPip';
 import {
   View,
   Text,
@@ -45,9 +49,10 @@ import {
   LayoutAnimation,
   TouchableWithoutFeedback,
   TextInput,
-  AppState,
+  Animated,
+  Platform,
   LogBox,
-  Animated
+  AppState
 } from 'react-native';
 
 LogBox.ignoreLogs([
@@ -63,7 +68,7 @@ import ProfileScreen from './src/screens/ProfileScreen';
 import LeaderboardScreen from './src/screens/LeaderboardScreen';
 import PremiumModal from './src/screens/PremiumModal';
 import { checkIsPremium } from './src/hooks/usePremiumStatus';
-import { Platform, UIManager } from 'react-native';
+import { UIManager } from 'react-native';
 import { responsive } from './src/utils/responsive';
 import SplashScreen from 'react-native-splash-screen';
 
@@ -89,10 +94,10 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Cardio Crusher',
     description: 'High intensity cardio to crush calories - 3 sets',
     exercises: [
-      { name: 'Jumping Jacks', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
-      { name: 'High Knees', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
-      { name: 'Mountain Climbers', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
-      { name: 'Burpees', detail: '10 reps x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Jumping Jacks', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185529/Jumping_Jacks_fsd0tu.mp4' },
+      { name: 'High Knees', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/High_Knees_b9raf7.mp4' },
+      { name: 'Mountain Climbers', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+      { name: 'Burpees', detail: '10 reps x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Burpees_yayn8x.mp4' },
       { name: 'Skater Hops', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
     ]
   },
@@ -101,10 +106,10 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Fat Burn HIIT',
     description: 'Maximum calorie burn with explosive movements - 4 sets',
     exercises: [
-      { name: 'Burpees', detail: '12 reps x 4 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
-      { name: 'Mountain Climbers', detail: '60s x 4 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
-      { name: 'High Knees', detail: '45s x 4 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
-      { name: 'Jumping Jacks', detail: '60s x 4 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Burpees', detail: '12 reps x 4 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Burpees_yayn8x.mp4' },
+      { name: 'Mountain Climbers', detail: '60s x 4 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+      { name: 'High Knees', detail: '45s x 4 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/High_Knees_b9raf7.mp4' },
+      { name: 'Jumping Jacks', detail: '60s x 4 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185529/Jumping_Jacks_fsd0tu.mp4' },
     ]
   },
   'AbsReloaded': {
@@ -112,10 +117,10 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Abs Reloaded',
     description: 'Core focused routine for defined abs - 3 sets',
     exercises: [
-      { name: 'Crunches', detail: '60s x 3 sets' },
-      { name: 'Tuck Hold', detail: '60s x 3 sets' },
-      { name: 'Oblique Crunches', detail: '60s x 3 sets' },
-      { name: 'Side Plank', detail: '60s x 3 sets' },
+      { name: 'Crunches', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185514/Crunches_ywv6ne.mp4' },
+      { name: 'Russian Twists', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185513/Russian_Twists_qlwrwm.mp4' },
+      { name: 'Cross Sit up', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185520/Cross_Sit_up_ffcwzn.mp4' },
+      { name: 'Side Plank', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185518/Side_Plank_bmz6wk.mp4' },
     ]
   },
   'power_squad': {
@@ -123,9 +128,9 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Power Squad',
     description: 'Focus on explosive power and leg strength.',
     exercises: [
-      { name: 'Squats', detail: '20 reps' },
-      { name: 'Lunges', detail: '15 reps each' },
-      { name: 'Burpees', detail: '10 reps' },
+      { name: 'Squats', detail: '20 reps', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+      { name: 'Lunges', detail: '15 reps each', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
+      { name: 'Burpees', detail: '10 reps', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Burpees_yayn8x.mp4' },
     ]
   },
   'UpperBodyStrength': {
@@ -133,7 +138,7 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Upper Body Strength',
     description: 'Focus on Upper Body strength - 3 sets',
     exercises: [
-      { name: 'Push-ups', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Push-ups', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
       { name: 'Shoulder Press', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
       { name: 'Shoulder Taps Plank', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
     ]
@@ -143,9 +148,9 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Full-Body Builder',
     description: 'Complete full body workout - 3 sets',
     exercises: [
-      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
-      { name: 'Push-ups', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
-      { name: 'Overhead Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+      { name: 'Push-ups', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+      { name: 'Overhead Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
     ]
   },
   'HIITExpress': {
@@ -153,10 +158,10 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'HIIT Express',
     description: 'Quick high intensity cardio - 3 sets',
     exercises: [
-      { name: 'High Knees', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'High Knees', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/High_Knees_b9raf7.mp4' },
       { name: 'Skater Hops', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
       { name: 'Shoulder Taps Plank', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
-      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
     ]
   },
   'SweatCircuit': {
@@ -164,10 +169,10 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Sweat Circuit',
     description: 'Full body sweat session - 3 sets',
     exercises: [
-      { name: 'Jumping Jacks', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Jumping Jacks', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185529/Jumping_Jacks_fsd0tu.mp4' },
       { name: 'Oblique Crunches', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
-      { name: 'High Knees', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
-      { name: 'Crunches', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'High Knees', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/High_Knees_b9raf7.mp4' },
+      { name: 'Crunches', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185514/Crunches_ywv6ne.mp4' },
     ]
   },
   'CardioMax': {
@@ -175,11 +180,11 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Cardio Max',
     description: 'Ultimate cardio challenge for experts - 5 sets',
     exercises: [
-      { name: 'Burpees', detail: '15 reps x 5 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
-      { name: 'Mountain Climbers', detail: '60s x 5 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
-      { name: 'High Knees', detail: '60s x 5 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
-      { name: 'Jumping Jacks', detail: '90s x 5 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
-      { name: 'Plank butt kicks', detail: '60s x 5 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Burpees', detail: '15 reps x 5 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Burpees_yayn8x.mp4' },
+      { name: 'Mountain Climbers', detail: '60s x 5 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+      { name: 'High Knees', detail: '60s x 5 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/High_Knees_b9raf7.mp4' },
+      { name: 'Jumping Jacks', detail: '90s x 5 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185529/Jumping_Jacks_fsd0tu.mp4' },
+      { name: 'Plank butt kicks', detail: '60s x 5 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/plank_butt_kicks_wcnxid.mp4' },
     ]
   },
   'CoreCrusher': {
@@ -187,10 +192,10 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Core Crusher',
     description: 'Intense core workout.',
     exercises: [
-      { name: 'Tuck Hold', detail: '30s' },
-      { name: 'Oblique Crunches', detail: '30s' },
-      { name: 'Side Plank Left', detail: '30s' },
-      { name: 'Side Plank Right', detail: '30s' },
+      { name: 'Tuck Hold', detail: '30s', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Oblique Crunches', detail: '30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185514/Crunches_ywv6ne.mp4' },
+      { name: 'Side Plank Left', detail: '30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185518/Side_Plank_bmz6wk.mp4' },
+      { name: 'Side Plank Right', detail: '30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185518/Side_Plank_bmz6wk.mp4' },
     ]
   },
   'MobilityFlow': {
@@ -198,11 +203,11 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Mobility Flow',
     description: 'Smooth mobility sequence.',
     exercises: [
-      { name: 'Jefferson Curl', detail: '30s' },
-      { name: 'Standing Hamstring Mobility', detail: '30s' },
-      { name: 'Hamstring Mobility', detail: '30s' },
-      { name: 'Side Bend Left', detail: '30s' },
-      { name: 'Side Bend Right', detail: '30s' },
+      { name: 'Jefferson Curl', detail: '30s', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Standing Hamstring Mobility', detail: '30s', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Hamstring Mobility', detail: '30s', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Side Bend Left', detail: '30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185518/side_bend_tpmp53.mp4' },
+      { name: 'Side Bend Right', detail: '30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185518/side_bend_tpmp53.mp4' },
     ]
   },
   'DynamicMobility': {
@@ -210,11 +215,11 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Dynamic Mobility',
     description: 'Active movement for range of motion.',
     exercises: [
-      { name: 'Reverse Sit to Table Top', detail: '30s' },
-      { name: 'Standing Knee Raise Left', detail: '30s' },
-      { name: 'Standing Knee Raise Right', detail: '30s' },
-      { name: 'Side Bend Left', detail: '30s' },
-      { name: 'Side Bend Right', detail: '30s' },
+      { name: 'Reverse Sit to Table Top', detail: '30s', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Standing Knee Raise Left', detail: '30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185582/warm_up-_standing_knee_raise_iodwnw.mp4' },
+      { name: 'Standing Knee Raise Right', detail: '30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185582/warm_up-_standing_knee_raise_iodwnw.mp4' },
+      { name: 'Side Bend Left', detail: '30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185518/side_bend_tpmp53.mp4' },
+      { name: 'Side Bend Right', detail: '30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185518/side_bend_tpmp53.mp4' },
     ]
   },
   'PostureFix': {
@@ -222,10 +227,10 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Posture Fix',
     description: 'Improve alignment and posture - 3 sets',
     exercises: [
-      { name: 'Jefferson Curl', detail: '60s x 3 sets' },
-      { name: 'Glutes Bridge', detail: '60s x 3 sets' },
-      { name: 'Hamstring Mobility', detail: '60s x 3 sets' },
-      { name: 'Overhead Squat', detail: '60s x 3 sets' },
+      { name: 'Jefferson Curl', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Glutes Bridge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185516/Glute_Bridge_nphtwp.mp4' },
+      { name: 'Hamstring Mobility', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Overhead Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
     ]
   },
   'MobilityMax': {
@@ -233,16 +238,16 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Mobility Max',
     description: 'Complete mobility session - 3 sets',
     exercises: [
-      { name: 'Jefferson Curl', detail: '60s x 3 sets' },
-      { name: 'Standing Hamstring Mobility', detail: '60s x 3 sets' },
-      { name: 'Hamstring Mobility', detail: '60s x 3 sets' },
-      { name: 'Side Bend Left', detail: '60s x 3 sets' },
-      { name: 'Side Bend Right', detail: '60s x 3 sets' },
-      { name: 'Reverse Sit to Table Top', detail: '60s x 3 sets' },
-      { name: 'Standing Knee Raise Left', detail: '60s x 3 sets' },
-      { name: 'Standing Knee Raise Right', detail: '60s x 3 sets' },
-      { name: 'Glutes Bridge', detail: '60s x 3 sets' },
-      { name: 'Overhead Squat', detail: '60s x 3 sets' },
+      { name: 'Jefferson Curl', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Standing Hamstring Mobility', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Hamstring Mobility', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Side Bend Left', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185518/side_bend_tpmp53.mp4' },
+      { name: 'Side Bend Right', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185518/side_bend_tpmp53.mp4' },
+      { name: 'Reverse Sit to Table Top', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Standing Knee Raise Left', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185582/warm_up-_standing_knee_raise_iodwnw.mp4' },
+      { name: 'Standing Knee Raise Right', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185582/warm_up-_standing_knee_raise_iodwnw.mp4' },
+      { name: 'Glutes Bridge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185516/Glute_Bridge_nphtwp.mp4' },
+      { name: 'Overhead Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
     ]
   },
   'GluteBlaster': {
@@ -250,11 +255,11 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Glute Blaster',
     description: 'Sculpt and tone your glutes.',
     exercises: [
-      { name: 'Glutes Bridge', detail: '30s' },
-      { name: 'Side Lunge Left', detail: '30s' },
-      { name: 'Side Lunge Right', detail: '30s' },
-      { name: 'Lunge', detail: '30s' },
-      { name: 'Air Squat', detail: '30s' },
+      { name: 'Glutes Bridge', detail: '30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185516/Glute_Bridge_nphtwp.mp4' },
+      { name: 'Side Lunge Left', detail: '30s', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Side Lunge Right', detail: '30s', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Lunge', detail: '30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
+      { name: 'Air Squat', detail: '30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
     ]
   },
   'SideToSideBurner': {
@@ -262,12 +267,12 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Side to Side Burner',
     description: 'Lateral movements for legs - 3 sets',
     exercises: [
-      { name: 'Skater Hops', detail: '60s x 3 sets' },
-      { name: 'Standing Knee Raise Left', detail: '60s x 3 sets' },
-      { name: 'Standing Knee Raise Right', detail: '60s x 3 sets' },
-      { name: 'High Knees', detail: '60s x 3 sets' },
-      { name: 'Side Lunge Left', detail: '60s x 3 sets' },
-      { name: 'Side Lunge Right', detail: '60s x 3 sets' },
+      { name: 'Skater Hops', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Standing Knee Raise Left', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185582/warm_up-_standing_knee_raise_iodwnw.mp4' },
+      { name: 'Standing Knee Raise Right', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185582/warm_up-_standing_knee_raise_iodwnw.mp4' },
+      { name: 'High Knees', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/High_Knees_b9raf7.mp4' },
+      { name: 'Side Lunge Left', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Side Lunge Right', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
     ]
   },
   'LowImpactTorch': {
@@ -275,10 +280,10 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Low Impact Torch',
     description: 'Burn calories without impact - 3 sets',
     exercises: [
-      { name: 'Glutes Bridge', detail: '60s x 3 sets' },
-      { name: 'Oblique Crunches', detail: '60s x 3 sets' },
-      { name: 'Standing Knee Raise Left', detail: '60s x 3 sets' },
-      { name: 'Standing Knee Raise Right', detail: '60s x 3 sets' },
+      { name: 'Glutes Bridge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185516/Glute_Bridge_nphtwp.mp4' },
+      { name: 'Oblique Crunches', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185514/Crunches_ywv6ne.mp4' },
+      { name: 'Standing Knee Raise Left', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185582/warm_up-_standing_knee_raise_iodwnw.mp4' },
+      { name: 'Standing Knee Raise Right', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185582/warm_up-_standing_knee_raise_iodwnw.mp4' },
       { name: 'Reverse Sit to Table Top', detail: '60s x 3 sets' },
     ]
   },
@@ -287,17 +292,17 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Lower Max',
     description: 'Complete lower body challenge - 3 sets',
     exercises: [
-      { name: 'Glutes Bridge', detail: '60s x 3 sets' },
+      { name: 'Glutes Bridge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185516/Glute_Bridge_nphtwp.mp4' },
       { name: 'Side Lunge Left', detail: '60s x 3 sets' },
       { name: 'Side Lunge Right', detail: '60s x 3 sets' },
-      { name: 'Lunge', detail: '60s x 3 sets' },
-      { name: 'Air Squat', detail: '60s x 3 sets' },
+      { name: 'Lunge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
+      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
       { name: 'Skater Hops', detail: '60s x 3 sets' },
-      { name: 'Standing Knee Raise Left', detail: '60s x 3 sets' },
-      { name: 'Standing Knee Raise Right', detail: '60s x 3 sets' },
-      { name: 'High Knees', detail: '60s x 3 sets' },
-      { name: 'Oblique Crunches', detail: '60s x 3 sets' },
-      { name: 'Reverse Sit to Table Top', detail: '60s x 3 sets' },
+      { name: 'Standing Knee Raise Left', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185582/warm_up-_standing_knee_raise_iodwnw.mp4' },
+      { name: 'Standing Knee Raise Right', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185582/warm_up-_standing_knee_raise_iodwnw.mp4' },
+      { name: 'High Knees', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/High_Knees_b9raf7.mp4' },
+      { name: 'Oblique Crunches', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185514/Crunches_ywv6ne.mp4' },
+      { name: 'Reverse Sit to Table Top', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
     ]
   },
   'ChestProgram': {
@@ -305,9 +310,9 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Chest Program',
     description: 'Focus on proper form and chest development - 3 sets',
     exercises: [
-      { name: 'Push-ups', detail: '60s x 3 sets' },
-      { name: 'Shoulder Press', detail: '60s x 3 sets' },
-      { name: 'Shoulder Taps Plank', detail: '60s x 3 sets' },
+      { name: 'Push-ups', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+      { name: 'Shoulder Press', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Shoulder Taps Plank', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
     ]
   },
   'ArmsProgram': {
@@ -315,9 +320,9 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Arms Program',
     description: 'Increase weights gradually for arm strength - 3 sets',
     exercises: [
-      { name: 'Shoulder Press', detail: '60s x 3 sets' },
-      { name: 'Push-ups', detail: '60s x 3 sets' },
-      { name: 'Shoulder Taps Plank', detail: '60s x 3 sets' },
+      { name: 'Shoulder Press', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Push-ups', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+      { name: 'Shoulder Taps Plank', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
     ]
   },
   'LegsProgram': {
@@ -325,7 +330,8 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Legs Program',
     description: 'Build strength and endurance in your legs - 3 sets',
     exercises: [
-      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+      { name: 'Bulgarian Split Squats', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185512/Bulgarian_Split_Squats_sohzay.mp4' },
       { name: 'Lunge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
       { name: 'Glutes Bridge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
       { name: 'Side Lunge Left', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
@@ -337,11 +343,11 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Leg Day Special',
     description: 'The ultimate leg day blast - 3 sets',
     exercises: [
-      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
-      { name: 'Lunge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+      { name: 'Lunge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
       { name: 'Side Lunge Left', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
       { name: 'Side Lunge Right', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
-      { name: 'Glutes Bridge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Glutes Bridge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185516/Glute_Bridge_nphtwp.mp4' },
     ]
   },
   'MeditationSession': {
@@ -349,6 +355,7 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Meditation Session',
     description: 'Find your inner peace and clarity - 1 session',
     exercises: [
+      { name: 'Meditation - Sukhasana', detail: '5 min', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185593/Meditation_-_Sukhasana_gnlmbp.mp4' },
       { name: 'Deep Breathing', detail: '5 min' },
       { name: 'Body Scan', detail: '5 min' },
       { name: 'Mindful Observation', detail: '5 min' },
@@ -359,10 +366,11 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Elite Yoga',
     description: 'Advanced yoga flow for flexibility and balance - 3 sets',
     exercises: [
-      { name: 'Yoga - Downward Facing Dog', detail: '60s x 3 sets' },
-      { name: 'Yoga - Ustrasana', detail: '60s x 3 sets' },
-      { name: 'Yoga - Baddha Konasana', detail: '60s x 3 sets' },
-      { name: 'Yoga - Supta Kapotasana', detail: '60s x 3 sets' },
+      { name: 'Yoga - Downward Facing Dog', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185587/Yoga_-_Downward_Facing_Dog_Adho_Mukha_Svanasana_pbmmtu.mp4' },
+      { name: 'Yoga - Ustrasana', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185591/Yoga_-_ustrasana_ruoegj.mp4' },
+      { name: 'Yoga - Baddha Konasana', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185588/Yoga_-_baddha_konasana_ydoy05.mp4' },
+      { name: 'Yoga - Supta Kapotasana', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185587/Yoga_-_Supta_Kapotasana_k57xyr.mp4' },
+      { name: 'Shoulder stand', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185512/Shoulder_stand_qrkpq5.mp4' },
     ]
   },
 };
@@ -486,7 +494,7 @@ const BODY_FOCUS_DETAILS: Record<string, any> = {
     title: 'Chest Chisel',
     description: 'Sculpt a powerful chest - 3 sets',
     exercises: [
-      { name: 'Push-ups', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Push-ups', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
       { name: 'Shoulder Taps Plank', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
       { name: 'High Plank Hold', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
     ]
@@ -496,8 +504,8 @@ const BODY_FOCUS_DETAILS: Record<string, any> = {
     title: 'Thunder Thighs',
     description: 'Strengthen your quads and hamstrings - 3 sets',
     exercises: [
-      { name: 'Lunge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
-      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Lunge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
+      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
       { name: 'Ski Jumps', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
       { name: 'Jumps', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
     ]
@@ -507,7 +515,7 @@ const BODY_FOCUS_DETAILS: Record<string, any> = {
     title: 'Glute Gains',
     description: 'Target the glutes and hips - 3 sets',
     exercises: [
-      { name: 'Glutes Bridge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Glutes Bridge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185516/Glute_Bridge_nphtwp.mp4' },
       { name: 'Skater Hops', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
       { name: 'Side Lunge (Left)', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
     ]
@@ -517,8 +525,9 @@ const BODY_FOCUS_DETAILS: Record<string, any> = {
     title: 'Calf Craze',
     description: 'Build powerful calves - 3 sets',
     exercises: [
-      { name: 'Jumping Jacks', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
-      { name: 'High Knees', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Calf Raises', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185515/Calf_Raises_mcimrt.mp4' },
+      { name: 'Jumping Jacks', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185529/Jumping_Jacks_fsd0tu.mp4' },
+      { name: 'High Knees', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/High_Knees_b9raf7.mp4' },
     ]
   },
   'Arms': {
@@ -539,6 +548,7 @@ const BODY_FOCUS_DETAILS: Record<string, any> = {
       { name: 'Tuck Hold', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
       { name: 'Shoulder Taps Plank', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
       { name: 'Pushups', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Alternate toe touch', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185509/Alternate_toe_touch_znwlix.mp4' },
     ]
   },
   'PlankCore': {
@@ -556,11 +566,11 @@ const BODY_FOCUS_DETAILS: Record<string, any> = {
     title: 'Upper Body Circuit',
     description: 'Comprehensive strength circuit - 3 sets',
     exercises: [
-      { name: 'Air Squat', detail: '60s x 3 sets' },
+      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
       { name: 'Side Lunge (Left)', detail: '60s x 3 sets' },
       { name: 'Side Lunge (Right)', detail: '60s x 3 sets' },
-      { name: 'Lunge', detail: '60s x 3 sets' },
-      { name: 'Glutes Bridge', detail: '60s x 3 sets' },
+      { name: 'Lunge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
+      { name: 'Glutes Bridge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
     ]
   },
   'Featured_CoreCrusher': {
@@ -568,9 +578,9 @@ const BODY_FOCUS_DETAILS: Record<string, any> = {
     title: 'Core Crusher',
     description: 'Intense core session - 3 sets',
     exercises: [
-      { name: 'Tuck Hold', detail: '60s x 3 sets' },
-      { name: 'Oblique Crunches', detail: '60s x 3 sets' },
-      { name: 'Side Plank', detail: '60s x 3 sets' },
+      { name: 'Tuck Hold', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
+      { name: 'Oblique Crunches', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185514/Crunches_ywv6ne.mp4' },
+      { name: 'Side Plank', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185518/Side_Plank_bmz6wk.mp4' },
     ]
   },
   'Featured_HIITExpress': {
@@ -578,10 +588,10 @@ const BODY_FOCUS_DETAILS: Record<string, any> = {
     title: 'HIIT Express',
     description: 'High intensity cardio blast - 3 sets',
     exercises: [
-      { name: 'High Knees', detail: '60s x 3 sets' },
+      { name: 'High Knees', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/High_Knees_b9raf7.mp4' },
       { name: 'Skater Hops', detail: '60s x 3 sets' },
       { name: 'Shoulder Taps Plank', detail: '60s x 3 sets' },
-      { name: 'Air Squat', detail: '60s x 3 sets' },
+      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
     ]
   },
   'Featured_MobilityFlow': {
@@ -589,11 +599,12 @@ const BODY_FOCUS_DETAILS: Record<string, any> = {
     title: 'Mobility Flow',
     description: 'Improve flexibility and range of motion - 3 sets',
     exercises: [
+      { name: 'Hip Rotation', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/Hip_Rotation_pdrbi2.mp4' },
       { name: 'Jefferson Curl', detail: '60s x 3 sets' },
       { name: 'Standing Hamstring Mobility', detail: '60s x 3 sets' },
       { name: 'Hamstring Mobility', detail: '60s x 3 sets' },
-      { name: 'Side Bend Left', detail: '60s x 3 sets' },
-      { name: 'Side Bend Right', detail: '60s x 3 sets' },
+      { name: 'Side Bend Left', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185518/side_bend_tpmp53.mp4' },
+      { name: 'Side Bend Right', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185518/side_bend_tpmp53.mp4' },
     ]
   },
   'Featured_GluteBlaster': {
@@ -601,10 +612,10 @@ const BODY_FOCUS_DETAILS: Record<string, any> = {
     title: 'Glute Blaster',
     description: 'Sculpt and strengthen your glutes - 3 sets',
     exercises: [
-      { name: 'Glutes Bridge', detail: '60s x 3 sets' },
+      { name: 'Glutes Bridge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
       { name: 'Side Lunge Left', detail: '60s x 3 sets' },
       { name: 'Side Lunge Right', detail: '60s x 3 sets' },
-      { name: 'Lunge', detail: '60s x 3 sets' },
+      { name: 'Lunge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
     ]
   },
   'Featured_PowerPlyo': {
@@ -614,7 +625,7 @@ const BODY_FOCUS_DETAILS: Record<string, any> = {
     exercises: [
       { name: 'Jumps', detail: '60s x 3 sets' },
       { name: 'Ski Jumps', detail: '60s x 3 sets' },
-      { name: 'High Knees', detail: '60s x 3 sets' },
+      { name: 'High Knees', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/High_Knees_b9raf7.mp4' },
     ]
   }
 };
@@ -658,18 +669,15 @@ const SlideButton = ({ onSlideSuccess }: { onSlideSuccess: () => void }) => {
   );
 };
 
-import BodyFocusScreen from './src/screens/BodyFocusScreen';
-import { WorkoutProvider } from './src/context/WorkoutContext';
-import ExerciseService from './src/services/ExerciseService';
 // --- Constants ---
 const WORKOUT_FILTERS = ['Strength', 'Cardio', 'Core', 'Mobility', 'Lower'];
 
 // --- Helper Components ---
 const BottomNavBar = React.memo(({ activeNav, setActiveNav }: { activeNav: string; setActiveNav: (val: string) => void }) => {
   const navItems = [
-    { id: 'Home', activeIcon: 'https://img.icons8.com/ios-filled/50/1C1C1E/home.png', inactiveIcon: 'https://img.icons8.com/ios/50/8E8E93/home.png', label: 'Home' },
-    { id: 'Progress', activeIcon: 'https://img.icons8.com/ios-filled/50/1C1C1E/graph.png', inactiveIcon: 'https://img.icons8.com/ios/50/8E8E93/graph.png', label: 'Progress' },
-    { id: 'Profile', activeIcon: 'https://img.icons8.com/ios-filled/50/1C1C1E/user.png', inactiveIcon: 'https://img.icons8.com/ios/50/8E8E93/user.png', label: 'Profile' },
+    { id: 'Home', activeIcon: 'https://img.icons8.com/ios-filled/50/ffffff/home.png', inactiveIcon: 'https://img.icons8.com/ios/50/ffffff/home.png', label: 'Home' },
+    { id: 'Progress', activeIcon: 'https://img.icons8.com/ios-filled/50/ffffff/graph.png', inactiveIcon: 'https://img.icons8.com/ios/50/ffffff/graph.png', label: 'Progress' },
+    { id: 'Profile', activeIcon: 'https://img.icons8.com/ios-filled/50/ffffff/user.png', inactiveIcon: 'https://img.icons8.com/ios/50/ffffff/user.png', label: 'Profile' },
   ];
 
   return (
@@ -701,7 +709,7 @@ const BottomNavBar = React.memo(({ activeNav, setActiveNav }: { activeNav: strin
             >
               <Image
                 source={{ uri: isActive ? item.activeIcon : item.inactiveIcon }}
-                style={{ width: 24, height: 24, marginBottom: 4 }}
+                style={{ width: 24, height: 24, marginBottom: 4, tintColor: isActive ? '#1C1C1E' : '#8E8E93' }}
                 resizeMode="contain"
               />
               <Text style={{
@@ -728,53 +736,94 @@ const VideoWorkoutScreen = ({ navigation, route }: any) => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isResting, setIsResting] = useState(false);
-  const [timer, setTimer] = useState(90);
+  const exerciseTime = workout?.exerciseDuration || 90;
+  const restTime = workout?.restDuration || 20; // Default to 20 if not specified
+  const [timer, setTimer] = useState(exerciseTime);
   const currentExercise = exercises[currentIndex];
   const nextExercise = exercises[currentIndex + 1];
 
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    AuthService.getCurrentUser().then(setUser);
+  }, []);
+
+  const completeWorkout = async () => {
+    if (user?.id && workout?.title) {
+      try {
+        console.log('Completing workout:', workout.title);
+        // Map current exercises to a format expected by the backend
+        const results = exercises.map((ex: any) => ({
+          name: ex.name,
+          reps_performed: 1, // Placeholder since we don't have AI tracking in this mode
+          reps_performed_perfect: 1
+        }));
+
+        // Calculate total duration: number of exercises * exercise duration + rests
+        const totalDuration = (exercises.length * exerciseTime) + ((exercises.length - 1) * restTime);
+
+        await ExerciseService.saveWorkoutCompletion(
+          user.id,
+          workout.title,
+          results,
+          true,
+          totalDuration
+        );
+      } catch (e) {
+        console.error('Failed to save workout completion', e);
+      }
+    }
+  };
+
+  // Auto-close workout when the final exercise timer hits 0
+  useEffect(() => {
+    if (timer === 0 && currentIndex === exercises.length - 1 && !isResting) {
+      completeWorkout().then(() => navigation.goBack());
+    }
+  }, [timer, currentIndex, isResting, exercises.length, navigation]);
+
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimer(prev => {
+      setTimer((prev: number) => {
         if (prev > 0) return prev - 1;
 
         // When timer hits 0
         if (isResting) {
           setIsResting(false);
           setCurrentIndex(c => c + 1);
-          return 90; // Next exercise duration
+          return exerciseTime; // Next exercise duration
         } else if (currentIndex < exercises.length - 1) {
           setIsResting(true);
-          return 20; // Rest duration
+          return restTime; // Rest duration
         }
         return 0;
       });
     }, 1000);
     return () => clearInterval(interval);
-  }, [currentIndex, isResting]);
+  }, [currentIndex, isResting, exerciseTime, restTime]);
 
   const handleNext = () => {
     if (isResting) {
       setIsResting(false);
       setCurrentIndex(currentIndex + 1);
-      setTimer(90);
+      setTimer(exerciseTime);
     } else if (currentIndex < exercises.length - 1) {
       setIsResting(true);
-      setTimer(20);
+      setTimer(restTime);
     } else {
-      Alert.alert('Workout Complete!', 'You have finished all exercises.', [
-        { text: 'Finish', onPress: () => navigation.goBack() }
-      ]);
+      // Automatically close if user manually presses next on the last exercise
+      completeWorkout().then(() => navigation.goBack());
     }
   };
 
   const handlePrev = () => {
     if (isResting) {
       setIsResting(false);
-      setTimer(90);
+      setTimer(exerciseTime);
     } else if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
       setIsResting(false);
-      setTimer(90);
+      setTimer(exerciseTime);
     }
   };
 
@@ -784,124 +833,204 @@ const VideoWorkoutScreen = ({ navigation, route }: any) => {
     return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
   };
 
+  // Progress 0→1 as time elapses
+  const totalTime = isResting ? restTime : exerciseTime;
+  const progressPct = totalTime > 0 ? ((totalTime - timer) / totalTime) * 100 : 0;
+
   return (
-    <View style={{ flex: 1, backgroundColor: '#1C1C1E' }}>
-      <StatusBar barStyle="light-content" />
+    <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
 
-      {/* Exercise Info Header */}
-      <View style={{ position: 'absolute', top: 50, left: 20, right: 20, zIndex: 10 }}>
-        <Text style={{ color: '#FF6B35', fontSize: 14, fontWeight: '700', fontFamily: 'Lexend', textTransform: 'uppercase' }}>
-          {isResting ? 'REST TIME' : `Exercise ${currentIndex + 1} of ${exercises.length}`}
-        </Text>
-        <Text style={{ color: 'white', fontSize: 24, fontWeight: '800', fontFamily: 'Lexend', marginTop: 4 }}>
-          {isResting ? `Up Next: ${nextExercise?.name}` : currentExercise.name}
-        </Text>
-      </View>
+      {/* ── VIDEO AREA (takes all space above panel) ── */}
+      <View style={{ flex: 1, overflow: 'hidden' }}>
 
-      {/* Video Area */}
-      <View style={{ flex: 6, backgroundColor: '#000', borderRadius: 40, overflow: 'hidden', marginTop: 120, marginHorizontal: 16, justifyContent: 'center', alignItems: 'center' }}>
         {isResting ? (
-          <View style={{ alignItems: 'center' }}>
-            <View style={{ width: 80, height: 80, borderRadius: 40, backgroundColor: 'rgba(255, 107, 53, 0.2)', justifyContent: 'center', alignItems: 'center', marginBottom: 20 }}>
-              <Text style={{ fontSize: 40 }}>🧘</Text>
+          /* REST STATE */
+          <View style={{ flex: 1, backgroundColor: '#F8F9FB', justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{
+              width: 140, height: 140, borderRadius: 70,
+              backgroundColor: 'rgba(255,107,53,0.08)', borderWidth: 1.5,
+              borderColor: 'rgba(255,107,53,0.2)', justifyContent: 'center', alignItems: 'center', marginBottom: 28
+            }}>
+              <View style={{
+                width: 90, height: 90, borderRadius: 45,
+                backgroundColor: 'rgba(255,107,53,0.12)', justifyContent: 'center', alignItems: 'center'
+              }}>
+                <Image
+                  source={{ uri: 'https://img.icons8.com/ios-filled/100/ff6b35/meditation.png' }}
+                  style={{ width: 44, height: 44 }}
+                  resizeMode="contain"
+                />
+              </View>
             </View>
-            <Text style={{ color: 'white', fontSize: 28, fontWeight: '800', fontFamily: 'Lexend' }}>Take a Breath</Text>
-            <Text style={{ color: '#8E8E93', fontSize: 16, fontFamily: 'Lexend', marginTop: 8 }}>Get ready for {nextExercise?.name}</Text>
+            <Text style={{
+              color: '#FF6B35', fontSize: 11, fontWeight: '700', fontFamily: 'Lexend',
+              textTransform: 'uppercase', letterSpacing: 3.5, marginBottom: 10
+            }}>Rest & Recover</Text>
+            <Text style={{ color: '#1C1C1E', fontSize: 26, fontWeight: '900', fontFamily: 'Lexend', textAlign: 'center' }}>
+              Take a Breath
+            </Text>
+            {nextExercise && (
+              <Text style={{ color: 'rgba(28,28,30,0.45)', fontSize: 14, fontFamily: 'Lexend', marginTop: 8 }}>
+                Up next: {nextExercise.name}
+              </Text>
+            )}
           </View>
-        ) : (
+        ) : currentExercise.videoUrl ? (
+          /* VIDEO */
           <Video
-            source={currentExercise.videoUrl ? { uri: currentExercise.videoUrl } : require('./assets/videos/squats.mp4')}
-            style={{ width: '100%', height: '100%' }}
+            source={{ uri: currentExercise.videoUrl }}
+            style={StyleSheet.absoluteFillObject}
             resizeMode="cover"
             repeat
             muted
             playInBackground={false}
             playWhenInactive={false}
           />
+        ) : (
+          /* NO VIDEO FALLBACK */
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ color: 'white', fontSize: 24, fontWeight: '800', fontFamily: 'Lexend' }}>
+              {currentExercise.name}
+            </Text>
+            <Text style={{ color: '#8E8E93', fontSize: 16, fontFamily: 'Lexend', marginTop: 8 }}>
+              Keep going! You're doing great.
+            </Text>
+          </View>
         )}
+
+        {/* Subtle top scrim for nav bar readability */}
+        <View style={{
+          position: 'absolute', top: 0, left: 0, right: 0, height: 110,
+          backgroundColor: 'rgba(255,255,255,0.1)'
+        }} pointerEvents="none" />
+
+        {/* Top bar */}
+        <View style={{
+          position: 'absolute', top: 0, left: 0, right: 0,
+          paddingTop: 56, paddingHorizontal: 20,
+          flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'
+        }}>
+          <View style={{
+            backgroundColor: 'rgba(255,255,255,0.85)', paddingHorizontal: 14,
+            paddingVertical: 7, borderRadius: 20, borderWidth: 1, borderColor: '#F2F2F7'
+          }}>
+            <Text style={{
+              color: isResting ? '#FF8C42' : '#1C1C1E', fontSize: 12,
+              fontWeight: '700', fontFamily: 'Lexend', textTransform: 'uppercase', letterSpacing: 1.5
+            }}>
+              {isResting ? '🔥  REST' : `${currentIndex + 1}  /  ${exercises.length}`}
+            </Text>
+          </View>
+          <TouchableOpacity
+            onPress={() => Alert.alert('Quit Workout?',
+              'Your progress for this session will be lost. Are you sure?',
+              [{ text: 'Keep Going', style: 'cancel' },
+              { text: 'Yes, Quit', onPress: () => navigation.goBack(), style: 'destructive' }])}
+            style={{
+              width: 40, height: 40, borderRadius: 20,
+              backgroundColor: 'rgba(255,255,255,0.85)', borderWidth: 1,
+              borderColor: '#F2F2F7', justifyContent: 'center', alignItems: 'center'
+            }}>
+            <Text style={{ color: '#1C1C1E', fontSize: 17, fontWeight: '700' }}>✕</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
-      {/* Timer & Controls Area */}
-      <View style={{ flex: 1, backgroundColor: 'white', borderTopLeftRadius: 40, borderTopRightRadius: 40, marginTop: 10, alignItems: 'center', justifyContent: 'center' }}>
+      {/* ── BOTTOM PANEL ── */}
+      <View style={{
+        backgroundColor: '#FFFFFF', paddingHorizontal: 24,
+        paddingTop: 16, paddingBottom: 44, borderTopWidth: 1, borderColor: '#F2F2F7'
+      }}>
 
-        {/* Main Control Row: Prev, Timer, Next */}
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: '100%', paddingHorizontal: 20 }}>
+        {/* Exercise name */}
+        {!isResting && (
+          <View style={{ marginBottom: 10 }}>
+            <Text style={{
+              color: 'rgba(28,28,30,0.40)', fontSize: 10, fontWeight: '700',
+              fontFamily: 'Lexend', textTransform: 'uppercase', letterSpacing: 3, marginBottom: 2
+            }}>
+              Now Performing
+            </Text>
+            <Text style={{ color: '#1C1C1E', fontSize: 18, fontWeight: '900', fontFamily: 'Lexend' }}>
+              {currentExercise.name}
+            </Text>
+          </View>
+        )}
 
-          {/* Previous Button */}
-          <TouchableOpacity
-            onPress={handlePrev}
+        {/* Progress bar */}
+        <View style={{
+          height: 3, backgroundColor: 'rgba(0,0,0,0.05)',
+          borderRadius: 2, marginBottom: 16, overflow: 'hidden'
+        }}>
+          <View style={{
+            height: 3, width: `${Math.min(progressPct, 100)}%` as any,
+            backgroundColor: '#FF6B35', borderRadius: 2
+          }} />
+        </View>
+
+        {/* Controls */}
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+          <TouchableOpacity onPress={handlePrev}
             disabled={currentIndex === 0 && !isResting}
             style={{
-              width: 44,
-              height: 44,
-              borderRadius: 22,
-              backgroundColor: '#F2F2F7',
-              justifyContent: 'center',
-              alignItems: 'center',
-              opacity: (currentIndex === 0 && !isResting) ? 0.3 : 1,
-              marginRight: 15
-            }}
-          >
-            <Text style={{ fontSize: 20, color: '#1C1C1E' }}>◀</Text>
+              width: 52, height: 52, borderRadius: 26,
+              backgroundColor: '#F8F9FB', borderWidth: 1,
+              borderColor: '#F2F2F7', justifyContent: 'center', alignItems: 'center',
+              opacity: currentIndex === 0 && !isResting ? 0.25 : 1
+            }}>
+            <Text style={{ color: '#1C1C1E', fontSize: 24 }}>‹</Text>
           </TouchableOpacity>
 
-          {/* Timer Display */}
-          <View style={{ backgroundColor: isResting ? '#FFF1EB' : '#F2F2F7', paddingVertical: 10, paddingHorizontal: 25, borderRadius: 25, minWidth: 160, alignItems: 'center' }}>
+          <View style={{ alignItems: 'center' }}>
             <Text style={{
-              fontSize: responsive.rf(55),
-              fontWeight: '800',
-              fontFamily: 'Lexend',
-              color: isResting ? '#FF6B35' : '#1C1C1E',
-              letterSpacing: 2
+              color: isResting ? '#FF8C42' : '#1C1C1E',
+              fontSize: responsive.rf(50), fontWeight: '900', fontFamily: 'Lexend', letterSpacing: -1
             }}>
               {formatTime(timer)}
             </Text>
+            <Text style={{
+              color: 'rgba(28,28,30,0.30)', fontSize: 10,
+              fontFamily: 'Lexend', textTransform: 'uppercase', letterSpacing: 2.5
+            }}>
+              {isResting ? 'Rest' : 'Work'}
+            </Text>
           </View>
 
-          {/* Next/Finish Button */}
-          <TouchableOpacity
-            onPress={handleNext}
+          <TouchableOpacity onPress={handleNext}
             style={{
-              width: 44,
-              height: 44,
-              borderRadius: 22,
-              backgroundColor: (currentIndex === exercises.length - 1 && !isResting) ? '#FF6B35' : '#F2F2F7',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginLeft: 15,
-              shadowColor: (currentIndex === exercises.length - 1 && !isResting) ? '#FF6B35' : 'transparent',
-              shadowOpacity: 0.3,
-              shadowRadius: 5,
-              elevation: 3
-            }}
-          >
-            {(currentIndex === exercises.length - 1 && !isResting) ? (
-              <Text style={{ fontSize: 16, color: 'white', fontWeight: '800' }}>✓</Text>
-            ) : (
-              <Text style={{ fontSize: 20, color: isResting ? '#FF6B35' : '#1C1C1E' }}>▶</Text>
-            )}
+              width: 52, height: 52, borderRadius: 26,
+              backgroundColor: (currentIndex === exercises.length - 1 && !isResting) ? '#FF6B35' : '#F8F9FB',
+              borderWidth: 1,
+              borderColor: (currentIndex === exercises.length - 1 && !isResting) ? '#FF6B35' : '#F2F2F7',
+              justifyContent: 'center', alignItems: 'center',
+              shadowColor: '#FF6B35',
+              shadowOpacity: (currentIndex === exercises.length - 1 && !isResting) ? 0.5 : 0,
+              shadowRadius: 12, elevation: 5
+            }}>
+            {currentIndex === exercises.length - 1 && !isResting
+              ? <Text style={{ color: '#FFF', fontSize: 22 }}>✓</Text>
+              : <Text style={{ color: '#FF6B35', fontSize: 24 }}>›</Text>}
           </TouchableOpacity>
-
         </View>
 
+        {/* Next hint */}
+        {nextExercise && !isResting && (
+          <View style={{
+            marginTop: 14, flexDirection: 'row', alignItems: 'center',
+            backgroundColor: '#F8F9FB', borderRadius: 10, padding: 11, paddingHorizontal: 14,
+            borderWidth: 1, borderColor: '#F2F2F7'
+          }}>
+            <Text style={{
+              color: 'rgba(28,28,30,0.4)', fontSize: 10, fontFamily: 'Lexend',
+              textTransform: 'uppercase', letterSpacing: 1.5, marginRight: 8
+            }}>Next</Text>
+            <Text style={{ color: 'rgba(28,28,30,0.7)', fontSize: 13, fontFamily: 'Lexend', fontWeight: '600' }}>
+              {nextExercise.name}
+            </Text>
+          </View>
+        )}
       </View>
-
-      {/* Close Button */}
-      <TouchableOpacity
-        onPress={() => {
-          Alert.alert(
-            'Quit Workout?',
-            'Your progress for this session will be lost. Are you sure you want to stop?',
-            [
-              { text: 'Keep Going', style: 'cancel' },
-              { text: 'Yes, Quit', onPress: () => navigation.goBack(), style: 'destructive' }
-            ]
-          );
-        }}
-        style={{ position: 'absolute', top: 50, right: 25, width: 44, height: 44, borderRadius: 22, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'center', alignItems: 'center', zIndex: 10 }}
-      >
-        <Text style={{ color: 'white', fontSize: 24, fontWeight: '600' }}>✕</Text>
-      </TouchableOpacity>
     </View>
   );
 };
@@ -911,9 +1040,17 @@ const MainTabScreen = ({ navigation }: any) => {
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('Active');
   const [showPremiumModal, setShowPremiumModal] = useState(false);
+  const [showTestMenu, setShowTestMenu] = useState(false);
+  const [testLevelTarget, setTestLevelTarget] = useState('beginner');
+  const [testDayTarget, setTestDayTarget] = useState(1);
   const [isPremium, setIsPremium] = useState(false);
   const [user, setUser] = useState<any>(null); // Store full user if needed
   const [userRank, setUserRank] = useState<number | null>(null); // User's leaderboard rank
+  const [loadingOpponent, setLoadingOpponent] = useState(false);
+  const [matchedOpponent, setMatchedOpponent] = useState<any>(null);
+  const [showChallengeModal, setShowChallengeModal] = useState(false);
+  const [challenges, setChallenges] = useState<any[]>([]);
+  const [currentWorkoutName, setCurrentWorkoutName] = useState<string | null>(null);
 
   useEffect(() => {
     // Initial fetch
@@ -1161,11 +1298,6 @@ const MainTabScreen = ({ navigation }: any) => {
   const filterWidths = useRef<Record<string, number>>({});
 
   // Challenge states
-  const [matchedOpponent, setMatchedOpponent] = useState<any>(null);
-  const [showChallengeModal, setShowChallengeModal] = useState(false);
-  const [challenges, setChallenges] = useState<any[]>([]);
-  const [loadingOpponent, setLoadingOpponent] = useState(false);
-  const [currentWorkoutName, setCurrentWorkoutName] = useState<string | null>(null);
 
   const handleWorkoutCompletion = async (params: any) => {
     console.log('=== WORKOUT COMPLETION START ===');
@@ -1279,12 +1411,12 @@ const MainTabScreen = ({ navigation }: any) => {
 
   // --- Workout Logic ---
 
-  const showDailyKickstartDetails = async () => {
+  const showDailyKickstartDetails = async (testLevel?: string, testDay?: number) => {
     try {
       const onboardingData = await OnboardingService.getOnboardingData();
-      let level = onboardingData?.experience || 'beginner';
+      let level = testLevel || onboardingData?.experience || 'beginner';
       level = level.toLowerCase();
-      const day = new Date().getDay();
+      const day = testDay !== undefined ? testDay : new Date().getDay();
 
       let uiExercises: any[] = [];
       let description = "";
@@ -1292,54 +1424,69 @@ const MainTabScreen = ({ navigation }: any) => {
       // Monday (Day 1)
       if (day === 1 || day === 0) {
         if (level === 'intermediate') {
-          description = "Day 1 - Upper Body";
-          uiExercises = [
-            { isHeader: true, title: '🔥 Warm-up' },
-            { name: 'Shoulder Press', detail: '1 set • 15 reps', displayIndex: 1 },
-            { name: 'Shoulder Taps Plank', detail: '1 set • 20 sec', displayIndex: 2 },
-            { name: 'Standing Side Bend (L)', detail: '1 set • 10 reps', displayIndex: 3 },
-            { name: 'Standing Side Bend (R)', detail: '1 set • 10 reps', displayIndex: 4 },
+          if (day === 0) {
+            description = "Rest Day";
+            uiExercises = [];
+          } else {
+            description = "Day 1 - Chest, Triceps & Core";
+            uiExercises = [
+              { isHeader: true, title: 'Main Workout' },
+              { name: 'Pushups', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+              { name: 'Pushups', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+              { name: 'Pushups', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
 
-            { isHeader: true, title: '🏆 Main Workout' },
-            { name: 'Push-up', detail: '4 sets • 12-15 reps', displayIndex: 5 },
-            { name: 'Shoulder Press', detail: '4 sets • 12 reps', displayIndex: 6 },
-            { name: 'Shoulder Taps Plank', detail: '3 sets • 30 sec', displayIndex: 7 },
-            { name: 'Side Plank (L)', detail: '3 sets • 30 sec', displayIndex: 8 },
-            { name: 'Side Plank (R)', detail: '3 sets • 30 sec', displayIndex: 9 },
-          ];
+              { name: 'Tricep Dips', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Tricep_Dips_qywkn3.mp4' },
+              { name: 'Tricep Dips', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Tricep_Dips_qywkn3.mp4' },
+              { name: 'Tricep Dips', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Tricep_Dips_qywkn3.mp4' },
+
+              { name: 'Plank', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185533/Plank_riua2q.mp4' },
+              { name: 'Plank', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185533/Plank_riua2q.mp4' },
+              { name: 'Plank', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185533/Plank_riua2q.mp4' },
+            ];
+          }
         } else if (level === 'advanced' || level === 'expert') {
-          description = "Day 1 - Upper Body";
-          uiExercises = [
-            { isHeader: true, title: '🔥 Warm-up' },
-            { name: 'Shoulder Press', detail: '1 set • 20 reps', displayIndex: 1 },
-            { name: 'Shoulder Taps Plank', detail: '1 set • 30 sec', displayIndex: 2 },
-            { name: 'Side Plank (L)', detail: '1 set • 20 sec', displayIndex: 3 },
-            { name: 'Side Plank (R)', detail: '1 set • 20 sec', displayIndex: 4 },
+          if (day === 0) {
+            description = "Rest Day";
+            uiExercises = [];
+          } else {
+            description = "Day 1 - Chest, Triceps & Core";
+            uiExercises = [
+              { isHeader: true, title: 'Main Workout' },
+              { name: 'Pushups', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+              { name: 'Pushups', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+              { name: 'Pushups', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+              { name: 'Pushups', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
 
-            { isHeader: true, title: '🏆 Main Workout' },
-            { name: 'Push-up', detail: '5 sets • 18-20 reps', displayIndex: 5 },
-            { name: 'Shoulder Press', detail: '4 sets • 15 reps', displayIndex: 6 },
-            { name: 'Shoulder Taps Plank', detail: '4 sets • 40 sec', displayIndex: 7 },
-            { name: 'Side Plank (L)', detail: '4 sets • 40 sec', displayIndex: 8 },
-            { name: 'Side Plank (R)', detail: '4 sets • 40 sec', displayIndex: 9 },
-          ];
+              { name: 'Tricep Dips', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Tricep_Dips_qywkn3.mp4' },
+              { name: 'Tricep Dips', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Tricep_Dips_qywkn3.mp4' },
+              { name: 'Tricep Dips', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Tricep_Dips_qywkn3.mp4' },
+              { name: 'Tricep Dips', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Tricep_Dips_qywkn3.mp4' },
+
+              { name: 'Plank', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185533/Plank_riua2q.mp4' },
+              { name: 'Plank', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185533/Plank_riua2q.mp4' },
+              { name: 'Plank', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185533/Plank_riua2q.mp4' },
+              { name: 'Plank', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185533/Plank_riua2q.mp4' },
+            ];
+          }
         } else {
-          // Beginner (Existing)
-          description = "Day 1 - Upper Body + Core";
-          uiExercises = [
-            { isHeader: true, title: '🔥 Warm-up' },
-            { name: 'Shoulder Press', detail: '1 set • 12 reps', displayIndex: 1 },
-            { name: 'Side Bend Left', detail: '1 set • 10 reps', displayIndex: 2 },
-            { name: 'Side Bend Right', detail: '1 set • 10 reps', displayIndex: 3 },
-            { name: 'Shoulder Taps', detail: '1 set • 15 sec', displayIndex: 4 },
-            { isHeader: true, title: '🏆 Main Workout' },
-            { name: 'Push-ups', detail: '3 sets • 8-10 reps', displayIndex: 5 },
-            { name: 'Shoulder Press', detail: '3 sets • 10-12 reps', displayIndex: 6 },
-            { name: 'Shoulder Taps', detail: '3 sets • 20 sec', displayIndex: 7 },
-            { name: 'Side Plank', detail: '2 sets/side • 20 sec', displayIndex: 8 },
-            { name: 'Side Bend Left', detail: '2 sets • 12 reps', displayIndex: 9 },
-            { name: 'Side Bend Right', detail: '2 sets • 12 reps', displayIndex: 10 },
-          ];
+          // Beginner
+          if (day === 0) {
+            description = "Rest Day";
+            uiExercises = [];
+          } else {
+            description = "Day 1 - Chest, Triceps & Core";
+            uiExercises = [
+              { isHeader: true, title: 'Main Workout' },
+              { name: 'Push-up', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+              { name: 'Push-up', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+
+              { name: 'Tricep Dips', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Tricep_Dips_qywkn3.mp4' },
+              { name: 'Tricep Dips', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Tricep_Dips_qywkn3.mp4' },
+
+              { name: 'Plank', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185533/Plank_riua2q.mp4' },
+              { name: 'Plank', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185533/Plank_riua2q.mp4' },
+            ];
+          }
         }
       }
       // Tuesday (Day 2)
@@ -1347,54 +1494,51 @@ const MainTabScreen = ({ navigation }: any) => {
         if (level === 'intermediate') {
           description = "Day 2 - Lower Body";
           uiExercises = [
-            { isHeader: true, title: '🔥 Warm-up' },
-            { name: 'Air Squat', detail: '1 set • 15 reps', displayIndex: 1 },
-            { name: 'Side Lunge (L)', detail: '1 set • 8 reps', displayIndex: 2 },
-            { name: 'Side Lunge (R)', detail: '1 set • 8 reps', displayIndex: 3 },
-            { name: 'Standing Knee Raise (L)', detail: '1 set • 12 reps', displayIndex: 4 },
-            { name: 'Standing Knee Raise (R)', detail: '1 set • 12 reps', displayIndex: 5 },
+            { isHeader: true, title: 'Main Workout' },
+            { name: 'Air Squats', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+            { name: 'Air Squats', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+            { name: 'Air Squats', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
 
-            { isHeader: true, title: '🏆 Main Workout' },
-            { name: 'Air Squat', detail: '4 sets • 15 reps', displayIndex: 6 },
-            { name: 'Lunge', detail: '3 sets • 12 reps/leg', displayIndex: 7 },
-            { name: 'Side Lunge (L)', detail: '3 sets • 10 reps', displayIndex: 8 },
-            { name: 'Side Lunge (R)', detail: '3 sets • 10 reps', displayIndex: 9 },
-            { name: 'Glute Bridge', detail: '3 sets • 15 reps', displayIndex: 10 },
+            { name: 'Lunges', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
+            { name: 'Lunges', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
+            { name: 'Lunges', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
+
+            { name: 'Calf Raises', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185515/Calf_Raises_mcimrt.mp4' },
+            { name: 'Calf Raises', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185515/Calf_Raises_mcimrt.mp4' },
+            { name: 'Calf Raises', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185515/Calf_Raises_mcimrt.mp4' },
           ];
         } else if (level === 'advanced' || level === 'expert') {
           description = "Day 2 - Lower Body";
           uiExercises = [
-            { isHeader: true, title: '🔥 Warm-up' },
-            { name: 'Air Squat', detail: '1 set • 20 reps', displayIndex: 1 },
-            { name: 'Side Lunge (L)', detail: '1 set • 10 reps', displayIndex: 2 },
-            { name: 'Side Lunge (R)', detail: '1 set • 10 reps', displayIndex: 3 },
-            { name: 'Standing Knee Raise (L)', detail: '1 set • 15 reps', displayIndex: 4 },
-            { name: 'Standing Knee Raise (R)', detail: '1 set • 15 reps', displayIndex: 5 },
+            { isHeader: true, title: 'Main Workout' },
+            { name: 'Air Squats', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+            { name: 'Air Squats', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+            { name: 'Air Squats', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+            { name: 'Air Squats', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
 
-            { isHeader: true, title: '🏆 Main Workout' },
-            { name: 'Air Squat', detail: '5 sets • 20 reps', displayIndex: 6 },
-            { name: 'Lunge', detail: '4 sets • 15 reps/leg', displayIndex: 7 },
-            { name: 'Side Lunge (L)', detail: '3 sets • 12 reps', displayIndex: 8 },
-            { name: 'Side Lunge (R)', detail: '3 sets • 12 reps', displayIndex: 9 },
-            { name: 'Glute Bridge', detail: '4 sets • 20 reps', displayIndex: 10 },
+            { name: 'Lunges', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
+            { name: 'Lunges', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
+            { name: 'Lunges', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
+            { name: 'Lunges', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
+
+            { name: 'Calf Raises', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185515/Calf_Raises_mcimrt.mp4' },
+            { name: 'Calf Raises', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185515/Calf_Raises_mcimrt.mp4' },
+            { name: 'Calf Raises', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185515/Calf_Raises_mcimrt.mp4' },
+            { name: 'Calf Raises', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185515/Calf_Raises_mcimrt.mp4' },
           ];
         } else {
           // Beginner (Existing)
           description = "Day 2 - Lower Body";
           uiExercises = [
-            { isHeader: true, title: '🔥 Warm-up' },
-            { name: 'Air Squat', detail: '1 set • 12 reps', displayIndex: 1 },
-            { name: 'Standing Knee Raise (L)', detail: '1 set • 10 reps', displayIndex: 2 },
-            { name: 'Standing Knee Raise (R)', detail: '1 set • 10 reps', displayIndex: 3 },
-            { name: 'Side Lunge (L)', detail: '1 set • 6 reps', displayIndex: 4 },
-            { name: 'Side Lunge (R)', detail: '1 set • 6 reps', displayIndex: 5 },
+            { isHeader: true, title: 'Main Workout' },
+            { name: 'Air Squats', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+            { name: 'Air Squats', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
 
-            { isHeader: true, title: '🏆 Main Workout' },
-            { name: 'Air Squat', detail: '3 sets • 12 reps', displayIndex: 6 },
-            { name: 'Lunge', detail: '3 sets • 10 reps/leg', displayIndex: 7 },
-            { name: 'Side Lunge (L)', detail: '2 sets • 8 reps', displayIndex: 8 },
-            { name: 'Side Lunge (R)', detail: '2 sets • 8 reps', displayIndex: 9 },
-            { name: 'Glute Bridge', detail: '3 sets • 12 reps', displayIndex: 10 },
+            { name: 'Lunges', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
+            { name: 'Lunges', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
+
+            { name: 'Calf Raises', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185515/Calf_Raises_mcimrt.mp4' },
+            { name: 'Calf Raises', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185515/Calf_Raises_mcimrt.mp4' },
           ];
         }
       }
@@ -1403,138 +1547,241 @@ const MainTabScreen = ({ navigation }: any) => {
         if (level === 'intermediate') {
           description = "Day 3 - Core";
           uiExercises = [
-            { isHeader: true, title: '🔥 Warm-up' },
-            { name: 'Glute Bridge', detail: '2 sets • 20 reps', displayIndex: 1 },
-            { name: 'Standing Oblique Crunches', detail: '2 sets • 12 reps', displayIndex: 2 },
+            { isHeader: true, title: 'Main Workout' },
+            { name: 'Crunches', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185514/Crunches_ywv6ne.mp4' },
+            { name: 'Crunches', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185514/Crunches_ywv6ne.mp4' },
+            { name: 'Crunches', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185514/Crunches_ywv6ne.mp4' },
 
-            { isHeader: true, title: '🏆 Main Workout' },
-            { name: 'Crunches', detail: '4 sets • 20 reps', displayIndex: 4 },
-            { name: 'Standing Oblique Crunches', detail: '3 sets • 20 reps', displayIndex: 5 },
-            { name: 'High Plank', detail: '3 sets • 40 sec', displayIndex: 5 },
-            { name: 'Side Plank', detail: '3 sets • 30 sec', displayIndex: 6 },
+            { name: 'Leg Raises', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185582/warm_up-_standing_knee_raise_iodwnw.mp4' },
+            { name: 'Leg Raises', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185582/warm_up-_standing_knee_raise_iodwnw.mp4' },
+            { name: 'Leg Raises', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185582/warm_up-_standing_knee_raise_iodwnw.mp4' },
+
+            { name: 'Russian Twists', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185513/Russian_Twists_qlwrwm.mp4' },
+            { name: 'Russian Twists', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185513/Russian_Twists_qlwrwm.mp4' },
+            { name: 'Russian Twists', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185513/Russian_Twists_qlwrwm.mp4' },
           ];
         } else if (level === 'advanced' || level === 'expert') {
           description = "Day 3 - Core";
           uiExercises = [
-            { isHeader: true, title: '🔥 Warm-up' },
-            { name: 'Standing Oblique Crunches', detail: '1 set • 40 reps', displayIndex: 1 },
-            { name: 'Glute Bridge', detail: '1 set • 15 reps', displayIndex: 2 },
+            { isHeader: true, title: 'Main Workout' },
+            { name: 'Crunches', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185514/Crunches_ywv6ne.mp4' },
+            { name: 'Crunches', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185514/Crunches_ywv6ne.mp4' },
+            { name: 'Crunches', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185514/Crunches_ywv6ne.mp4' },
+            { name: 'Crunches', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185514/Crunches_ywv6ne.mp4' },
 
-            { isHeader: true, title: '🏆 Main Workout' },
-            { name: 'Crunches', detail: '4 sets • 25 reps', displayIndex: 3 },
-            // Removed Bicycle
-            { name: 'Standing Oblique Crunches', detail: '4 sets • 25 reps', displayIndex: 4 },
-            { name: 'High Plank', detail: '4 sets • 60 sec', displayIndex: 5 },
-            { name: 'Glute Bridge', detail: '3 sets • 20 reps', displayIndex: 6 },
+            { name: 'Leg Raises', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185582/warm_up-_standing_knee_raise_iodwnw.mp4' },
+            { name: 'Leg Raises', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185582/warm_up-_standing_knee_raise_iodwnw.mp4' },
+            { name: 'Leg Raises', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185582/warm_up-_standing_knee_raise_iodwnw.mp4' },
+            { name: 'Leg Raises', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185582/warm_up-_standing_knee_raise_iodwnw.mp4' },
+
+            { name: 'Russian Twists', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185513/Russian_Twists_qlwrwm.mp4' },
+            { name: 'Russian Twists', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185513/Russian_Twists_qlwrwm.mp4' },
+            { name: 'Russian Twists', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185513/Russian_Twists_qlwrwm.mp4' },
+            { name: 'Russian Twists', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185513/Russian_Twists_qlwrwm.mp4' },
           ];
         } else {
           // Beginner
           description = "Day 3 - Core";
           uiExercises = [
-            { isHeader: true, title: '🔥 Warm-up' },
-            { name: 'Glute Bridge', detail: '1 set • 20 reps', displayIndex: 1 },
-            { name: 'Standing Oblique Crunches', detail: '1 set • 12 reps', displayIndex: 2 },
-            { name: 'Standing Oblique Crunches', detail: '1 set • 10 reps', displayIndex: 3 },
+            { isHeader: true, title: 'Main Workout' },
+            { name: 'Crunches', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185514/Crunches_ywv6ne.mp4' },
+            { name: 'Crunches', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185514/Crunches_ywv6ne.mp4' },
 
-            { isHeader: true, title: '🏆 Main Workout' },
-            { name: 'Crunches', detail: '3 sets • 15 reps', displayIndex: 4 },
-            { name: 'Glute Bridge', detail: '3 sets • 20 reps', displayIndex: 5 },
-            { name: 'Standing Oblique Crunches', detail: '3 sets • 15 reps', displayIndex: 6 },
-            { name: 'High Plank', detail: '2 sets • 30 sec', displayIndex: 7 },
-            { name: 'Standing Oblique Crunches', detail: '2 sets • 12 reps', displayIndex: 8 },
+            { name: 'Leg Raises', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185582/warm_up-_standing_knee_raise_iodwnw.mp4' },
+            { name: 'Leg Raises', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185582/warm_up-_standing_knee_raise_iodwnw.mp4' },
+
+            { name: 'Russian Twists', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185513/Russian_Twists_qlwrwm.mp4' },
+            { name: 'Russian Twists', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185513/Russian_Twists_qlwrwm.mp4' },
           ];
         }
       }
       // Thursday (Day 4)
       else if (day === 4) {
         if (level === 'intermediate') {
-          description = "Day 4 - Conditioning";
+          description = "Day 4 - Cardio + Full Body";
           uiExercises = [
-            { isHeader: true, title: '🔥 Warm-up' },
-            { name: 'Jumping Jacks', detail: '1 set • 40 sec', displayIndex: 1 },
-            { name: 'High Knees', detail: '1 set • 40 sec', displayIndex: 2 },
+            { isHeader: true, title: 'Main Workout' },
+            { name: 'Jumping Jacks', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185529/Jumping_Jacks_fsd0tu.mp4' },
+            { name: 'Jumping Jacks', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185529/Jumping_Jacks_fsd0tu.mp4' },
+            { name: 'Jumping Jacks', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185529/Jumping_Jacks_fsd0tu.mp4' },
 
-            { isHeader: true, title: '🏆 Main Workout' },
-            { name: 'Jumping Jacks', detail: '4 sets • 40 sec', displayIndex: 3 },
-            { name: 'High Knees', detail: '4 sets • 40 sec', displayIndex: 4 },
-            { name: 'Skater Hops', detail: '3 sets • 15 reps/side', displayIndex: 5 },
-            { name: 'Ski Jumps', detail: '3 sets • 10 reps', displayIndex: 6 },
+            { name: 'Mountain Climbers', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185528/Mountain_Climbers_watvuv.mp4' },
+            { name: 'Mountain Climbers', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185528/Mountain_Climbers_watvuv.mp4' },
+            { name: 'Mountain Climbers', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185528/Mountain_Climbers_watvuv.mp4' },
+
+            { name: 'Burpees', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Burpees_yayn8x.mp4' },
+            { name: 'Burpees', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Burpees_yayn8x.mp4' },
+            { name: 'Burpees', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Burpees_yayn8x.mp4' },
           ];
         } else if (level === 'advanced' || level === 'expert') {
-          description = "Day 4 - Conditioning";
+          description = "Day 4 - Cardio + Full Body";
           uiExercises = [
-            { isHeader: true, title: '🔥 Warm-up' },
-            { name: 'Jumping Jacks', detail: '1 set • 60 sec', displayIndex: 1 },
-            { name: 'High Knees', detail: '1 set • 60 sec', displayIndex: 2 },
+            { isHeader: true, title: 'Main Workout' },
+            { name: 'Jumping Jacks', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185529/Jumping_Jacks_fsd0tu.mp4' },
+            { name: 'Jumping Jacks', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185529/Jumping_Jacks_fsd0tu.mp4' },
+            { name: 'Jumping Jacks', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185529/Jumping_Jacks_fsd0tu.mp4' },
+            { name: 'Jumping Jacks', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185529/Jumping_Jacks_fsd0tu.mp4' },
 
-            { isHeader: true, title: '🏆 Main Workout' },
-            { name: 'Jumping Jacks', detail: '5 sets • 60 sec', displayIndex: 3 },
-            { name: 'High Knees', detail: '5 sets • 60 sec', displayIndex: 4 },
-            { name: 'Skater Hops', detail: '4 sets • 20 reps/side', displayIndex: 5 },
-            { name: 'Air Squat', detail: '4 sets • 15 reps', displayIndex: 6 },
+            { name: 'Mountain Climbers', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185528/Mountain_Climbers_watvuv.mp4' },
+            { name: 'Mountain Climbers', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185528/Mountain_Climbers_watvuv.mp4' },
+            { name: 'Mountain Climbers', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185528/Mountain_Climbers_watvuv.mp4' },
+            { name: 'Mountain Climbers', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185528/Mountain_Climbers_watvuv.mp4' },
+
+            { name: 'Burpees', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Burpees_yayn8x.mp4' },
+            { name: 'Burpees', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Burpees_yayn8x.mp4' },
+            { name: 'Burpees', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Burpees_yayn8x.mp4' },
+            { name: 'Burpees', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Burpees_yayn8x.mp4' },
           ];
         } else {
           // Beginner
           description = "Day 4 - Cardio + Full Body";
           uiExercises = [
-            { isHeader: true, title: '🔥 Warm-up' },
-            { name: 'Jumping Jacks', detail: '1 set • 40 sec', displayIndex: 1 },
-            { name: 'Jumps', detail: '1 set • 30 sec', displayIndex: 2 },
-            { isHeader: true, title: '🏆 Main Workout' },
-            { name: 'High Knees', detail: '3 sets • 30 sec', displayIndex: 3 },
-            { name: 'Jumping Jacks', detail: '3 sets • 40 sec', displayIndex: 4 },
-            { name: 'Jumps', detail: '3 sets • 30 sec', displayIndex: 6 },
-            { name: 'Skater Hops', detail: '2 sets • 10 reps/side', displayIndex: 7 },
-            { name: 'Ski Jumps', detail: '2 sets • 6 reps', displayIndex: 8 },
+            { isHeader: true, title: 'Main Workout' },
+            { name: 'Jumping Jacks', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185529/Jumping_Jacks_fsd0tu.mp4' },
+            { name: 'Jumping Jacks', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185529/Jumping_Jacks_fsd0tu.mp4' },
+
+            { name: 'Mountain Climbers', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185528/Mountain_Climbers_watvuv.mp4' },
+            { name: 'Mountain Climbers', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185528/Mountain_Climbers_watvuv.mp4' },
+
+            { name: 'Burpees', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Burpees_yayn8x.mp4' },
+            { name: 'Burpees', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Burpees_yayn8x.mp4' },
           ];
         }
       }
       // Friday (Day 5)
       else if (day === 5) {
         if (level === 'intermediate') {
-          description = "Day 5 - Mobility";
+          description = "Day 5 - Full Body";
           uiExercises = [
-            { isHeader: true, title: '🔥 Warm-up' },
-            { name: 'Hamstring Mobility', detail: '1 set • 10 reps', displayIndex: 1 },
-            { name: 'Standing Knee Raise (L)', detail: '1 set • 15 reps', displayIndex: 2 },
-            { name: 'Standing Knee Raise (R)', detail: '1 set • 15 reps', displayIndex: 3 },
+            { isHeader: true, title: 'Main Workout' },
+            { name: 'Glute Bridge', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185516/Glute_Bridge_nphtwp.mp4' },
+            { name: 'Glute Bridge', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185516/Glute_Bridge_nphtwp.mp4' },
+            { name: 'Glute Bridge', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185516/Glute_Bridge_nphtwp.mp4' },
 
-            { isHeader: true, title: '🏆 Main Workout' },
-            { name: 'Squat', detail: '3 sets • 10 reps', displayIndex: 4 },
-            { name: 'Standing Knee Raise (L)', detail: '3 sets • 15 reps', displayIndex: 5 },
-            { name: 'Standing Knee Raise (R)', detail: '3 sets • 15 reps', displayIndex: 6 },
-            { name: 'Hamstring Mobility', detail: '3 sets • 12 reps', displayIndex: 7 },
-            { name: 'Standing Hamstring Mobility', detail: '3 sets • 30 sec', displayIndex: 8 },
+            { name: 'Step-Ups', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185532/Step-Ups_u3mslg.mp4' },
+            { name: 'Step-Ups', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185532/Step-Ups_u3mslg.mp4' },
+            { name: 'Step-Ups', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185532/Step-Ups_u3mslg.mp4' },
+
+            { name: 'Side Plank', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185518/Side_Plank_bmz6wk.mp4' },
+            { name: 'Side Plank', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185518/Side_Plank_bmz6wk.mp4' },
+            { name: 'Side Plank', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185518/Side_Plank_bmz6wk.mp4' },
           ];
         } else if (level === 'advanced' || level === 'expert') {
-          description = "Day 5 - Mobility";
+          description = "Day 5 - Full Body";
           uiExercises = [
-            { isHeader: true, title: '🔥 Warm-up' },
-            { name: 'Hamstring Mobility', detail: '1 set • 12 reps', displayIndex: 1 },
-            { name: 'Standing Knee Raise (L)', detail: '1 set • 20 reps', displayIndex: 2 },
-            { name: 'Standing Knee Raise (R)', detail: '1 set • 20 reps', displayIndex: 3 },
+            { isHeader: true, title: 'Main Workout' },
+            { name: 'Glute Bridge', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185516/Glute_Bridge_nphtwp.mp4' },
+            { name: 'Glute Bridge', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185516/Glute_Bridge_nphtwp.mp4' },
+            { name: 'Glute Bridge', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185516/Glute_Bridge_nphtwp.mp4' },
+            { name: 'Glute Bridge', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185516/Glute_Bridge_nphtwp.mp4' },
 
-            { isHeader: true, title: '🏆 Main Workout' },
-            { name: 'Squat', detail: '4 sets • 12 reps', displayIndex: 4 },
-            { name: 'Standing Knee Raise (L)', detail: '3 sets • 20 reps', displayIndex: 5 },
-            { name: 'Standing Knee Raise (R)', detail: '3 sets • 20 reps', displayIndex: 6 },
-            { name: 'Hamstring Mobility', detail: '3 sets • 15 reps', displayIndex: 7 },
-            { name: 'Standing Hamstring Mobility', detail: '3 sets • 40 sec', displayIndex: 8 },
+            { name: 'Step-Ups', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185532/Step-Ups_u3mslg.mp4' },
+            { name: 'Step-Ups', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185532/Step-Ups_u3mslg.mp4' },
+            { name: 'Step-Ups', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185532/Step-Ups_u3mslg.mp4' },
+            { name: 'Step-Ups', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185532/Step-Ups_u3mslg.mp4' },
+
+            { name: 'Side Plank', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185518/Side_Plank_bmz6wk.mp4' },
+            { name: 'Side Plank', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185518/Side_Plank_bmz6wk.mp4' },
+            { name: 'Side Plank', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185518/Side_Plank_bmz6wk.mp4' },
+            { name: 'Side Plank', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185518/Side_Plank_bmz6wk.mp4' },
+
+            { name: 'Pushups', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+            { name: 'Pushups', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+            { name: 'Pushups', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+            { name: 'Pushups', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
           ];
         } else {
           // Beginner
-          description = "Day 5 - Mobility";
+          description = "Day 5 - Full Body";
           uiExercises = [
-            { isHeader: true, title: '🔥 Warm-up' },
-            { name: 'Standing Knee Raise (L)', detail: '1 set • 10 reps', displayIndex: 1 },
-            { name: 'Standing Knee Raise (R)', detail: '1 set • 10 reps', displayIndex: 2 },
-            { name: 'Hamstring Mobility', detail: '1 set • 8 reps', displayIndex: 3 },
+            { isHeader: true, title: 'Main Workout' },
+            { name: 'Glute Bridge', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185516/Glute_Bridge_nphtwp.mp4' },
+            { name: 'Glute Bridge', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185516/Glute_Bridge_nphtwp.mp4' },
 
-            { isHeader: true, title: '🏆 Main Workout' },
-            { name: 'Squat', detail: '3 sets • 8 reps', displayIndex: 4 },
-            { name: 'Standing Knee Raise (L)', detail: '2 sets • 12 reps', displayIndex: 5 },
-            { name: 'Standing Knee Raise (R)', detail: '2 sets • 12 reps', displayIndex: 6 },
-            { name: 'Hamstring Mobility', detail: '2 sets • 10 reps', displayIndex: 7 },
+            { name: 'Step-Ups', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185532/Step-Ups_u3mslg.mp4' },
+            { name: 'Step-Ups', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185532/Step-Ups_u3mslg.mp4' },
+
+            { name: 'Side Plank', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185518/Side_Plank_bmz6wk.mp4' },
+            { name: 'Side Plank', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185518/Side_Plank_bmz6wk.mp4' },
+
+            { name: 'Pushups', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+            { name: 'Pushups', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+          ];
+        }
+      }
+      // Saturday (Day 6)
+      else if (day === 6) {
+        if (level === 'beginner') {
+          description = "Day 6 - Full Body";
+          uiExercises = [
+            { isHeader: true, title: 'Main Workout' },
+            { name: 'Air Squats', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+            { name: 'Air Squats', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+
+            { name: 'Plank', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185533/Plank_riua2q.mp4' },
+            { name: 'Plank', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185533/Plank_riua2q.mp4' },
+
+            { name: 'Mobility (Hamstring)', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Mobility_hamstring_a4sig8.mp4' },
+            { name: 'Mobility (Hamstring)', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Mobility_hamstring_a4sig8.mp4' },
+
+            { name: 'Hip Rotation', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/Hip_Rotation_pdrbi2.mp4' },
+            { name: 'Hip Rotation', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/Hip_Rotation_pdrbi2.mp4' },
+
+            { name: 'Light Air Squats', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+            { name: 'Light Air Squats', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+          ];
+        } else if (level === 'intermediate') {
+          description = "Day 6 - Full Body";
+          uiExercises = [
+            { isHeader: true, title: 'Main Workout' },
+            { name: 'Air Squats', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+            { name: 'Air Squats', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+            { name: 'Air Squats', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+
+            { name: 'Plank', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185533/Plank_riua2q.mp4' },
+            { name: 'Plank', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185533/Plank_riua2q.mp4' },
+            { name: 'Plank', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185533/Plank_riua2q.mp4' },
+
+            { name: 'Mobility (Hamstring)', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Mobility_hamstring_a4sig8.mp4' },
+            { name: 'Mobility (Hamstring)', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Mobility_hamstring_a4sig8.mp4' },
+            { name: 'Mobility (Hamstring)', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Mobility_hamstring_a4sig8.mp4' },
+
+            { name: 'Hip Rotation', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/Hip_Rotation_pdrbi2.mp4' },
+            { name: 'Hip Rotation', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/Hip_Rotation_pdrbi2.mp4' },
+            { name: 'Hip Rotation', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/Hip_Rotation_pdrbi2.mp4' },
+
+            { name: 'Light Air Squats', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+            { name: 'Light Air Squats', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+            { name: 'Light Air Squats', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+          ];
+        } else if (level === 'advanced' || level === 'expert') {
+          description = "Day 6 - Full Body";
+          uiExercises = [
+            { isHeader: true, title: 'Main Workout' },
+            { name: 'Air Squats', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+            { name: 'Air Squats', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+            { name: 'Air Squats', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+            { name: 'Air Squats', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+
+            { name: 'Plank', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185533/Plank_riua2q.mp4' },
+            { name: 'Plank', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185533/Plank_riua2q.mp4' },
+            { name: 'Plank', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185533/Plank_riua2q.mp4' },
+            { name: 'Plank', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185533/Plank_riua2q.mp4' },
+
+            { name: 'Mobility (Hamstring)', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Mobility_hamstring_a4sig8.mp4' },
+            { name: 'Mobility (Hamstring)', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Mobility_hamstring_a4sig8.mp4' },
+            { name: 'Mobility (Hamstring)', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Mobility_hamstring_a4sig8.mp4' },
+            { name: 'Mobility (Hamstring)', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Mobility_hamstring_a4sig8.mp4' },
+
+            { name: 'Hip Rotation', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/Hip_Rotation_pdrbi2.mp4' },
+            { name: 'Hip Rotation', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/Hip_Rotation_pdrbi2.mp4' },
+            { name: 'Hip Rotation', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/Hip_Rotation_pdrbi2.mp4' },
+            { name: 'Hip Rotation', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/Hip_Rotation_pdrbi2.mp4' },
+
+            { name: 'Light Air Squats', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+            { name: 'Light Air Squats', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+            { name: 'Light Air Squats', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+            { name: 'Light Air Squats', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
           ];
         }
       }
@@ -1543,16 +1790,30 @@ const MainTabScreen = ({ navigation }: any) => {
         id: 'DailyKickstart',
         title: 'Morning Kickstart',
         description: description,
-        time: '10 min',
-        tag: `${uiExercises.length} Exercises`,
+        time: uiExercises.length === 0 ? 'Rest Day' :
+          (level === 'beginner' && (day === 1 || day === 0 || day === 2 || day === 3 || day === 4 || day === 5 || day === 6)) ? '6 min' :
+            ((level === 'intermediate' && (day === 1 || day === 2 || day === 3 || day === 4 || day === 5 || day === 6)) ? '9 min' :
+              ((level === 'advanced' || level === 'expert') && (day === 6)) ? '22 min' :
+                ((level === 'advanced' || level === 'expert') && (day === 5)) ? '17 min' :
+                  ((level === 'advanced' || level === 'expert') && (day === 1 || day === 2 || day === 3 || day === 4)) ? '13 min' : '10 min'),
+        tag: `${uiExercises.filter(ex => !ex.isHeader).length} Exercises`,
         category: 'Daily',
         image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400',
-        exercises: uiExercises
+        exercises: uiExercises,
+        exerciseDuration: (level === 'beginner' && (day === 1 || day === 0 || day === 2 || day === 3 || day === 4 || day === 5 || day === 6)) ? 30 :
+          ((level === 'intermediate' && (day === 1 || day === 2 || day === 3 || day === 4 || day === 5 || day === 6)) ? 40 :
+            ((level === 'advanced' || level === 'expert') && (day === 1 || day === 2 || day === 3 || day === 4 || day === 5 || day === 6)) ? 50 : 90),
+        restDuration: (level === 'beginner' && (day === 1 || day === 0 || day === 2 || day === 3 || day === 4 || day === 5 || day === 6)) ? 30 :
+          ((level === 'advanced' || level === 'expert') && (day === 1 || day === 2 || day === 3 || day === 4 || day === 5 || day === 6)) ? 15 : 20,
       });
 
     } catch (e) {
       console.error('Error showing daily details', e);
     }
+  };
+
+  const openTestMenu = () => {
+    setShowTestMenu(true);
   };
 
   // startDailyKickstart removed (Sency SDK)
@@ -1579,25 +1840,34 @@ const MainTabScreen = ({ navigation }: any) => {
         3: 'Core',
         4: 'Cardio + Full Body',
         5: 'Mobility',
-        6: 'Rest Day',
+        6: 'Full Body',
         0: 'Rest Day',
       },
       'Intermediate': {
-        1: 'Upper Body',
+        1: 'Chest, Triceps & Core',
         2: 'Lower Body',
         3: 'Core',
-        4: 'Conditioning',
-        5: 'Mobility',
-        6: 'Rest Day',
+        4: 'Cardio + Full Body',
+        5: 'Full Body',
+        6: 'Full Body',
         0: 'Rest Day',
       },
       'Expert': {
-        1: 'Upper Body',
+        1: 'Chest, Triceps & Core',
         2: 'Lower Body',
         3: 'Core',
-        4: 'Conditioning',
-        5: 'Mobility',
-        6: 'Rest Day',
+        4: 'Cardio + Full Body',
+        5: 'Full Body',
+        6: 'Full Body',
+        0: 'Rest Day',
+      },
+      'Advanced': {
+        1: 'Chest, Triceps & Core',
+        2: 'Lower Body',
+        3: 'Core',
+        4: 'Cardio + Full Body',
+        5: 'Full Body',
+        6: 'Full Body',
         0: 'Rest Day',
       },
     };
@@ -1726,7 +1996,7 @@ const MainTabScreen = ({ navigation }: any) => {
               <View style={{ flex: 1, backgroundColor: '#FF6B35' }}>
                 {/* ── Header sits on the colored background ── */}
                 <View style={{ paddingHorizontal: 20, paddingTop: 10, paddingBottom: 16 }}>
-                  <Text style={{ fontSize: responsive.rf(26), fontWeight: '800', color: '#FFFFFF', fontFamily: 'Lexend', letterSpacing: -0.5 }}>Arthlete</Text>
+                  <Text style={{ fontSize: responsive.rf(32), fontWeight: '900', color: '#FFFFFF', fontFamily: 'Arthlete', letterSpacing: 1.5, textTransform: 'uppercase' }}>Arthlete</Text>
                 </View>
 
                 {/* ── White content card ── */}
@@ -1758,19 +2028,26 @@ const MainTabScreen = ({ navigation }: any) => {
                     {/* Card Header */}
                     <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', paddingHorizontal: 20, paddingTop: 24, paddingBottom: 20 }}>
                       <View style={{ flex: 1, marginRight: 16 }}>
-                        <Text style={{ fontSize: 13, color: '#6B6B6B', fontFamily: 'Lexend', marginBottom: 8 }}>
-                          Day {new Date().getDay() || 7} of 28
+                        <Text style={{
+                          fontSize: 11,
+                          color: '#8E8E93',
+                          fontFamily: 'Lexend',
+                          fontWeight: Platform.OS === 'android' ? 'bold' : '700',
+                          marginBottom: 8,
+                          letterSpacing: 1
+                        }}>
+                          PROGRAM DAY {new Date().getDay() || 7} OF 28
                         </Text>
                         <Text style={{
                           fontSize: responsive.rf(26),
-                          fontWeight: '800',
+                          fontWeight: Platform.OS === 'android' ? '900' : '800',
                           color: '#1C1C1E',
                           fontFamily: 'Lexend',
                           lineHeight: 30,
                           textTransform: 'uppercase',
                           letterSpacing: -0.5,
                         }}>
-                          {getDailyWorkoutDescription()} Program
+                          {getDailyWorkoutDescription()}{'\n'}Program
                         </Text>
                       </View>
                       {/* Icon */}
@@ -1782,7 +2059,12 @@ const MainTabScreen = ({ navigation }: any) => {
                         justifyContent: 'center',
                         alignItems: 'center',
                       }}>
-                        <Text style={{ fontSize: 32 }}>💪</Text>
+                        <Image
+                          source={{ uri: 'https://img.icons8.com/ios-filled/50/ffffff/dumbbell.png' }}
+                          style={{ width: 36, height: 36, tintColor: '#FF6B35', zIndex: 10 }}
+                          resizeMode="contain"
+                          fadeDuration={0}
+                        />
                       </View>
                     </View>
 
@@ -1828,7 +2110,11 @@ const MainTabScreen = ({ navigation }: any) => {
                         </Text>
                         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
                           <Text style={{ fontSize: 14, color: '#8E8E93', fontFamily: 'Lexend' }}>{session.duration}</Text>
-                          <Text style={{ fontSize: 14, color: '#FF6B35', fontFamily: 'Lexend' }}>▶</Text>
+                          <Image
+                            source={{ uri: 'https://img.icons8.com/ios-filled/50/FF6B35/play--v1.png' }}
+                            style={{ width: 14, height: 14 }}
+                            resizeMode="contain"
+                          />
                         </View>
                       </TouchableOpacity>
                     ))}
@@ -1840,40 +2126,49 @@ const MainTabScreen = ({ navigation }: any) => {
                     onPress={() => {
                       if (isPremium) {
                         const details = WORKOUT_DETAILS_DATA['MeditationSession'];
-                        if (details) setSelectedWorkout(details);
+                        if (details) {
+                          navigation.navigate('VideoWorkout', { workout: details });
+                        }
                       } else {
                         setShowPremiumModal(true);
                       }
                     }}
                     style={{
                       marginHorizontal: 16,
-                      backgroundColor: '#FFFFFF',
+                      backgroundColor: '#F8FBFF', // Subtle blue tint like screenshot
                       borderRadius: 18,
                       shadowColor: '#000',
                       shadowOffset: { width: 0, height: 2 },
-                      shadowOpacity: 0.06,
-                      shadowRadius: 8,
-                      elevation: 3,
+                      shadowOpacity: 0.04,
+                      shadowRadius: 6,
+                      elevation: 2,
                       marginBottom: 24,
-                      padding: 20,
+                      padding: 24, // More padding like screenshot
                       flexDirection: 'row',
                       alignItems: 'center',
                       justifyContent: 'space-between',
+                      borderWidth: 1,
+                      borderColor: '#EBF3FF',
                     }}
                   >
                     <View style={{ flex: 1 }}>
-                      <Text style={{ fontSize: 13, color: '#4A90E2', fontFamily: 'Lexend', fontWeight: '600', marginBottom: 6 }}>
+                      <Text style={{ fontSize: 13, color: '#3A86FF', fontFamily: 'Lexend', fontWeight: Platform.OS === 'android' ? 'bold' : '700', marginBottom: 6, letterSpacing: 0.5 }}>
                         TODAY'S MINDFULNESS
                       </Text>
-                      <Text style={{ fontSize: 17, fontWeight: '700', color: '#1C1C1E', fontFamily: 'Lexend', marginBottom: 4 }}>
+                      <Text style={{ fontSize: 19, fontWeight: Platform.OS === 'android' ? '900' : '800', color: '#1C1C1E', fontFamily: 'Lexend', marginBottom: 4 }}>
                         Meditation Session
                       </Text>
-                      <Text style={{ fontSize: 14, color: '#6B6B6B', fontFamily: 'Lexend' }}>
+                      <Text style={{ fontSize: 15, color: '#8E8E93', fontFamily: 'Lexend' }}>
                         Relax and Recharge · 15 min
                       </Text>
                     </View>
-                    <View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: '#F0F7FF', justifyContent: 'center', alignItems: 'center' }}>
-                      <Text style={{ fontSize: 18, color: '#4A90E2' }}>🧘</Text>
+                    <View style={{ width: 48, height: 48, borderRadius: 24, backgroundColor: '#E1EFFF', justifyContent: 'center', alignItems: 'center' }}>
+                      <Image
+                        source={{ uri: 'https://img.icons8.com/ios-filled/50/ffffff/yoga.png' }}
+                        style={{ width: 32, height: 32, tintColor: '#3A86FF', zIndex: 10 }}
+                        resizeMode="contain"
+                        fadeDuration={0}
+                      />
                     </View>
                   </TouchableOpacity>
 
@@ -1895,10 +2190,10 @@ const MainTabScreen = ({ navigation }: any) => {
                     style={{ marginBottom: 28 }}
                   >
                     {[
-                      { id: 'CardioCrusher', title: 'Cardio Crusher', tag: 'New · 6 sessions', author: 'Coach Sarah', img: 'https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=400&q=80', emoji: '🏃' },
-                      { id: 'FatBurnHIIT', title: 'Fat Burn HIIT', tag: 'HIIT · 4 sessions', author: 'Coach Sarah', img: 'https://images.unsplash.com/photo-1601422407692-ec4eeec1d9b3?auto=format&fit=crop&w=400&q=80', emoji: '🔥' },
-                      { id: 'Shoulders', title: 'Shoulder Builder', tag: 'Strength · 6 sessions', author: 'Coach Alex', img: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&w=400&q=80', emoji: '💪' },
-                      { id: 'LowerBody', title: 'Leg Day Special', tag: 'Lower · 5 sessions', author: 'Coach Laura', img: 'https://images.unsplash.com/photo-1434682881908-b43d0467b798?auto=format&fit=crop&w=400&q=80', emoji: '🦵' },
+                      { id: 'CardioCrusher', title: 'Cardio Crusher', tag: 'New · 6 sessions', author: 'Coach Sarah', img: 'https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=400&q=80', icon: 'https://img.icons8.com/ios-filled/50/FFFFFF/running.png' },
+                      { id: 'FatBurnHIIT', title: 'Fat Burn HIIT', tag: 'HIIT · 4 sessions', author: 'Coach Sarah', img: 'https://images.unsplash.com/photo-1601422407692-ec4eeec1d9b3?auto=format&fit=crop&w=400&q=80', icon: 'https://img.icons8.com/ios-filled/50/FFFFFF/fire-element.png' },
+                      { id: 'Shoulders', title: 'Shoulder Builder', tag: 'Strength · 6 sessions', author: 'Coach Alex', img: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&w=400&q=80', icon: 'https://img.icons8.com/ios-filled/50/FFFFFF/dumbbell.png' },
+                      { id: 'LowerBody', title: 'Leg Day Special', tag: 'Lower · 5 sessions', author: 'Coach Laura', img: 'https://images.unsplash.com/photo-1434682881908-b43d0467b798?auto=format&fit=crop&w=400&q=80', icon: 'https://img.icons8.com/ios-filled/50/FFFFFF/squats.png' },
                     ].map((item, idx) => (
                       <View
                         key={idx}
@@ -1946,6 +2241,14 @@ const MainTabScreen = ({ navigation }: any) => {
                       </View>
                     ))}
                   </ScrollView>
+
+                  {/* ── Test Mode / Preview ── */}
+                  <TouchableOpacity
+                    onPress={openTestMenu}
+                    style={{ backgroundColor: '#2C2C2E', paddingHorizontal: 16, paddingVertical: 10, borderRadius: 12, alignItems: 'center' }}
+                  >
+                    <Text style={{ color: 'white', fontFamily: 'Lexend', fontSize: 13, fontWeight: '700' }}>TEST WORKOUTS</Text>
+                  </TouchableOpacity>
 
                   {/* ── Motivational Quote ── */}
                   <View style={{ marginHorizontal: 16, marginBottom: 40, backgroundColor: '#F8F9FA', padding: 16, borderRadius: 14, borderLeftWidth: 4, borderLeftColor: '#FF6B35' }}>
@@ -2097,13 +2400,13 @@ const MainTabScreen = ({ navigation }: any) => {
                     </Text>
                     <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 16, gap: 12 }}>
                       {[
-                        { name: 'Arms', image: 'https://img.icons8.com/ios-filled/100/1C1C1E/biceps.png', color: '#F2F2F7' },
-                        { name: 'Chest', image: 'https://img.icons8.com/ios-filled/100/1C1C1E/chest.png', color: '#F2F2F7' },
-                        { name: 'Back', image: 'https://img.icons8.com/ios-filled/100/1C1C1E/back-muscles.png', color: '#F2F2F7' },
-                        { name: 'Shoulders', image: 'https://img.icons8.com/ios-filled/100/1C1C1E/shoulders.png', color: '#F2F2F7' },
-                        { name: 'Legs', image: 'https://img.icons8.com/ios-filled/100/1C1C1E/leg.png', color: '#F2F2F7' },
-                        { name: 'Abs', image: 'https://img.icons8.com/ios-filled/100/1C1C1E/torso.png', color: '#F2F2F7' },
-                        { name: 'Thighs', image: 'https://img.icons8.com/ios-filled/100/1C1C1E/hamstrings.png', color: '#F2F2F7' },
+                        { name: 'Arms', image: 'https://img.icons8.com/ios-filled/50/ffffff/biceps.png', color: '#F2F2F7' },
+                        { name: 'Chest', image: 'https://img.icons8.com/ios-filled/50/ffffff/chest.png', color: '#F2F2F7' },
+                        { name: 'Back', image: 'https://img.icons8.com/ios-filled/50/ffffff/back-muscles.png', color: '#F2F2F7' },
+                        { name: 'Shoulders', image: 'https://img.icons8.com/ios-filled/50/ffffff/shoulders.png', color: '#F2F2F7' },
+                        { name: 'Legs', image: 'https://img.icons8.com/ios-filled/50/ffffff/leg.png', color: '#F2F2F7' },
+                        { name: 'Abs', image: 'https://img.icons8.com/ios-filled/50/ffffff/torso.png', color: '#F2F2F7' },
+                        { name: 'Thighs', image: 'https://img.icons8.com/ios-filled/50/ffffff/hamstrings.png', color: '#F2F2F7' },
                       ].map((part, idx) => (
                         <TouchableOpacity
                           key={idx}
@@ -2180,7 +2483,7 @@ const MainTabScreen = ({ navigation }: any) => {
               <View style={{ flex: 1, backgroundColor: '#FF6B35' }}>
                 {/* ── Header sits on the colored background ── */}
                 <View style={{ paddingHorizontal: 20, paddingTop: 10, paddingBottom: 16 }}>
-                  <Text style={{ fontSize: responsive.rf(26), fontWeight: '800', color: '#FFFFFF', fontFamily: 'Lexend', letterSpacing: -0.5 }}>Progress</Text>
+                  <Text style={{ fontSize: responsive.rf(32), fontWeight: '900', color: '#FFFFFF', fontFamily: 'Arthlete', letterSpacing: 1.5, textTransform: 'uppercase' }}>Progress</Text>
                 </View>
                 {/* ── White content card ── */}
                 <View style={{ flex: 1, backgroundColor: '#FFFFFF', borderTopLeftRadius: 28, borderTopRightRadius: 28, overflow: 'hidden' }}>
@@ -2191,7 +2494,7 @@ const MainTabScreen = ({ navigation }: any) => {
               <View style={{ flex: 1, backgroundColor: '#FF6B35' }}>
                 {/* ── Header sits on the colored background ── */}
                 <View style={{ paddingHorizontal: 20, paddingTop: 10, paddingBottom: 16 }}>
-                  <Text style={{ fontSize: responsive.rf(26), fontWeight: '800', color: '#FFFFFF', fontFamily: 'Lexend', letterSpacing: -0.5 }}>Profile</Text>
+                  <Text style={{ fontSize: responsive.rf(32), fontWeight: '900', color: '#FFFFFF', fontFamily: 'Arthlete', letterSpacing: 1.5, textTransform: 'uppercase' }}>Profile</Text>
                 </View>
                 {/* ── White content card ── */}
                 <View style={{ flex: 1, backgroundColor: '#FFFFFF', borderTopLeftRadius: 28, borderTopRightRadius: 28, overflow: 'hidden' }}>
@@ -2227,8 +2530,8 @@ const MainTabScreen = ({ navigation }: any) => {
                     <Text style={styles.creditsEarnedLabel}>Credits Earned</Text>
                     <View style={styles.creditsEarnedValue}>
                       <Image
-                        source={{ uri: 'https://img.icons8.com/ios-filled/50/FFD700/fire-element.png' }}
-                        style={{ width: 24, height: 24, marginRight: 8 }}
+                        source={{ uri: 'https://img.icons8.com/ios-filled/50/ffffff/fire-element.png' }}
+                        style={{ width: 24, height: 24, marginRight: 8, tintColor: '#FFD700' }}
                       />
                       <Text style={styles.creditsEarnedNumber}>
                         +{summaryData?.exercises?.reduce((sum: number, ex: any) =>
@@ -2318,6 +2621,46 @@ const MainTabScreen = ({ navigation }: any) => {
           </Modal>
 
           {/* Challenge Creation Modal */}
+          {/* TEST MENU MODAL */}
+          <Modal visible={showTestMenu} animationType="fade" transparent={true}>
+            <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.85)', justifyContent: 'center', alignItems: 'center', padding: 20 }}>
+              <View style={{ backgroundColor: '#1C1C1E', borderRadius: 24, padding: 24, width: '100%' }}>
+                <Text style={{ color: 'white', fontSize: 22, fontWeight: '800', fontFamily: 'Lexend', marginBottom: 24, textAlign: 'center' }}>Test Mode</Text>
+
+                <Text style={{ color: '#8E8E93', fontSize: 14, fontFamily: 'Lexend', marginBottom: 12 }}>Select Level</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24 }}>
+                  {['Beginner', 'Intermediate', 'Advanced'].map(l => (
+                    <TouchableOpacity key={l} onPress={() => setTestLevelTarget(l.toLowerCase())}
+                      style={{ paddingVertical: 10, paddingHorizontal: 12, borderRadius: 12, backgroundColor: testLevelTarget === l.toLowerCase() ? '#FF6B35' : '#2C2C2E' }}>
+                      <Text style={{ color: 'white', fontSize: 12, fontFamily: 'Lexend', fontWeight: testLevelTarget === l.toLowerCase() ? '700' : '400' }}>{l}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+
+                <Text style={{ color: '#8E8E93', fontSize: 14, fontFamily: 'Lexend', marginBottom: 12 }}>Select Day</Text>
+                <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 32 }}>
+                  {[1, 2, 3, 4, 5, 6, 7].map(d => (
+                    <TouchableOpacity key={d} onPress={() => setTestDayTarget(d)}
+                      style={{ height: 44, width: 44, borderRadius: 22, justifyContent: 'center', alignItems: 'center', backgroundColor: testDayTarget === d ? '#FF6B35' : '#2C2C2E' }}>
+                      <Text style={{ color: 'white', fontSize: 15, fontFamily: 'Lexend', fontWeight: testDayTarget === d ? '700' : '400' }}>{d}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+
+                <View style={{ flexDirection: 'row', gap: 16 }}>
+                  <TouchableOpacity onPress={() => setShowTestMenu(false)}
+                    style={{ flex: 1, paddingVertical: 14, borderRadius: 16, backgroundColor: '#2C2C2E', alignItems: 'center' }}>
+                    <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Lexend', fontWeight: '600' }}>Cancel</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => { setShowTestMenu(false); showDailyKickstartDetails(testLevelTarget, testDayTarget); }}
+                    style={{ flex: 1, paddingVertical: 14, borderRadius: 16, backgroundColor: '#FF6B35', alignItems: 'center' }}>
+                    <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Lexend', fontWeight: '800' }}>Load</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </Modal>
+
           <Modal visible={showChallengeModal} animationType="slide" transparent={true}>
             <View style={styles.bottomModalOverlay}>
               <View style={styles.challengeModalContent}>
@@ -2365,7 +2708,7 @@ const MainTabScreen = ({ navigation }: any) => {
                             <Text style={{ fontSize: 12, color: '#FFF', fontFamily: 'Lexend' }}>#{matchedOpponent.rank}</Text>
                           </View>
                           <View style={{ backgroundColor: 'rgba(255,255,255,0.2)', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12 }}>
-                            <Text style={{ fontSize: 12, color: '#FFF', fontFamily: 'Lexend' }}>🔥 {matchedOpponent.credits}</Text>
+                            <Text style={{ fontSize: 12, color: '#FFF', fontFamily: 'Lexend' }}>PRO {matchedOpponent.credits}</Text>
                           </View>
                         </View>
                       </View>
@@ -2582,10 +2925,10 @@ const MainTabScreen = ({ navigation }: any) => {
                       let iconUrl = '';
                       let cleanTitle = ex.title;
                       if (ex.title.includes('Warm-up')) {
-                        iconUrl = 'https://img.icons8.com/ios-filled/50/FF6B35/fire-element.png';
+                        iconUrl = 'https://img.icons8.com/ios-filled/50/ffffff/fire-element.png';
                         cleanTitle = 'Warm-up';
                       } else if (ex.title.includes('Main Workout')) {
-                        iconUrl = 'https://img.icons8.com/ios-filled/50/FF6B35/trophy.png';
+                        iconUrl = 'https://img.icons8.com/ios-filled/50/ffffff/trophy.png';
                         cleanTitle = 'Main Workout';
                       }
 
@@ -2669,7 +3012,7 @@ const MainTabScreen = ({ navigation }: any) => {
                 </ScrollView>
 
                 <View style={{ position: 'absolute', bottom: 40, left: 24, right: 24 }}>
-                  {['Shoulders', 'Chest', 'Thighs', 'Hips & Glutes', 'Calves', 'Arms', 'Abs', 'PlankCore', 'Featured_UpperBody', 'Featured_CoreCrusher', 'Featured_HIITExpress', 'Featured_MobilityFlow', 'Featured_GluteBlaster', 'Featured_PowerPlyo', 'CardioCrusher', 'FatBurnHIIT', 'AbsReloaded', 'UpperBodyStrength', 'FullBodyBuilder', 'HIITExpress', 'SweatCircuit', 'CardioMax', 'CoreCrusher', 'MobilityFlow', 'DynamicMobility', 'PostureFix', 'MobilityMax', 'GluteBlaster', 'SideToSideBurner', 'LowImpactTorch', 'LowerMax', 'DailyKickstart', 'ChestProgram', 'ArmsProgram', 'LegsProgram', 'MeditationSession', 'LowerBody', 'EliteYoga'].includes(selectedWorkout?.id) ? (
+                  {selectedWorkout ? (
                     <TouchableOpacity
                       style={{
                         backgroundColor: '#FF6B35',
@@ -2685,12 +3028,11 @@ const MainTabScreen = ({ navigation }: any) => {
                       }}
                       activeOpacity={0.85}
                       onPress={async () => {
-                        const id = selectedWorkout?.id;
+                        const workoutToPlay = selectedWorkout; // capture BEFORE clearing
                         setSelectedWorkout(null);
                         setTimeout(() => {
-                          // Pass the current selected workout to the video screen
-                          navigation.navigate('VideoWorkout', { workout: selectedWorkout });
-                        }, 600);
+                          navigation.navigate('VideoWorkout', { workout: workoutToPlay });
+                        }, 300);
                       }}
                     >
                       <Text style={{ color: 'white', fontSize: responsive.rf(20), fontWeight: '800', fontFamily: 'Lexend', letterSpacing: 0.5 }}>START WORKOUT</Text>

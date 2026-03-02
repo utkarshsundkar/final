@@ -87,7 +87,8 @@ export const saveWorkoutCompletion = async (
     userId: string,
     workoutName: string,
     exercises: any[],
-    isPerfect?: boolean
+    isPerfect?: boolean,
+    durationSeconds?: number
 ) => {
     try {
         const token = await AuthService.getAccessToken();
@@ -101,7 +102,8 @@ export const saveWorkoutCompletion = async (
                 userId,
                 workout_name: workoutName,
                 exercises,
-                is_perfect: isPerfect
+                is_perfect: isPerfect,
+                duration_seconds: durationSeconds
             },
             {
                 headers: {
@@ -117,8 +119,29 @@ export const saveWorkoutCompletion = async (
     }
 };
 
+export const getProgressSummary = async (userId: string) => {
+    try {
+        const token = await AuthService.getAccessToken();
+        if (!token) return null;
+
+        const response = await axios.get(`${EXERCISE_URL}/progress-summary`, {
+            params: { userId },
+            headers: { Authorization: `Bearer ${token}` }
+        });
+
+        if (response.data?.success) {
+            return response.data.data;
+        }
+        return null;
+    } catch (error) {
+        console.error('Get Progress Summary Error:', error);
+        return null;
+    }
+};
+
 export default {
     saveExercise,
     getWorkoutStats,
-    saveWorkoutCompletion
+    saveWorkoutCompletion,
+    getProgressSummary
 };

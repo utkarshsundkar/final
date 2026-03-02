@@ -1,14 +1,67 @@
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Dimensions, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Dimensions, Image, ActivityIndicator } from 'react-native';
 import { responsive } from '../utils/responsive';
+import { useState, useEffect, useCallback } from 'react';
+import ExerciseService from '../services/ExerciseService';
+import AuthService from '../services/AuthService';
+import { useFocusEffect } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
 const ProgressScreen = () => {
+    const [stats, setStats] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
     const now = new Date();
     const year = now.getFullYear();
     const month = now.getMonth();
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    const fetchStats = async () => {
+        try {
+            const user = await AuthService.getCurrentUser();
+            if (user?.id) {
+                const data = await ExerciseService.getProgressSummary(user.id);
+                if (data) {
+                    setStats(data);
+                }
+            }
+        } catch (error) {
+            console.error('Failed to fetch stats:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchStats();
+    }, []);
+
+    useFocusEffect(
+        useCallback(() => {
+            fetchStats();
+        }, [])
+    );
+
+    // Derived values with fallbacks
+    const monthlyMinutes = stats?.monthlyMinutes || 0;
+    const monthlyGoal = 600;
+    const monthlyPercent = Math.min(Math.round((monthlyMinutes / monthlyGoal) * 100), 100);
+
+    const weeklyDays = stats?.weeklyDays || 0;
+    const weeklyGoal = 7;
+    const weeklyPercent = Math.min(Math.round((weeklyDays / weeklyGoal) * 100), 100);
+
+    const completionRate = stats?.completionRate || 0;
+    const streak = stats?.streak || 0;
+    const todayDuration = stats?.todayDuration || 0;
+
+    if (loading && !stats) {
+        return (
+            <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+                <ActivityIndicator size="large" color="#FF6B35" />
+            </View>
+        );
+    }
 
     return (
         <View style={styles.container}>
@@ -34,9 +87,9 @@ const ProgressScreen = () => {
                                         const dayNumber = index - firstDay + 1;
                                         const isValidDay = dayNumber > 0 && dayNumber <= daysInMonth;
 
-                                        // Static Pattern
-                                        const activeIndices = [0, 1, 3, 4, 8, 10, 11, 15, 16, 17, 20, 22, 24, 27, 29, 30, 31, 33];
-                                        const isActive = isValidDay && activeIndices.includes(index);
+                                        // Real Dynamic Pattern
+                                        const activeDays = stats?.activeDays || [];
+                                        const isActive = isValidDay && activeDays.includes(dayNumber);
                                         const isToday = isValidDay && dayNumber === now.getDate();
 
                                         return (
@@ -72,7 +125,7 @@ const ProgressScreen = () => {
                 <View style={styles.statsCard}>
                     {/* Left: Radial Charts Simulation */}
                     <View style={styles.chartContainer}>
-                        {/* Outer Ring (Monthly Goal - 40%) */}
+                        {/* Outer Ring (Monthly Goal) */}
                         <View style={{ position: 'absolute', width: 120, height: 120, borderRadius: 60, borderWidth: 14, borderColor: '#F2F2F7' }} />
                         <View style={{
                             position: 'absolute',
@@ -81,13 +134,13 @@ const ProgressScreen = () => {
                             borderRadius: 60,
                             borderWidth: 14,
                             borderTopColor: '#FF6B35',
-                            borderLeftColor: '#FF6B35',
-                            borderBottomColor: 'transparent',
-                            borderRightColor: '#F2F2F7',
-                            transform: [{ rotate: '-10deg' }]
+                            borderLeftColor: monthlyPercent > 25 ? '#FF6B35' : 'transparent',
+                            borderBottomColor: monthlyPercent > 50 ? '#FF6B35' : 'transparent',
+                            borderRightColor: monthlyPercent > 75 ? '#FF6B35' : 'transparent',
+                            transform: [{ rotate: `${(monthlyPercent / 100) * 360 - 45}deg` }]
                         }} />
 
-                        {/* Inner Ring (Weekly Goal - 71%) */}
+                        {/* Inner Ring (Weekly Goal) */}
                         <View style={{ position: 'absolute', width: 85, height: 85, borderRadius: 42.5, borderWidth: 14, borderColor: '#F2F2F7' }} />
                         <View style={{
                             position: 'absolute',
@@ -96,10 +149,10 @@ const ProgressScreen = () => {
                             borderRadius: 42.5,
                             borderWidth: 14,
                             borderTopColor: '#1C1C1E',
-                            borderLeftColor: '#1C1C1E',
-                            borderBottomColor: '#1C1C1E',
-                            borderRightColor: '#F2F2F7',
-                            transform: [{ rotate: '45deg' }]
+                            borderLeftColor: weeklyPercent > 25 ? '#1C1C1E' : 'transparent',
+                            borderBottomColor: weeklyPercent > 50 ? '#1C1C1E' : 'transparent',
+                            borderRightColor: weeklyPercent > 75 ? '#1C1C1E' : 'transparent',
+                            transform: [{ rotate: `${(weeklyPercent / 100) * 360 - 45}deg` }]
                         }} />
                     </View>
 
@@ -109,8 +162,8 @@ const ProgressScreen = () => {
                             <View style={[styles.dot, { backgroundColor: '#FF6B35' }]} />
                             <View>
                                 <Text style={styles.legendLabel}>Monthly Goal</Text>
-                                <Text style={styles.legendValue}>240<Text style={styles.legendTotal}>/600min</Text></Text>
-                                <Text style={{ fontSize: 10, color: '#FF6B35', fontWeight: '700', fontFamily: 'Lexend', marginTop: 2 }}>40% of Monthly Goal</Text>
+                                <Text style={styles.legendValue}>{monthlyMinutes}<Text style={styles.legendTotal}>/{monthlyGoal}min</Text></Text>
+                                <Text style={{ fontSize: 10, color: '#FF6B35', fontWeight: '700', fontFamily: 'Lexend', marginTop: 2 }}>{monthlyPercent}% of Monthly Goal</Text>
                             </View>
                         </View>
 
@@ -118,8 +171,8 @@ const ProgressScreen = () => {
                             <View style={[styles.dot, { backgroundColor: '#1C1C1E' }]} />
                             <View>
                                 <Text style={styles.legendLabel}>Weekly Goal</Text>
-                                <Text style={styles.legendValue}>5<Text style={styles.legendTotal}>/7 days</Text></Text>
-                                <Text style={{ fontSize: 10, color: '#8E8E93', fontWeight: '700', fontFamily: 'Lexend', marginTop: 2 }}>2 Days Left to Perfect Week</Text>
+                                <Text style={styles.legendValue}>{weeklyDays}<Text style={styles.legendTotal}>/{weeklyGoal} days</Text></Text>
+                                <Text style={{ fontSize: 10, color: '#8E8E93', fontWeight: '700', fontFamily: 'Lexend', marginTop: 2 }}>{weeklyGoal - weeklyDays} Days Left to Perfect Week</Text>
                             </View>
                         </View>
                     </View>
@@ -140,14 +193,14 @@ const ProgressScreen = () => {
                                     borderRadius: 40,
                                     borderWidth: 8,
                                     borderTopColor: '#FF6B35',
-                                    borderLeftColor: '#FF6B35',
-                                    borderBottomColor: '#FF6B35',
-                                    borderRightColor: '#F5F5F5',
-                                    transform: [{ rotate: '-15deg' }],
+                                    borderLeftColor: completionRate > 25 ? '#FF6B35' : '#F5F5F5',
+                                    borderBottomColor: completionRate > 50 ? '#FF6B35' : '#F5F5F5',
+                                    borderRightColor: completionRate > 75 ? '#FF6B35' : '#F5F5F5',
+                                    transform: [{ rotate: `${(completionRate / 100) * 360 - 90}deg` }],
                                     zIndex: 1,
                                     elevation: 1
                                 }} />
-                                <Text style={{ position: 'absolute', fontSize: 20, fontWeight: '700', fontFamily: 'Lexend', color: '#000', zIndex: 2 }}>92%</Text>
+                                <Text style={{ position: 'absolute', fontSize: 20, fontWeight: '700', fontFamily: 'Lexend', color: '#000', zIndex: 2 }}>{completionRate}%</Text>
                             </View>
                         </View>
                     </View>
@@ -156,7 +209,7 @@ const ProgressScreen = () => {
                     <View style={styles.gridCard}>
                         <Text style={styles.cardLabel}>Miss Rate</Text>
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ fontSize: responsive.rf(responsive.isTablet ? 64 : 48), fontWeight: '600', fontFamily: 'Lexend', color: '#FF5252' }}>8%</Text>
+                            <Text style={{ fontSize: responsive.rf(responsive.isTablet ? 64 : 48), fontWeight: '600', fontFamily: 'Lexend', color: '#FF5252' }}>{100 - completionRate}%</Text>
                             <Text style={{ fontSize: 12, color: '#888', fontFamily: 'Lexend' }}>Last 30 days</Text>
                         </View>
                     </View>
@@ -169,7 +222,7 @@ const ProgressScreen = () => {
                         <Text style={styles.cardLabel}>Streak</Text>
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={{ fontSize: responsive.rf(responsive.isTablet ? 64 : 48), fontWeight: '700', fontFamily: 'Lexend', color: '#FF6B35' }}>12</Text>
+                                <Text style={{ fontSize: responsive.rf(responsive.isTablet ? 64 : 48), fontWeight: '700', fontFamily: 'Lexend', color: '#FF6B35' }}>{streak}</Text>
                                 <Text style={{ fontSize: 24, marginLeft: 4 }}>🔥</Text>
                             </View>
                             <Text style={{ fontSize: 14, color: '#888', fontFamily: 'Lexend' }}>Days Active</Text>
@@ -181,7 +234,7 @@ const ProgressScreen = () => {
                         <Text style={styles.cardLabel}>Duration</Text>
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                             <Text style={{ fontSize: responsive.rf(responsive.isTablet ? 64 : 48), fontWeight: '600', fontFamily: 'Lexend', color: '#000' }}>
-                                45 <Text style={{ fontSize: responsive.rf(responsive.isTablet ? 24 : 18), fontWeight: '500', fontFamily: 'Lexend', color: '#888' }}>min</Text>
+                                {todayDuration} <Text style={{ fontSize: responsive.rf(responsive.isTablet ? 24 : 18), fontWeight: '500', fontFamily: 'Lexend', color: '#888' }}>min</Text>
                             </Text>
                         </View>
                     </View>
