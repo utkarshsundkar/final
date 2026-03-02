@@ -357,6 +357,8 @@ const getUserStatsProgress = asyncHandler(async (req, res) => {
     throw new ApiError(400, "userId is required");
   }
 
+  const targetUserId = new mongoose.Types.ObjectId(userId);
+
   const now = new Date();
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
   const startOfWeek = new Date(now);
@@ -364,7 +366,7 @@ const getUserStatsProgress = asyncHandler(async (req, res) => {
 
   // 1. Monthly Duration (minutes)
   const monthlyWorkouts = await Workout.find({
-    userId,
+    userId: targetUserId,
     createdAt: { $gte: startOfMonth }
   });
 
@@ -376,7 +378,7 @@ const getUserStatsProgress = asyncHandler(async (req, res) => {
 
   // 2. Weekly Goal (days worked out this week)
   const weeklyWorkouts = await Workout.find({
-    userId,
+    userId: targetUserId,
     createdAt: { $gte: startOfWeek }
   });
 
@@ -396,7 +398,7 @@ const getUserStatsProgress = asyncHandler(async (req, res) => {
   }
 
   // 4. Current Streak
-  const allWorkouts = await Workout.find({ userId }).sort({ createdAt: -1 });
+  const allWorkouts = await Workout.find({ userId: targetUserId }).sort({ createdAt: -1 });
   let currentStreak = 0;
   if (allWorkouts.length > 0) {
     const daySet = new Set(allWorkouts.map(w => new Date(w.createdAt).toDateString()));
@@ -411,7 +413,7 @@ const getUserStatsProgress = asyncHandler(async (req, res) => {
   // 5. Total Duration (Today)
   const startOfToday = new Date(now.setHours(0, 0, 0, 0));
   const todayWorkouts = await Workout.find({
-    userId,
+    userId: targetUserId,
     createdAt: { $gte: startOfToday }
   });
   const todayDuration = todayWorkouts.reduce((acc, curr) => {
@@ -424,9 +426,13 @@ const getUserStatsProgress = asyncHandler(async (req, res) => {
   sevenDaysAgo.setHours(0, 0, 0, 0);
 
   const last7DaysWorkouts = await Workout.find({
-    userId,
+    userId: targetUserId,
     createdAt: { $gte: sevenDaysAgo }
   });
+
+  const activeDays = Array.from(new Set(
+    monthlyWorkouts.map(w => new Date(w.createdAt).getDate())
+  ));
 
   const weeklyActivity = [];
   for (let i = 0; i < 7; i++) {
