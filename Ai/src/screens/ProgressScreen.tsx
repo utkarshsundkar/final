@@ -3,6 +3,7 @@ import { responsive } from '../utils/responsive';
 import { useState, useEffect, useCallback } from 'react';
 import ExerciseService from '../services/ExerciseService';
 import AuthService from '../services/AuthService';
+import OnboardingService from '../services/OnboardingService';
 import { useFocusEffect } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
@@ -10,6 +11,7 @@ const { width } = Dimensions.get('window');
 const ProgressScreen = () => {
     const [stats, setStats] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [userLevel, setUserLevel] = useState('intermediate');
     const now = new Date();
     const year = now.getFullYear();
     const month = now.getMonth();
@@ -20,9 +22,16 @@ const ProgressScreen = () => {
         try {
             const user = await AuthService.getCurrentUser();
             if (user?.id) {
-                const data = await ExerciseService.getProgressSummary(user.id);
+                const [data, onboarding] = await Promise.all([
+                    ExerciseService.getProgressSummary(user.id),
+                    OnboardingService.getOnboardingData()
+                ]);
+
                 if (data) {
                     setStats(data);
+                }
+                if (onboarding?.experience) {
+                    setUserLevel(onboarding.experience.toLowerCase());
                 }
             }
         } catch (error) {
@@ -44,11 +53,14 @@ const ProgressScreen = () => {
 
     // Derived values with fallbacks
     const monthlyMinutes = stats?.monthlyMinutes || 0;
-    const monthlyGoal = 600;
+
+    // Level-based monthly goals based on 40m/day avg for Intermediate:
+    // Beginner (20m/day -> 600m), Intermediate (40m/day -> 1200m), Advanced/Expert (60m/day -> 1800m)
+    const monthlyGoal = userLevel === 'beginner' ? 600 : (userLevel === 'intermediate' ? 1200 : 1800);
     const monthlyPercent = Math.min(Math.round((monthlyMinutes / monthlyGoal) * 100), 100);
 
     const weeklyDays = stats?.weeklyDays || 0;
-    const weeklyGoal = 7;
+    const weeklyGoal = 6;
     const weeklyPercent = Math.min(Math.round((weeklyDays / weeklyGoal) * 100), 100);
 
     const completionRate = stats?.completionRate || 0;
@@ -89,7 +101,9 @@ const ProgressScreen = () => {
 
                                         // Real Dynamic Pattern
                                         const activeDays = stats?.activeDays || [];
+                                        const yogaDays = stats?.yogaDays || [];
                                         const isActive = isValidDay && activeDays.includes(dayNumber);
+                                        const isYoga = isValidDay && yogaDays.includes(dayNumber);
                                         const isToday = isValidDay && dayNumber === now.getDate();
 
                                         return (
@@ -97,20 +111,32 @@ const ProgressScreen = () => {
                                                 key={col}
                                                 style={[
                                                     styles.activityGridBox,
-                                                    isValidDay && (isActive ? { backgroundColor: '#FF6B35' } : { backgroundColor: 'rgba(255,255,255,0.08)' }),
-                                                    isValidDay && isToday && { borderColor: '#FFFFFF', borderWidth: 2, backgroundColor: isActive ? '#FF6B35' : 'rgba(255,255,255,0.08)' },
+                                                    isValidDay && (isActive ? { backgroundColor: '#FF6B35' } : { backgroundColor: '#333' }),
+                                                    isValidDay && isToday && { borderColor: '#FFFFFF', borderWidth: 2, backgroundColor: isActive ? '#FF6B35' : '#333' },
                                                     !isValidDay && { backgroundColor: 'transparent' }
                                                 ]}
                                             >
                                                 {isValidDay && (
-                                                    <Text style={{
-                                                        fontSize: responsive.rf(responsive.isTablet ? 16 : 10),
-                                                        color: isActive ? '#FFFFFF' : '#888',
-                                                        fontFamily: 'Lexend',
-                                                        fontWeight: isToday ? '800' : '500'
-                                                    }}>
-                                                        {dayNumber}
-                                                    </Text>
+                                                    <>
+                                                        <Text style={{
+                                                            fontSize: responsive.rf(responsive.isTablet ? 16 : 10),
+                                                            color: isActive ? '#FFFFFF' : '#888',
+                                                            fontFamily: 'Lexend',
+                                                            fontWeight: isToday ? '800' : '500'
+                                                        }}>
+                                                            {dayNumber}
+                                                        </Text>
+                                                        {isYoga && (
+                                                            <Text style={{
+                                                                position: 'absolute',
+                                                                bottom: -4,
+                                                                right: -2,
+                                                                fontSize: responsive.rf(responsive.isTablet ? 14 : 10)
+                                                            }}>
+                                                                🔥
+                                                            </Text>
+                                                        )}
+                                                    </>
                                                 )}
                                             </View>
                                         );
@@ -123,56 +149,60 @@ const ProgressScreen = () => {
 
                 {/* Stats Overview Card */}
                 <View style={styles.statsCard}>
-                    {/* Left: Radial Charts Simulation */}
-                    <View style={styles.chartContainer}>
-                        {/* Outer Ring (Monthly Goal) */}
-                        <View style={{ position: 'absolute', width: 120, height: 120, borderRadius: 60, borderWidth: 14, borderColor: '#F2F2F7' }} />
-                        <View style={{
-                            position: 'absolute',
-                            width: 120,
-                            height: 120,
-                            borderRadius: 60,
-                            borderWidth: 14,
-                            borderTopColor: '#FF6B35',
-                            borderLeftColor: monthlyPercent > 25 ? '#FF6B35' : 'transparent',
-                            borderBottomColor: monthlyPercent > 50 ? '#FF6B35' : 'transparent',
-                            borderRightColor: monthlyPercent > 75 ? '#FF6B35' : 'transparent',
-                            transform: [{ rotate: `${(monthlyPercent / 100) * 360 - 45}deg` }]
-                        }} />
-
-                        {/* Inner Ring (Weekly Goal) */}
-                        <View style={{ position: 'absolute', width: 85, height: 85, borderRadius: 42.5, borderWidth: 14, borderColor: '#F2F2F7' }} />
-                        <View style={{
-                            position: 'absolute',
-                            width: 85,
-                            height: 85,
-                            borderRadius: 42.5,
-                            borderWidth: 14,
-                            borderTopColor: '#1C1C1E',
-                            borderLeftColor: weeklyPercent > 25 ? '#1C1C1E' : 'transparent',
-                            borderBottomColor: weeklyPercent > 50 ? '#1C1C1E' : 'transparent',
-                            borderRightColor: weeklyPercent > 75 ? '#1C1C1E' : 'transparent',
-                            transform: [{ rotate: `${(weeklyPercent / 100) * 360 - 45}deg` }]
-                        }} />
+                    {/* Vertical Activity Graph - 100% Native & High Visual Fidelity */}
+                    <View style={{ flex: 1.3, height: 140, justifyContent: 'flex-end', paddingBottom: 10 }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', height: 100 }}>
+                            {(stats?.weeklyActivity || [
+                                { label: 'M', value: 0 }, { label: 'T', value: 0 }, { label: 'W', value: 0 },
+                                { label: 'T', value: 0 }, { label: 'F', value: 0 }, { label: 'S', value: 0 }, { label: 'S', value: 0 }
+                            ]).map((day: any, idx: number) => {
+                                // Calculate normalized height (max 80 units)
+                                const barHeight = day.value > 0 ? Math.min(Math.max((day.value / 60) * 80, 8), 80) : 0;
+                                return (
+                                    <View key={idx} style={{ alignItems: 'center', width: '12%' }}>
+                                        <View style={{
+                                            height: 80,
+                                            width: 8,
+                                            backgroundColor: '#F2F2F7',
+                                            borderRadius: 4,
+                                            justifyContent: 'flex-end'
+                                        }}>
+                                            <View style={{
+                                                height: barHeight,
+                                                width: '100%',
+                                                backgroundColor: day.isToday ? '#FF6B35' : '#1C1C1E',
+                                                borderRadius: 4,
+                                                opacity: day.value > 0 ? 1 : 0
+                                            }} />
+                                        </View>
+                                        <Text style={{
+                                            fontSize: 9,
+                                            color: '#8E8E93',
+                                            fontFamily: 'Lexend',
+                                            marginTop: 6,
+                                            fontWeight: day.isToday ? '800' : '500'
+                                        }}>{day.label}</Text>
+                                    </View>
+                                );
+                            })}
+                        </View>
+                        <Text style={{ fontSize: 10, color: '#8E8E93', fontFamily: 'Lexend', textAlign: 'center', marginTop: 8 }}>Weekly Momentum</Text>
                     </View>
 
-                    {/* Right: Legend Box (White) */}
-                    <View style={styles.legendBox}>
-                        <View style={styles.legendItem}>
-                            <View style={[styles.dot, { backgroundColor: '#FF6B35' }]} />
-                            <View>
-                                <Text style={styles.legendLabel}>Monthly Goal</Text>
-                                <Text style={styles.legendValue}>{monthlyMinutes}<Text style={styles.legendTotal}>/{monthlyGoal}min</Text></Text>
-                                <Text style={{ fontSize: 10, color: '#FF6B35', fontWeight: '700', fontFamily: 'Lexend', marginTop: 2 }}>{monthlyPercent}% of Monthly Goal</Text>
+                    {/* Right: Goals Summary */}
+                    <View style={{ flex: 1, marginLeft: 16 }}>
+                        <View style={{ marginBottom: 16 }}>
+                            <Text style={styles.legendLabel}>Monthly Goal</Text>
+                            <Text style={{ fontSize: 18, fontWeight: '700', color: '#FF6B35', fontFamily: 'Lexend' }}>{monthlyMinutes}<Text style={{ fontSize: 12, color: '#8E8E93', fontWeight: '400' }}>/{monthlyGoal}m</Text></Text>
+                            <View style={{ height: 4, backgroundColor: '#F2F2F7', borderRadius: 2, marginTop: 4, overflow: 'hidden' }}>
+                                <View style={{ height: '100%', width: `${monthlyPercent}%`, backgroundColor: '#FF6B35' }} />
                             </View>
                         </View>
-
-                        <View style={[styles.legendItem, { marginTop: 12 }]}>
-                            <View style={[styles.dot, { backgroundColor: '#1C1C1E' }]} />
-                            <View>
-                                <Text style={styles.legendLabel}>Weekly Goal</Text>
-                                <Text style={styles.legendValue}>{weeklyDays}<Text style={styles.legendTotal}>/{weeklyGoal} days</Text></Text>
-                                <Text style={{ fontSize: 10, color: '#8E8E93', fontWeight: '700', fontFamily: 'Lexend', marginTop: 2 }}>{weeklyGoal - weeklyDays} Days Left to Perfect Week</Text>
+                        <View>
+                            <Text style={styles.legendLabel}>Weekly Goal</Text>
+                            <Text style={{ fontSize: 18, fontWeight: '700', color: '#1C1C1E', fontFamily: 'Lexend' }}>{weeklyDays}<Text style={{ fontSize: 12, color: '#8E8E93', fontWeight: '400' }}>/6d</Text></Text>
+                            <View style={{ height: 4, backgroundColor: '#F2F2F7', borderRadius: 2, marginTop: 4, overflow: 'hidden' }}>
+                                <View style={{ height: '100%', width: `${weeklyPercent}%`, backgroundColor: '#1C1C1E' }} />
                             </View>
                         </View>
                     </View>
@@ -185,22 +215,11 @@ const ProgressScreen = () => {
                         <Text style={styles.cardLabel}>Completion Rate</Text>
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
                             {/* Ring Container */}
-                            <View style={{ width: 80, height: 80, justifyContent: 'center', alignItems: 'center' }}>
-                                {/* Single View Multi-color Border for Android */}
-                                <View style={{
-                                    width: 80,
-                                    height: 80,
-                                    borderRadius: 40,
-                                    borderWidth: 8,
-                                    borderTopColor: '#FF6B35',
-                                    borderLeftColor: completionRate > 25 ? '#FF6B35' : '#F5F5F5',
-                                    borderBottomColor: completionRate > 50 ? '#FF6B35' : '#F5F5F5',
-                                    borderRightColor: completionRate > 75 ? '#FF6B35' : '#F5F5F5',
-                                    transform: [{ rotate: `${(completionRate / 100) * 360 - 90}deg` }],
-                                    zIndex: 1,
-                                    elevation: 1
-                                }} />
-                                <Text style={{ position: 'absolute', fontSize: 20, fontWeight: '700', fontFamily: 'Lexend', color: '#000', zIndex: 2 }}>{completionRate}%</Text>
+                            <View style={{ width: '100%', alignItems: 'center' }}>
+                                <Text style={{ fontSize: 36, fontWeight: '800', fontFamily: 'Lexend', color: '#FF6B35', marginBottom: 12 }}>{completionRate}%</Text>
+                                <View style={{ height: 8, width: '100%', backgroundColor: '#F5F5F5', borderRadius: 4, overflow: 'hidden' }}>
+                                    <View style={{ height: '100%', width: `${completionRate}%`, backgroundColor: '#FF6B35', borderRadius: 4 }} />
+                                </View>
                             </View>
                         </View>
                     </View>

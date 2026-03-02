@@ -350,17 +350,6 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
       { name: 'Glutes Bridge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185516/Glute_Bridge_nphtwp.mp4' },
     ]
   },
-  'MeditationSession': {
-    id: 'MeditationSession',
-    title: 'Meditation Session',
-    description: 'Find your inner peace and clarity - 1 session',
-    exercises: [
-      { name: 'Meditation - Sukhasana', detail: '5 min', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185593/Meditation_-_Sukhasana_gnlmbp.mp4' },
-      { name: 'Deep Breathing', detail: '5 min' },
-      { name: 'Body Scan', detail: '5 min' },
-      { name: 'Mindful Observation', detail: '5 min' },
-    ]
-  },
   'EliteYoga': {
     id: 'EliteYoga',
     title: 'Elite Yoga',
@@ -736,6 +725,8 @@ const VideoWorkoutScreen = ({ navigation, route }: any) => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isResting, setIsResting] = useState(false);
+  const [isDemoPhase, setIsDemoPhase] = useState(true); // New state for demo phase
+  const [videoRate, setVideoRate] = useState(1.0); // State to control video speed
   const exerciseTime = workout?.exerciseDuration || 90;
   const restTime = workout?.restDuration || 20; // Default to 20 if not specified
   const [timer, setTimer] = useState(exerciseTime);
@@ -747,6 +738,37 @@ const VideoWorkoutScreen = ({ navigation, route }: any) => {
   useEffect(() => {
     AuthService.getCurrentUser().then(setUser);
   }, []);
+
+  // Trigger demo phase for the first set of every new exercise
+  useEffect(() => {
+    if (!isResting) {
+      // Find the first index where this specific exercise appears in the workout list
+      const firstOccurrenceIndex = exercises.findIndex(ex => ex.name === currentExercise?.name);
+
+      // It's the "First Set" if this is the first time we see this name in the list, 
+      // or if it's explicitly labeled as Set 1/1st Set.
+      const isFirstSet = (firstOccurrenceIndex === currentIndex) ||
+        currentExercise?.detail?.toLowerCase().includes('set 1') ||
+        currentExercise?.detail?.toLowerCase().includes('1st set');
+
+      if (currentExercise?.videoUrl && isFirstSet) {
+        setIsDemoPhase(true);
+        setVideoRate(1.0); // Reset rate for new demo
+      } else {
+        setIsDemoPhase(false);
+        setVideoRate(1.0);
+      }
+    }
+  }, [currentIndex, isResting, currentExercise?.videoUrl, currentExercise?.name, currentExercise?.detail]);
+
+  const onVideoLoad = (data: any) => {
+    // If video is longer than 5s and we are in demo phase, fast forward
+    if (isDemoPhase && data.duration > 5) {
+      setVideoRate(2.0);
+    } else {
+      setVideoRate(1.0);
+    }
+  };
 
   const completeWorkout = async () => {
     if (user?.id && workout?.title) {
@@ -784,6 +806,9 @@ const VideoWorkoutScreen = ({ navigation, route }: any) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
+      // Pause timer during demo phase
+      if (isDemoPhase && !isResting) return;
+
       setTimer((prev: number) => {
         if (prev > 0) return prev - 1;
 
@@ -800,7 +825,7 @@ const VideoWorkoutScreen = ({ navigation, route }: any) => {
       });
     }, 1000);
     return () => clearInterval(interval);
-  }, [currentIndex, isResting, exerciseTime, restTime]);
+  }, [currentIndex, isResting, exerciseTime, restTime, isDemoPhase]);
 
   const handleNext = () => {
     if (isResting) {
@@ -882,7 +907,12 @@ const VideoWorkoutScreen = ({ navigation, route }: any) => {
             source={{ uri: currentExercise.videoUrl }}
             style={StyleSheet.absoluteFillObject}
             resizeMode="cover"
-            repeat
+            repeat={!isDemoPhase}
+            rate={videoRate}
+            onLoad={onVideoLoad}
+            onEnd={() => {
+              if (isDemoPhase) setIsDemoPhase(false);
+            }}
             muted
             playInBackground={false}
             playWhenInactive={false}
@@ -916,121 +946,137 @@ const VideoWorkoutScreen = ({ navigation, route }: any) => {
             paddingVertical: 7, borderRadius: 20, borderWidth: 1, borderColor: '#F2F2F7'
           }}>
             <Text style={{
-              color: isResting ? '#FF8C42' : '#1C1C1E', fontSize: 12,
+              color: isResting ? '#FF8C42' : (isDemoPhase ? '#FF6B35' : '#1C1C1E'), fontSize: 12,
               fontWeight: '700', fontFamily: 'Lexend', textTransform: 'uppercase', letterSpacing: 1.5
             }}>
-              {isResting ? '🔥  REST' : `${currentIndex + 1}  /  ${exercises.length}`}
+              {isResting ? '🔥  REST' : (isDemoPhase ? '📺  TUTORIAL' : `${currentIndex + 1}  /  ${exercises.length}`)}
             </Text>
           </View>
-          <TouchableOpacity
-            onPress={() => Alert.alert('Quit Workout?',
-              'Your progress for this session will be lost. Are you sure?',
-              [{ text: 'Keep Going', style: 'cancel' },
-              { text: 'Yes, Quit', onPress: () => navigation.goBack(), style: 'destructive' }])}
-            style={{
-              width: 40, height: 40, borderRadius: 20,
-              backgroundColor: 'rgba(255,255,255,0.85)', borderWidth: 1,
-              borderColor: '#F2F2F7', justifyContent: 'center', alignItems: 'center'
-            }}>
-            <Text style={{ color: '#1C1C1E', fontSize: 17, fontWeight: '700' }}>✕</Text>
-          </TouchableOpacity>
+
+          {isDemoPhase && !isResting && (
+            <TouchableOpacity
+              onPress={() => setIsDemoPhase(false)}
+              style={{
+                backgroundColor: 'rgba(255,255,255,0.85)', paddingHorizontal: 16,
+                paddingVertical: 7, borderRadius: 20, borderWidth: 1, borderColor: '#F2F2F7'
+              }}>
+              <Text style={{ color: '#FF6B35', fontSize: 12, fontWeight: '800', fontFamily: 'Lexend' }}>SKIP ›</Text>
+            </TouchableOpacity>
+          )}
+
+          {!isDemoPhase && (
+            <TouchableOpacity
+              onPress={() => Alert.alert('Quit Workout?',
+                'Your progress for this session will be lost. Are you sure?',
+                [{ text: 'Keep Going', style: 'cancel' },
+                { text: 'Yes, Quit', onPress: () => navigation.goBack(), style: 'destructive' }])}
+              style={{
+                width: 40, height: 40, borderRadius: 20,
+                backgroundColor: 'rgba(255,255,255,0.85)', borderWidth: 1,
+                borderColor: '#F2F2F7', justifyContent: 'center', alignItems: 'center'
+              }}>
+              <Text style={{ color: '#1C1C1E', fontSize: 17, fontWeight: '700' }}>✕</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
 
       {/* ── BOTTOM PANEL ── */}
-      <View style={{
-        backgroundColor: '#FFFFFF', paddingHorizontal: 24,
-        paddingTop: 16, paddingBottom: 44, borderTopWidth: 1, borderColor: '#F2F2F7'
-      }}>
-
-        {/* Exercise name */}
-        {!isResting && (
-          <View style={{ marginBottom: 10 }}>
-            <Text style={{
-              color: 'rgba(28,28,30,0.40)', fontSize: 10, fontWeight: '700',
-              fontFamily: 'Lexend', textTransform: 'uppercase', letterSpacing: 3, marginBottom: 2
-            }}>
-              Now Performing
-            </Text>
-            <Text style={{ color: '#1C1C1E', fontSize: 18, fontWeight: '900', fontFamily: 'Lexend' }}>
-              {currentExercise.name}
-            </Text>
-          </View>
-        )}
-
-        {/* Progress bar */}
+      {!isDemoPhase && (
         <View style={{
-          height: 3, backgroundColor: 'rgba(0,0,0,0.05)',
-          borderRadius: 2, marginBottom: 16, overflow: 'hidden'
+          backgroundColor: '#FFFFFF', paddingHorizontal: 24,
+          paddingTop: 16, paddingBottom: 44, borderTopWidth: 1, borderColor: '#F2F2F7'
         }}>
+
+          {/* Exercise name */}
+          {!isResting && (
+            <View style={{ marginBottom: 10 }}>
+              <Text style={{
+                color: 'rgba(28,28,30,0.40)', fontSize: 10, fontWeight: '700',
+                fontFamily: 'Lexend', textTransform: 'uppercase', letterSpacing: 3, marginBottom: 2
+              }}>
+                Now Performing
+              </Text>
+              <Text style={{ color: '#1C1C1E', fontSize: 18, fontWeight: '900', fontFamily: 'Lexend' }}>
+                {currentExercise.name}
+              </Text>
+            </View>
+          )}
+
+          {/* Progress bar */}
           <View style={{
-            height: 3, width: `${Math.min(progressPct, 100)}%` as any,
-            backgroundColor: '#FF6B35', borderRadius: 2
-          }} />
-        </View>
-
-        {/* Controls */}
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-          <TouchableOpacity onPress={handlePrev}
-            disabled={currentIndex === 0 && !isResting}
-            style={{
-              width: 52, height: 52, borderRadius: 26,
-              backgroundColor: '#F8F9FB', borderWidth: 1,
-              borderColor: '#F2F2F7', justifyContent: 'center', alignItems: 'center',
-              opacity: currentIndex === 0 && !isResting ? 0.25 : 1
-            }}>
-            <Text style={{ color: '#1C1C1E', fontSize: 24 }}>‹</Text>
-          </TouchableOpacity>
-
-          <View style={{ alignItems: 'center' }}>
-            <Text style={{
-              color: isResting ? '#FF8C42' : '#1C1C1E',
-              fontSize: responsive.rf(50), fontWeight: '900', fontFamily: 'Lexend', letterSpacing: -1
-            }}>
-              {formatTime(timer)}
-            </Text>
-            <Text style={{
-              color: 'rgba(28,28,30,0.30)', fontSize: 10,
-              fontFamily: 'Lexend', textTransform: 'uppercase', letterSpacing: 2.5
-            }}>
-              {isResting ? 'Rest' : 'Work'}
-            </Text>
-          </View>
-
-          <TouchableOpacity onPress={handleNext}
-            style={{
-              width: 52, height: 52, borderRadius: 26,
-              backgroundColor: (currentIndex === exercises.length - 1 && !isResting) ? '#FF6B35' : '#F8F9FB',
-              borderWidth: 1,
-              borderColor: (currentIndex === exercises.length - 1 && !isResting) ? '#FF6B35' : '#F2F2F7',
-              justifyContent: 'center', alignItems: 'center',
-              shadowColor: '#FF6B35',
-              shadowOpacity: (currentIndex === exercises.length - 1 && !isResting) ? 0.5 : 0,
-              shadowRadius: 12, elevation: 5
-            }}>
-            {currentIndex === exercises.length - 1 && !isResting
-              ? <Text style={{ color: '#FFF', fontSize: 22 }}>✓</Text>
-              : <Text style={{ color: '#FF6B35', fontSize: 24 }}>›</Text>}
-          </TouchableOpacity>
-        </View>
-
-        {/* Next hint */}
-        {nextExercise && !isResting && (
-          <View style={{
-            marginTop: 14, flexDirection: 'row', alignItems: 'center',
-            backgroundColor: '#F8F9FB', borderRadius: 10, padding: 11, paddingHorizontal: 14,
-            borderWidth: 1, borderColor: '#F2F2F7'
+            height: 3, backgroundColor: 'rgba(0,0,0,0.05)',
+            borderRadius: 2, marginBottom: 16, overflow: 'hidden'
           }}>
-            <Text style={{
-              color: 'rgba(28,28,30,0.4)', fontSize: 10, fontFamily: 'Lexend',
-              textTransform: 'uppercase', letterSpacing: 1.5, marginRight: 8
-            }}>Next</Text>
-            <Text style={{ color: 'rgba(28,28,30,0.7)', fontSize: 13, fontFamily: 'Lexend', fontWeight: '600' }}>
-              {nextExercise.name}
-            </Text>
+            <View style={{
+              height: 3, width: `${Math.min(progressPct, 100)}%` as any,
+              backgroundColor: '#FF6B35', borderRadius: 2
+            }} />
           </View>
-        )}
-      </View>
+
+          {/* Controls */}
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+            <TouchableOpacity onPress={handlePrev}
+              disabled={currentIndex === 0 && !isResting}
+              style={{
+                width: 52, height: 52, borderRadius: 26,
+                backgroundColor: '#F8F9FB', borderWidth: 1,
+                borderColor: '#F2F2F7', justifyContent: 'center', alignItems: 'center',
+                opacity: currentIndex === 0 && !isResting ? 0.25 : 1
+              }}>
+              <Text style={{ color: '#1C1C1E', fontSize: 24 }}>‹</Text>
+            </TouchableOpacity>
+
+            <View style={{ alignItems: 'center' }}>
+              <Text style={{
+                color: isResting ? '#FF8C42' : '#1C1C1E',
+                fontSize: responsive.rf(50), fontWeight: '900', fontFamily: 'Lexend', letterSpacing: -1
+              }}>
+                {formatTime(timer)}
+              </Text>
+              <Text style={{
+                color: 'rgba(28,28,30,0.30)', fontSize: 10,
+                fontFamily: 'Lexend', textTransform: 'uppercase', letterSpacing: 2.5
+              }}>
+                {isResting ? 'Rest' : 'Work'}
+              </Text>
+            </View>
+
+            <TouchableOpacity onPress={handleNext}
+              style={{
+                width: 52, height: 52, borderRadius: 26,
+                backgroundColor: (currentIndex === exercises.length - 1 && !isResting) ? '#FF6B35' : '#F8F9FB',
+                borderWidth: 1,
+                borderColor: (currentIndex === exercises.length - 1 && !isResting) ? '#FF6B35' : '#F2F2F7',
+                justifyContent: 'center', alignItems: 'center',
+                shadowColor: '#FF6B35',
+                shadowOpacity: (currentIndex === exercises.length - 1 && !isResting) ? 0.5 : 0,
+                shadowRadius: 12, elevation: 5
+              }}>
+              {currentIndex === exercises.length - 1 && !isResting
+                ? <Text style={{ color: '#FFF', fontSize: 22 }}>✓</Text>
+                : <Text style={{ color: '#FF6B35', fontSize: 24 }}>›</Text>}
+            </TouchableOpacity>
+          </View>
+
+          {/* Next hint */}
+          {nextExercise && !isResting && (
+            <View style={{
+              marginTop: 14, flexDirection: 'row', alignItems: 'center',
+              backgroundColor: '#F8F9FB', borderRadius: 10, padding: 11, paddingHorizontal: 14,
+              borderWidth: 1, borderColor: '#F2F2F7'
+            }}>
+              <Text style={{
+                color: 'rgba(28,28,30,0.4)', fontSize: 10, fontFamily: 'Lexend',
+                textTransform: 'uppercase', letterSpacing: 1.5, marginRight: 8
+              }}>Next</Text>
+              <Text style={{ color: 'rgba(28,28,30,0.7)', fontSize: 13, fontFamily: 'Lexend', fontWeight: '600' }}>
+                {nextExercise.name}
+              </Text>
+            </View>
+          )}
+        </View>
+      )}
     </View>
   );
 };
@@ -1428,7 +1474,7 @@ const MainTabScreen = ({ navigation }: any) => {
             description = "Rest Day";
             uiExercises = [];
           } else {
-            description = "Day 1 - Chest, Triceps & Core";
+            description = "Day 1 - Upper Body Strength Day";
             uiExercises = [
               { isHeader: true, title: 'Main Workout' },
               { name: 'Pushups', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
@@ -1449,7 +1495,7 @@ const MainTabScreen = ({ navigation }: any) => {
             description = "Rest Day";
             uiExercises = [];
           } else {
-            description = "Day 1 - Chest, Triceps & Core";
+            description = "Day 1 - Upper Body Strength Day";
             uiExercises = [
               { isHeader: true, title: 'Main Workout' },
               { name: 'Pushups', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
@@ -1474,7 +1520,7 @@ const MainTabScreen = ({ navigation }: any) => {
             description = "Rest Day";
             uiExercises = [];
           } else {
-            description = "Day 1 - Chest, Triceps & Core";
+            description = "Day 1 - Upper Body Strength Day";
             uiExercises = [
               { isHeader: true, title: 'Main Workout' },
               { name: 'Push-up', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
@@ -1492,7 +1538,7 @@ const MainTabScreen = ({ navigation }: any) => {
       // Tuesday (Day 2)
       else if (day === 2) {
         if (level === 'intermediate') {
-          description = "Day 2 - Lower Body";
+          description = "Day 2 - Lower Body Builder";
           uiExercises = [
             { isHeader: true, title: 'Main Workout' },
             { name: 'Air Squats', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
@@ -1508,7 +1554,7 @@ const MainTabScreen = ({ navigation }: any) => {
             { name: 'Calf Raises', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185515/Calf_Raises_mcimrt.mp4' },
           ];
         } else if (level === 'advanced' || level === 'expert') {
-          description = "Day 2 - Lower Body";
+          description = "Day 2 - Lower Body Builder";
           uiExercises = [
             { isHeader: true, title: 'Main Workout' },
             { name: 'Air Squats', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
@@ -1528,7 +1574,7 @@ const MainTabScreen = ({ navigation }: any) => {
           ];
         } else {
           // Beginner (Existing)
-          description = "Day 2 - Lower Body";
+          description = "Day 2 - Lower Body Builder";
           uiExercises = [
             { isHeader: true, title: 'Main Workout' },
             { name: 'Air Squats', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
@@ -1545,7 +1591,7 @@ const MainTabScreen = ({ navigation }: any) => {
       // Wednesday (Day 3)
       else if (day === 3) {
         if (level === 'intermediate') {
-          description = "Day 3 - Core";
+          description = "Day 3 - Core Focus Day";
           uiExercises = [
             { isHeader: true, title: 'Main Workout' },
             { name: 'Crunches', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185514/Crunches_ywv6ne.mp4' },
@@ -1561,7 +1607,7 @@ const MainTabScreen = ({ navigation }: any) => {
             { name: 'Russian Twists', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185513/Russian_Twists_qlwrwm.mp4' },
           ];
         } else if (level === 'advanced' || level === 'expert') {
-          description = "Day 3 - Core";
+          description = "Day 3 - Core Focus Day";
           uiExercises = [
             { isHeader: true, title: 'Main Workout' },
             { name: 'Crunches', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185514/Crunches_ywv6ne.mp4' },
@@ -1581,7 +1627,7 @@ const MainTabScreen = ({ navigation }: any) => {
           ];
         } else {
           // Beginner
-          description = "Day 3 - Core";
+          description = "Day 3 - Core Focus Day";
           uiExercises = [
             { isHeader: true, title: 'Main Workout' },
             { name: 'Crunches', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185514/Crunches_ywv6ne.mp4' },
@@ -1598,7 +1644,7 @@ const MainTabScreen = ({ navigation }: any) => {
       // Thursday (Day 4)
       else if (day === 4) {
         if (level === 'intermediate') {
-          description = "Day 4 - Cardio + Full Body";
+          description = "Day 4 - Cardio Burn Day";
           uiExercises = [
             { isHeader: true, title: 'Main Workout' },
             { name: 'Jumping Jacks', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185529/Jumping_Jacks_fsd0tu.mp4' },
@@ -1614,7 +1660,7 @@ const MainTabScreen = ({ navigation }: any) => {
             { name: 'Burpees', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Burpees_yayn8x.mp4' },
           ];
         } else if (level === 'advanced' || level === 'expert') {
-          description = "Day 4 - Cardio + Full Body";
+          description = "Day 4 - Cardio Burn Day";
           uiExercises = [
             { isHeader: true, title: 'Main Workout' },
             { name: 'Jumping Jacks', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185529/Jumping_Jacks_fsd0tu.mp4' },
@@ -1634,7 +1680,7 @@ const MainTabScreen = ({ navigation }: any) => {
           ];
         } else {
           // Beginner
-          description = "Day 4 - Cardio + Full Body";
+          description = "Day 4 - Cardio Burn Day";
           uiExercises = [
             { isHeader: true, title: 'Main Workout' },
             { name: 'Jumping Jacks', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185529/Jumping_Jacks_fsd0tu.mp4' },
@@ -1651,7 +1697,7 @@ const MainTabScreen = ({ navigation }: any) => {
       // Friday (Day 5)
       else if (day === 5) {
         if (level === 'intermediate') {
-          description = "Day 5 - Full Body";
+          description = "Day 5 - Glute & Stability Day";
           uiExercises = [
             { isHeader: true, title: 'Main Workout' },
             { name: 'Glute Bridge', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185516/Glute_Bridge_nphtwp.mp4' },
@@ -1667,7 +1713,7 @@ const MainTabScreen = ({ navigation }: any) => {
             { name: 'Side Plank', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185518/Side_Plank_bmz6wk.mp4' },
           ];
         } else if (level === 'advanced' || level === 'expert') {
-          description = "Day 5 - Full Body";
+          description = "Day 5 - Glute & Stability Day";
           uiExercises = [
             { isHeader: true, title: 'Main Workout' },
             { name: 'Glute Bridge', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185516/Glute_Bridge_nphtwp.mp4' },
@@ -1692,7 +1738,7 @@ const MainTabScreen = ({ navigation }: any) => {
           ];
         } else {
           // Beginner
-          description = "Day 5 - Full Body";
+          description = "Day 5 - Glute & Stability Day";
           uiExercises = [
             { isHeader: true, title: 'Main Workout' },
             { name: 'Glute Bridge', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185516/Glute_Bridge_nphtwp.mp4' },
@@ -1712,7 +1758,7 @@ const MainTabScreen = ({ navigation }: any) => {
       // Saturday (Day 6)
       else if (day === 6) {
         if (level === 'beginner') {
-          description = "Day 6 - Full Body";
+          description = "Day 6 - Full Body Conditioning";
           uiExercises = [
             { isHeader: true, title: 'Main Workout' },
             { name: 'Air Squats', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
@@ -1731,7 +1777,7 @@ const MainTabScreen = ({ navigation }: any) => {
             { name: 'Light Air Squats', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
           ];
         } else if (level === 'intermediate') {
-          description = "Day 6 - Full Body";
+          description = "Day 6 - Full Body Conditioning";
           uiExercises = [
             { isHeader: true, title: 'Main Workout' },
             { name: 'Air Squats', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
@@ -1755,7 +1801,7 @@ const MainTabScreen = ({ navigation }: any) => {
             { name: 'Light Air Squats', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
           ];
         } else if (level === 'advanced' || level === 'expert') {
-          description = "Day 6 - Full Body";
+          description = "Day 6 - Full Body Conditioning";
           uiExercises = [
             { isHeader: true, title: 'Main Workout' },
             { name: 'Air Squats', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
@@ -1786,9 +1832,11 @@ const MainTabScreen = ({ navigation }: any) => {
         }
       }
 
+
+
       setSelectedWorkout({
         id: 'DailyKickstart',
-        title: 'Morning Kickstart',
+        title: 'Warmup',
         description: description,
         time: uiExercises.length === 0 ? 'Rest Day' :
           (level === 'beginner' && (day === 1 || day === 0 || day === 2 || day === 3 || day === 4 || day === 5 || day === 6)) ? '6 min' :
@@ -1835,44 +1883,152 @@ const MainTabScreen = ({ navigation }: any) => {
 
     const workoutDescriptions: { [key: string]: { [key: number]: string } } = {
       'Beginner': {
-        1: 'Upper Body + Core',
-        2: 'Lower Body',
-        3: 'Core',
-        4: 'Cardio + Full Body',
-        5: 'Mobility',
-        6: 'Full Body',
+        1: 'Upper Body Strength Day',
+        2: 'Lower Body Builder',
+        3: 'Core Focus Day',
+        4: 'Cardio Burn Day',
+        5: 'Glute & Stability Day',
+        6: 'Full Body Conditioning',
         0: 'Rest Day',
       },
       'Intermediate': {
-        1: 'Chest, Triceps & Core',
-        2: 'Lower Body',
-        3: 'Core',
-        4: 'Cardio + Full Body',
-        5: 'Full Body',
-        6: 'Full Body',
+        1: 'Upper Body Strength Day',
+        2: 'Lower Body Builder',
+        3: 'Core Focus Day',
+        4: 'Cardio Burn Day',
+        5: 'Glute & Stability Day',
+        6: 'Full Body Conditioning',
         0: 'Rest Day',
       },
       'Expert': {
-        1: 'Chest, Triceps & Core',
-        2: 'Lower Body',
-        3: 'Core',
-        4: 'Cardio + Full Body',
-        5: 'Full Body',
-        6: 'Full Body',
+        1: 'Upper Body Strength Day',
+        2: 'Lower Body Builder',
+        3: 'Core Focus Day',
+        4: 'Cardio Burn Day',
+        5: 'Glute & Stability Day',
+        6: 'Full Body Conditioning',
         0: 'Rest Day',
       },
       'Advanced': {
-        1: 'Chest, Triceps & Core',
-        2: 'Lower Body',
-        3: 'Core',
-        4: 'Cardio + Full Body',
-        5: 'Full Body',
-        6: 'Full Body',
+        1: 'Upper Body Strength Day',
+        2: 'Lower Body Builder',
+        3: 'Core Focus Day',
+        4: 'Cardio Burn Day',
+        5: 'Glute & Stability Day',
+        6: 'Full Body Conditioning',
         0: 'Rest Day',
       },
     };
 
     return workoutDescriptions[experienceLevel]?.[dayOfWeek] || 'Quick 5-minute routine';
+  };
+
+  const getDailyMeditationDetails = () => {
+    const dayOfWeek = new Date().getDay();
+    const onboardingData = user?.onboardingData || {};
+    const level = onboardingData.experience?.toLowerCase() || 'beginner';
+
+    const durations: any = {
+      'beginner': { long: '40s', short: '35s', display: '12 min' },
+      'intermediate': { long: '50s', short: '45s', display: '15 min' },
+      'advanced': { long: '60s', short: '55s', display: '18 min' },
+      'expert': { long: '60s', short: '55s', display: '18 min' }
+    };
+    const d = durations[level] || durations.beginner;
+
+    if (dayOfWeek === 2) {
+      return {
+        id: 'YogaDay2',
+        title: 'Yoga Day 2 - Hip Opening Flow',
+        description: 'Inner thighs + Glutes',
+        time: d.display,
+        exercises: [
+          { name: 'Baddha Konasana', detail: `${d.long}`, videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185588/Yoga_-_baddha_konasana_ydoy05.mp4' },
+          { name: 'Supta Kapotasana (Left)', detail: `${d.short}`, videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185587/Yoga_-_Supta_Kapotasana_k57xyr.mp4' },
+          { name: 'Supta Kapotasana (Right)', detail: `${d.short}`, videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185587/Yoga_-_Supta_Kapotasana_k57xyr.mp4' },
+          { name: 'Parsva Janu Sirsasana', detail: `${d.short}`, videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Mobility_hamstring_a4sig8.mp4' },
+        ]
+      };
+    }
+
+    if (dayOfWeek === 3) {
+      const pDetail = `${parseInt(d.short) - 5}s`;
+      return {
+        id: 'YogaDay3',
+        title: 'Yoga Day 3 - Strength & Balance',
+        description: 'Core + Stability',
+        time: d.display,
+        exercises: [
+          { name: 'Parivrtta Parsvakonasana', detail: pDetail, videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185591/Yoga_-_ustrasana_ruoegj.mp4' }, // Placeholder
+          { name: 'Downward Facing Dog', detail: `${d.short}`, videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185587/Yoga_-_Downward_Facing_Dog_Adho_Mukha_Svanasana_pbmmtu.mp4' },
+          { name: 'Prasarita Padottanasana D', detail: `${d.short}`, videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185588/Yoga_-_baddha_konasana_ydoy05.mp4' },
+        ]
+      };
+    }
+
+    if (dayOfWeek === 4) {
+      const uDetail = `${parseInt(d.short) - 10}s`;
+      return {
+        id: 'YogaDay4',
+        title: 'Yoga Day 4 - Chest & Back Opening',
+        description: 'Posture + Spinal Extension',
+        time: d.display,
+        exercises: [
+          { name: 'Ustrasana', detail: uDetail, videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185591/Yoga_-_ustrasana_ruoegj.mp4' },
+          { name: 'Downward Facing Dog', detail: `${d.short}`, videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185587/Yoga_-_Downward_Facing_Dog_Adho_Mukha_Svanasana_pbmmtu.mp4' },
+          { name: 'Janu Shirshasana', detail: `${d.short}`, videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Mobility_hamstring_a4sig8.mp4' },
+        ]
+      };
+    }
+
+    if (dayOfWeek === 5) {
+      return {
+        id: 'YogaDay5',
+        title: 'Yoga Day 5 - Deep Stretch & Recovery',
+        description: 'Full body mobility',
+        time: d.display,
+        exercises: [
+          { name: 'Prasarita Padottanasana', detail: `${d.long}`, videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185588/Yoga_-_baddha_konasana_ydoy05.mp4' },
+          { name: 'Supta Kapotasana', detail: `${d.short}`, videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185587/Yoga_-_Supta_Kapotasana_k57xyr.mp4' },
+          { name: 'Baddha Konasana', detail: `${d.long}`, videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185588/Yoga_-_baddha_konasana_ydoy05.mp4' },
+        ]
+      };
+    }
+
+    if (dayOfWeek === 6) {
+      const satDurations: any = {
+        'beginner': { suk: '3 min', pra: '2 min', lot: '1 min', display: '10 min' },
+        'intermediate': { suk: '5 min', pra: '4 min', lot: '3 min', display: '15 min' },
+        'advanced': { suk: '8 min', pra: '5 min', lot: '5 min', display: '25 min' },
+        'expert': { suk: '8 min', pra: '5 min', lot: '5 min', display: '25 min' }
+      };
+      const sd = satDurations[level] || satDurations.beginner;
+      return {
+        id: 'YogaDay6',
+        title: 'Yoga Day 6 - Mind & Breath Reset',
+        description: 'Nervous system + Meditation',
+        time: sd.display,
+        exercises: [
+          { name: 'Sukhasana (Meditation)', detail: sd.suk, videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185593/Meditation_-_Sukhasana_gnlmbp.mp4' },
+          { name: 'Pranayama', detail: sd.pra, videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185593/Meditation_-_Sukhasana_gnlmbp.mp4' },
+          { name: 'Lotus Pose (Padmasana)', detail: sd.lot, videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185588/Yoga_-_baddha_konasana_ydoy05.mp4' },
+        ]
+      };
+    }
+
+    // Default to Day 1 / Monday
+    return {
+      id: 'YogaDay1',
+      title: 'Yoga Day 1 - Flexibility Foundation',
+      description: 'Hamstrings + Spine Lengthening',
+      time: '12 min',
+      exercises: [
+        { name: 'Prasarita Padottanasana', detail: '35s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185588/Yoga_-_baddha_konasana_ydoy05.mp4' },
+        { name: 'Janu Shirshasana (Left)', detail: '35s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Mobility_hamstring_a4sig8.mp4' },
+        { name: 'Janu Shirshasana (Right)', detail: '35s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Mobility_hamstring_a4sig8.mp4' },
+        { name: 'Downward Facing Dog', detail: '35s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185587/Yoga_-_Downward_Facing_Dog_Adho_Mukha_Svanasana_pbmmtu.mp4' },
+      ]
+    };
   };
 
   // --- Stats Component ---
@@ -2073,7 +2229,7 @@ const MainTabScreen = ({ navigation }: any) => {
 
                     {/* Session rows */}
                     {[
-                      { name: 'Morning Kickstart', duration: '10 min' },
+                      { name: 'Warmup', duration: '10 min' },
                       { name: getDailyWorkoutDescription(), duration: '20 min' },
                     ].map((session, idx) => (
                       <TouchableOpacity
@@ -2081,11 +2237,18 @@ const MainTabScreen = ({ navigation }: any) => {
                         activeOpacity={0.7}
                         onPress={() => {
                           if (isPremium) {
-                            if (session.name === 'Morning Kickstart') {
+                            if (session.name === 'Warmup') {
+                              setCurrentWorkoutName('Warmup');
                               navigation.navigate('VideoWorkout', {
                                 workout: {
-                                  title: 'Morning Kickstart',
-                                  exercises: [{ name: 'Morning Warmup', detail: '10 min' }]
+                                  title: 'Warmup',
+                                  exercises: [
+                                    { isHeader: true, title: 'Warm-up' },
+                                    { name: 'Standing Knee Raise', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185582/warm_up-_standing_knee_raise_iodwnw.mp4' },
+                                    { name: 'Kickup Jumping Jacks', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185581/warm_up_-_kick_up_jumping_jacks_ivb6lt.mp4' },
+                                    { name: 'Wrist Circles', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185584/Warm_up_-_Wrist_Circles_vgj6vg.mp4' },
+                                    { name: 'Knee Rotations', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185581/warm_up_-_knee_rotations_dzrjqs.mp4' }
+                                  ]
                                 }
                               });
                             } else {
@@ -2125,9 +2288,9 @@ const MainTabScreen = ({ navigation }: any) => {
                     activeOpacity={0.97}
                     onPress={() => {
                       if (isPremium) {
-                        const details = WORKOUT_DETAILS_DATA['MeditationSession'];
+                        const details = getDailyMeditationDetails();
                         if (details) {
-                          navigation.navigate('VideoWorkout', { workout: details });
+                          setSelectedWorkout(details);
                         }
                       } else {
                         setShowPremiumModal(true);
@@ -2156,10 +2319,10 @@ const MainTabScreen = ({ navigation }: any) => {
                         TODAY'S MINDFULNESS
                       </Text>
                       <Text style={{ fontSize: 19, fontWeight: Platform.OS === 'android' ? '900' : '800', color: '#1C1C1E', fontFamily: 'Lexend', marginBottom: 4 }}>
-                        Meditation Session
+                        {getDailyMeditationDetails().title}
                       </Text>
-                      <Text style={{ fontSize: 15, color: '#8E8E93', fontFamily: 'Lexend' }}>
-                        Relax and Recharge · 15 min
+                      <Text style={{ fontSize: 14, color: '#8E8E93', fontFamily: 'Lexend' }}>
+                        {getDailyMeditationDetails().description} • {getDailyMeditationDetails().time}
                       </Text>
                     </View>
                     <View style={{ width: 48, height: 48, borderRadius: 24, backgroundColor: '#E1EFFF', justifyContent: 'center', alignItems: 'center' }}>
@@ -3029,6 +3192,9 @@ const MainTabScreen = ({ navigation }: any) => {
                       activeOpacity={0.85}
                       onPress={async () => {
                         const workoutToPlay = selectedWorkout; // capture BEFORE clearing
+                        if (workoutToPlay) {
+                          setCurrentWorkoutName(workoutToPlay.title);
+                        }
                         setSelectedWorkout(null);
                         setTimeout(() => {
                           navigation.navigate('VideoWorkout', { workout: workoutToPlay });
