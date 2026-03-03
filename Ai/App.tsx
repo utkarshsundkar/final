@@ -2822,21 +2822,39 @@ const MainTabScreen = ({ navigation }: any) => {
                   ))}
                 </View>
 
-                <TouchableOpacity
-                  onPress={() => NotificationService.testNotification()}
-                  activeOpacity={0.7}
-                  style={{
-                    backgroundColor: 'rgba(255,107,53,0.1)',
-                    borderWidth: 1,
-                    borderColor: '#FF6B35',
-                    borderRadius: 16,
-                    paddingVertical: 14,
-                    alignItems: 'center',
-                    marginBottom: 24
-                  }}
-                >
-                  <Text style={{ color: '#FF6B35', fontSize: 15, fontWeight: '700', fontFamily: 'Lexend' }}>🔔 TEST NOTIFICATION</Text>
-                </TouchableOpacity>
+                <View style={{ flexDirection: 'row', gap: 10, marginBottom: 24 }}>
+                  <TouchableOpacity
+                    onPress={() => NotificationService.testNotification()}
+                    activeOpacity={0.7}
+                    style={{
+                      flex: 1,
+                      backgroundColor: 'rgba(255,107,53,0.1)',
+                      borderWidth: 1,
+                      borderColor: '#FF6B35',
+                      borderRadius: 16,
+                      paddingVertical: 14,
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Text style={{ color: '#FF6B35', fontSize: 13, fontWeight: '700', fontFamily: 'Lexend' }}>🔔 TEST NOTIF</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    onPress={() => NotificationService.testFriendNotification()}
+                    activeOpacity={0.7}
+                    style={{
+                      flex: 1,
+                      backgroundColor: 'rgba(58,134,255,0.1)',
+                      borderWidth: 1,
+                      borderColor: '#3A86FF',
+                      borderRadius: 16,
+                      paddingVertical: 14,
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Text style={{ color: '#3A86FF', fontSize: 13, fontWeight: '700', fontFamily: 'Lexend' }}>🤝 FRIEND NOTIF</Text>
+                  </TouchableOpacity>
+                </View>
 
                 <View style={{ flexDirection: 'row', gap: 16 }}>
                   <TouchableOpacity onPress={() => setShowTestMenu(false)}
