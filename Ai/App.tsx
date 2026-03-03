@@ -4016,15 +4016,27 @@ const App = () => {
       }
 
       // Setup Notifications
-      NotificationService.requestPermission().then(() => {
+      NotificationService.requestPermission().then(async () => {
         // Only schedule if user exists and hasn't finished everything today
-        if (isAuthenticated && user) {
-          const isFriend = user.userType === 'FRIEND';
-          const targetUserId = isFriend ? (typeof user.friendOf === 'string' ? user.friendOf : user.friendOf?._id) : user.id;
-          const friendName = (isFriend && typeof user.friendOf === 'object') ? (user.friendOf?.username || user.friendOf?.name || 'Your friend') : 'Your friend';
+        if (isAuthenticated) {
+          // Refetch to ensure we have populated friendOf if available
+          const latestUser = await AuthService.refreshUserProfile().catch(() => AuthService.getCurrentUser());
+          if (!latestUser) return;
+
+          const isFriend = latestUser.userType === 'FRIEND';
+          const friendOfObj = typeof latestUser.friendOf === 'object' ? latestUser.friendOf : null;
+
+          // Use ID correctly (handle both mapped 'id' and potential '_id')
+          const targetUserId = isFriend
+            ? (friendOfObj?.id || friendOfObj?._id || (typeof latestUser.friendOf === 'string' ? latestUser.friendOf : null))
+            : latestUser.id;
+
+          const friendName = friendOfObj?.username || friendOfObj?.name || 'Your friend';
+
+          // Use target's experience level if friend, else self
+          const experienceLevel = (isFriend ? (friendOfObj?.experienceLevel) : latestUser.experienceLevel) || 'Beginner';
 
           const dayOfWeek = new Date().getDay();
-          const experienceLevel = user.experienceLevel || 'Beginner';
           const workoutDescriptions: any = {
             'Beginner': { 1: 'Upper Body Strength Day', 2: 'Lower Body Builder', 3: 'Core Focus Day', 4: 'Cardio Burn Day', 5: 'Glute & Stability Day', 6: 'Full Body Conditioning', 0: 'Rest Day' },
             'Intermediate': { 1: 'Upper Body Strength Day', 2: 'Lower Body Builder', 3: 'Core Focus Day', 4: 'Cardio Burn Day', 5: 'Glute & Stability Day', 6: 'Full Body Conditioning', 0: 'Rest Day' },
@@ -4041,8 +4053,18 @@ const App = () => {
               if (!hasCompletedMainProgram && !isRestDay) {
                 if (isFriend) {
                   NotificationService.scheduleFriendRepeatingReminders(friendName);
+                  // Immediate nudge if it's already between 10am and 10pm
+                  const nowHour = new Date().getHours();
+                  if (nowHour >= 10 && nowHour < 22) {
+                    NotificationService.testFriendNotification();
+                  }
                 } else {
                   NotificationService.scheduleRepeatingReminders();
+                  // Immediate nudge if it's already between 9am and 9pm
+                  const nowHour = new Date().getHours();
+                  if (nowHour >= 9 && nowHour < 21) {
+                    NotificationService.testNotification();
+                  }
                 }
               } else {
                 NotificationService.cancelWorkoutReminder();
