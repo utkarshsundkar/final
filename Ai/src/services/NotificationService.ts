@@ -12,6 +12,7 @@ class NotificationService {
             id: 'workout-reminders',
             name: 'Workout Reminders',
             importance: 4, // high
+            sound: 'workout_reminder',
         });
 
         // Create a time-based trigger
@@ -39,12 +40,14 @@ class NotificationService {
                 body: "You haven't completed your workout yet! Don't break the streak.",
                 android: {
                     channelId,
+                    sound: 'workout_reminder',
                     pressAction: {
                         id: 'default',
                     },
                 },
                 ios: {
                     critical: true,
+                    sound: 'workout_reminder.aiff',
                 }
             },
             trigger,
@@ -62,6 +65,7 @@ class NotificationService {
         const channelId = await notifee.createChannel({
             id: 'test',
             name: 'Test Channel',
+            sound: 'workout_reminder',
         });
 
         await notifee.displayNotification({
@@ -69,7 +73,11 @@ class NotificationService {
             body: 'This is what your reminder will look like!',
             android: {
                 channelId,
+                sound: 'workout_reminder',
             },
+            ios: {
+                sound: 'workout_reminder.aiff',
+            }
         });
     }
 }
