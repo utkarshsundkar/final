@@ -70,8 +70,69 @@ class NotificationService {
         console.log('Repeating workout reminders scheduled');
     }
 
+    async scheduleFriendRepeatingReminders(friendName: string = 'Your friend') {
+        const channelId = await notifee.createChannel({
+            id: 'friend-workout-reminders',
+            name: 'Friend Workout Reminders',
+            importance: 4,
+            sound: 'workout_reminder',
+        });
+
+        const reminders = [
+            { hour: 10, message: `${friendName} hasn't started their day yet. Maybe a quick nudge? ☀️` },
+            { hour: 14, message: `${friendName} missed their afternoon workout. Give them a push! 💪` },
+            { hour: 18, message: `Still no workout from ${friendName}. Time to motivate them! 🏋️‍♂️` },
+            { hour: 22, message: `Final call! ${friendName} hasn't performed their workout today. 🌙` },
+        ];
+
+        await this.cancelWorkoutReminder();
+
+        const now = new Date();
+
+        for (const rem of reminders) {
+            const date = new Date();
+            date.setHours(rem.hour);
+            date.setMinutes(0);
+            date.setSeconds(0);
+
+            if (date.getTime() <= now.getTime()) {
+                date.setDate(date.getDate() + 1);
+            }
+
+            const trigger: TimestampTrigger = {
+                type: TriggerType.TIMESTAMP,
+                timestamp: date.getTime(),
+                repeatFrequency: RepeatFrequency.DAILY,
+            };
+
+            await notifee.createTriggerNotification(
+                {
+                    id: `friend-reminder-${rem.hour}`,
+                    title: '🤝 Friend Accountability',
+                    body: rem.message,
+                    android: {
+                        channelId,
+                        sound: 'workout_reminder',
+                        pressAction: { id: 'default' },
+                    },
+                    ios: {
+                        critical: true,
+                        sound: 'workout_reminder.aiff',
+                    }
+                },
+                trigger,
+            );
+        }
+        console.log('Friend repeating reminders scheduled');
+    }
+
     async cancelWorkoutReminder() {
-        const ids = [9, 13, 17, 21].map(h => `workout-reminder-${h}`);
+        const hours = [9, 13, 17, 21];
+        const friendHours = [10, 14, 18, 22];
+        const ids = [
+            ...hours.map(h => `workout-reminder-${h}`),
+            ...friendHours.map(h => `friend-reminder-${h}`)
+        ];
         await Promise.all(ids.map(id => notifee.cancelNotification(id)));
         console.log('All workout reminders cancelled');
     }

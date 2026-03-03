@@ -4001,6 +4001,10 @@ const App = () => {
       NotificationService.requestPermission().then(() => {
         // Only schedule if user exists and hasn't finished everything today
         if (isAuthenticated && user) {
+          const isFriend = user.userType === 'FRIEND';
+          const targetUserId = isFriend ? (typeof user.friendOf === 'string' ? user.friendOf : user.friendOf?._id) : user.id;
+          const friendName = (isFriend && typeof user.friendOf === 'object') ? (user.friendOf?.username || user.friendOf?.name || 'Your friend') : 'Your friend';
+
           const dayOfWeek = new Date().getDay();
           const experienceLevel = user.experienceLevel || 'Beginner';
           const workoutDescriptions: any = {
@@ -4009,18 +4013,24 @@ const App = () => {
             'Expert': { 1: 'Upper Body Strength Day', 2: 'Lower Body Builder', 3: 'Core Focus Day', 4: 'Cardio Burn Day', 5: 'Glute & Stability Day', 6: 'Full Body Conditioning', 0: 'Rest Day' },
             'Advanced': { 1: 'Upper Body Strength Day', 2: 'Lower Body Builder', 3: 'Core Focus Day', 4: 'Cardio Burn Day', 5: 'Glute & Stability Day', 6: 'Full Body Conditioning', 0: 'Rest Day' },
           };
-          const todayWorkoutName = workoutDescriptions[experienceLevel]?.[dayOfWeek] || 'Rest Day';
+          const workoutNameToCheck = workoutDescriptions[experienceLevel]?.[dayOfWeek] || 'Rest Day';
 
-          ExerciseService.getProgressSummary(user.id).then(data => {
-            const hasCompletedMainProgram = data?.todayCompletedNames && data.todayCompletedNames.includes(todayWorkoutName);
-            const isRestDay = todayWorkoutName === 'Rest Day';
+          if (targetUserId) {
+            ExerciseService.getProgressSummary(targetUserId).then(data => {
+              const hasCompletedMainProgram = data?.todayCompletedNames && data.todayCompletedNames.includes(workoutNameToCheck);
+              const isRestDay = workoutNameToCheck === 'Rest Day';
 
-            if (!hasCompletedMainProgram && !isRestDay) {
-              NotificationService.scheduleRepeatingReminders(); // Start reminders (9am, 1pm, 5pm, 9pm)
-            } else {
-              NotificationService.cancelWorkoutReminder();
-            }
-          });
+              if (!hasCompletedMainProgram && !isRestDay) {
+                if (isFriend) {
+                  NotificationService.scheduleFriendRepeatingReminders(friendName);
+                } else {
+                  NotificationService.scheduleRepeatingReminders();
+                }
+              } else {
+                NotificationService.cancelWorkoutReminder();
+              }
+            });
+          }
         }
       });
     } catch (e) {
