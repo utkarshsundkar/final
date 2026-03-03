@@ -1438,9 +1438,14 @@ const MainTabScreen = ({ navigation }: any) => {
                 console.log(`Calling saveExercise for ${name}...`);
                 const result = await ExerciseService.saveExercise(user.id, name, total, perfect);
                 console.log('Save result:', result);
-                if (result?.data?.exercise?._id) {
+
+                // Flexible extraction from ApiResponse or direct data
+                const exData = result?.data?.exercise || result?.exercise || result?.data || result;
+                const exId = exData?._id || exData?.id;
+
+                if (exId) {
                   savedExercises.push({
-                    id: result.data.exercise._id,
+                    id: exId,
                     reps_performed: total,
                     reps_performed_perfect: perfect
                   });

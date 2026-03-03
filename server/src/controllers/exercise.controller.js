@@ -343,7 +343,7 @@ const saveWorkoutCompletion = asyncHandler(async (req, res) => {
     perfect_exercises: perfectCount,
     is_perfect: is_perfect || (perfectCount === exerciseArray.length && exerciseArray.length > 0),
     duration_seconds: duration_seconds || (exerciseArray.length * 120), // approx 2 min per ex if missing
-    exercises: exerciseArray.map(ex => ex.id || ex._id).filter(id => id) // Added linking
+    exercises: exerciseArray.map(ex => typeof ex === 'string' ? ex : (ex.id || ex._id)).filter(id => id)
   });
 
   return res.status(201).json(
@@ -375,11 +375,13 @@ const getUserStatsProgress = asyncHandler(async (req, res) => {
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
 
-  // 1. Monthly Workouts (with exercises populated)
   const monthlyWorkouts = await Workout.find({
     userId: targetUserId,
     createdAt: { $gte: startOfMonth }
-  }).populate('exercises').sort({ createdAt: -1 });
+  }).populate({
+    path: 'exercises',
+    select: 'exercise_name reps_performed reps_performed_perfect reps_performed_total'
+  }).sort({ createdAt: -1 });
 
   // Calculate total minutes. For now, we use a fallback if duration_seconds is 0
   // (Assuming ~10 mins per workout if not tracked yet)

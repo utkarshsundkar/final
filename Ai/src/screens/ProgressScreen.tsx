@@ -190,22 +190,38 @@ const ProgressScreen = () => {
                                                         />
                                                     </TouchableOpacity>
 
-                                                    {isExpanded && workout.exercises && (
+                                                    {isExpanded && (
                                                         <View style={{ paddingHorizontal: 16, paddingBottom: 16, paddingTop: 4 }}>
                                                             <View style={{ height: 1, backgroundColor: '#F2F2F7', marginBottom: 16 }} />
                                                             <View style={{ gap: 12 }}>
-                                                                {workout.exercises.map((ex: any, idx: number) => (
-                                                                    <View key={ex._id || idx} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                                        <View style={{ flex: 1 }}>
-                                                                            <Text style={{ fontSize: 14, color: '#3A3A3C', fontFamily: 'Lexend', fontWeight: '500' }}>{ex.exercise_name}</Text>
-                                                                        </View>
-                                                                        <View style={{ backgroundColor: ex.reps_performed === ex.reps_performed_perfect ? '#E8F5E9' : '#FFF3E0', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6 }}>
-                                                                            <Text style={{ fontSize: 13, color: ex.reps_performed === ex.reps_performed_perfect ? '#2E7D32' : '#E65100', fontFamily: 'Lexend', fontWeight: '700' }}>
-                                                                                {ex.reps_performed_perfect}/{ex.reps_performed} Reps
-                                                                            </Text>
-                                                                        </View>
+                                                                {workout.exercises && workout.exercises.length > 0 ? (
+                                                                    workout.exercises.map((ex: any, idx: number) => {
+                                                                        // Check if it's already a populated object or still a raw ID string
+                                                                        const isPopulated = typeof ex === 'object' && ex !== null;
+                                                                        const name = isPopulated ? ex.exercise_name : `Exercise ${idx + 1}`;
+                                                                        const total = isPopulated ? ex.reps_performed : workout.total_exercises; // Fallback estimate
+                                                                        const perfect = isPopulated ? ex.reps_performed_perfect : workout.perfect_exercises;
+
+                                                                        return (
+                                                                            <View key={isPopulated ? (ex._id || idx) : idx} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                                                <View style={{ flex: 1 }}>
+                                                                                    <Text style={{ fontSize: 14, color: '#3A3A3C', fontFamily: 'Lexend', fontWeight: '500' }}>{name}</Text>
+                                                                                </View>
+                                                                                <View style={{ backgroundColor: (total > 0 && total === perfect) ? '#E8F5E9' : '#FFF3E0', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6 }}>
+                                                                                    <Text style={{ fontSize: 13, color: (total > 0 && total === perfect) ? '#2E7D32' : '#E65100', fontFamily: 'Lexend', fontWeight: '700' }}>
+                                                                                        {perfect}/{total} Reps
+                                                                                    </Text>
+                                                                                </View>
+                                                                            </View>
+                                                                        );
+                                                                    })
+                                                                ) : (
+                                                                    <View style={{ alignItems: 'center', paddingVertical: 10 }}>
+                                                                        <Text style={{ fontSize: 12, color: '#8E8E93', fontFamily: 'Lexend', fontStyle: 'italic' }}>
+                                                                            Detailed logs not available for this session
+                                                                        </Text>
                                                                     </View>
-                                                                ))}
+                                                                )}
                                                             </View>
                                                         </View>
                                                     )}
