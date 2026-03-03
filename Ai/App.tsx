@@ -31,6 +31,7 @@ import PrivacyScreen from './src/screens/PrivacyScreen';
 import BodyFocusScreen from './src/screens/BodyFocusScreen';
 import { WorkoutProvider } from './src/context/WorkoutContext';
 import ExerciseService from './src/services/ExerciseService';
+import NotificationService from './src/services/NotificationService';
 // import WorkoutVideoPip from './src/components/WorkoutVideoPip';
 import {
   View,
@@ -1481,6 +1482,9 @@ const MainTabScreen = ({ navigation }: any) => {
               // Refresh rank and today stats
               fetchUserRank(updatedUser.id);
               fetchTodayStats(updatedUser.id);
+
+              // Cancel missed workout reminder for today since it's done
+              NotificationService.cancelWorkoutReminder();
             } else {
               console.log('Failed to refresh user profile');
             }
@@ -3974,6 +3978,25 @@ const App = () => {
           setInitialRoute('Home');
         }
       }
+
+      // Setup Notifications
+      NotificationService.requestPermission().then(() => {
+        // Only schedule if user exists and hasn't finished everything today
+        if (isAuthenticated) {
+          AuthService.getCurrentUser().then(u => {
+            if (u?.id) {
+              ExerciseService.getProgressSummary(u.id).then(data => {
+                // Approximate check: if today's counts are low, schedule reminder
+                if (!data?.todayCompletedNames || data.todayCompletedNames.length < 2) {
+                  NotificationService.scheduleWorkoutReminder(19, 0); // 7:00 PM reminder
+                } else {
+                  NotificationService.cancelWorkoutReminder();
+                }
+              });
+            }
+          });
+        }
+      });
     } catch (e) {
       console.error('Auth/Onboarding check error:', e);
       // Fail safe - go to Login

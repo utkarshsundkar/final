@@ -1285,6 +1285,11 @@ PODS:
     - Yoga
   - RNLocalize (3.6.0):
     - React-Core
+  - RNNotifee (9.1.8):
+    - React-Core
+    - RNNotifee/NotifeeCore (= 9.1.8)
+  - RNNotifee/NotifeeCore (9.1.8):
+    - React-Core
   - RNScreens (3.37.0):
     - DoubleConversion
     - glog
@@ -1379,6 +1384,7 @@ DEPENDENCIES:
   - RNIap (from `../node_modules/react-native-iap`)
   - RNKeychain (from `../node_modules/react-native-keychain`)
   - RNLocalize (from `../node_modules/react-native-localize`)
+  - "RNNotifee (from `../node_modules/@notifee/react-native`)"
   - RNScreens (from `../node_modules/react-native-screens`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -1529,6 +1535,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-keychain"
   RNLocalize:
     :path: "../node_modules/react-native-localize"
+  RNNotifee:
+    :path: "../node_modules/@notifee/react-native"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   Yoga:
@@ -1610,6 +1618,7 @@ SPEC CHECKSUMS:
   RNIap: a1d257bef9945dc85025049f3c4fff9d0052a292
   RNKeychain: efc03c9793994fb2906bcca24db9fc8442275ccd
   RNLocalize: af6a0c20ed114768c09805819b82a47de188f27d
+  RNNotifee: 4a6ee5c7deaf00e005050052d73ee6315dff7ec9
   RNScreens: b5ec99a7b9af5a8a6f23cc88716fe37be27aee97
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   Yoga: 9ad2c02dbd9811bb5a35fe23081cb0f5d5a3f9dd
