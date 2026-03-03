@@ -1882,7 +1882,7 @@ const MainTabScreen = ({ navigation }: any) => {
 
       setSelectedWorkout({
         id: 'DailyKickstart',
-        title: 'Warmup',
+        title: getDailyWorkoutDescription(),
         description: description,
         time: uiExercises.length === 0 ? 'Rest Day' :
           (level === 'beginner' && (day === 1 || day === 0 || day === 2 || day === 3 || day === 4 || day === 5 || day === 6)) ? '6 min' :
