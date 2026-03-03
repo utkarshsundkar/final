@@ -3975,13 +3975,14 @@ const App = () => {
     try {
       // 1. Check if user is authenticated
       const isAuthenticated = await AuthService.isAuthenticated();
+      let user = null;
 
       if (!isAuthenticated) {
         // Not logged in - show Login screen
         setInitialRoute('Login');
       } else {
         // 2. User is authenticated, check onboarding status
-        const user = await AuthService.getCurrentUser();
+        user = await AuthService.getCurrentUser();
 
         // Use property from user or check via service helper
         // Bypass onboarding for FRIEND users
@@ -3999,17 +4000,25 @@ const App = () => {
       // Setup Notifications
       NotificationService.requestPermission().then(() => {
         // Only schedule if user exists and hasn't finished everything today
-        if (isAuthenticated) {
-          AuthService.getCurrentUser().then(u => {
-            if (u?.id) {
-              ExerciseService.getProgressSummary(u.id).then(data => {
-                // Approximate check: if today's counts are low, schedule reminder
-                if (!data?.todayCompletedNames || data.todayCompletedNames.length < 2) {
-                  NotificationService.scheduleWorkoutReminder(19, 0); // 7:00 PM reminder
-                } else {
-                  NotificationService.cancelWorkoutReminder();
-                }
-              });
+        if (isAuthenticated && user) {
+          const dayOfWeek = new Date().getDay();
+          const experienceLevel = user.experienceLevel || 'Beginner';
+          const workoutDescriptions: any = {
+            'Beginner': { 1: 'Upper Body Strength Day', 2: 'Lower Body Builder', 3: 'Core Focus Day', 4: 'Cardio Burn Day', 5: 'Glute & Stability Day', 6: 'Full Body Conditioning', 0: 'Rest Day' },
+            'Intermediate': { 1: 'Upper Body Strength Day', 2: 'Lower Body Builder', 3: 'Core Focus Day', 4: 'Cardio Burn Day', 5: 'Glute & Stability Day', 6: 'Full Body Conditioning', 0: 'Rest Day' },
+            'Expert': { 1: 'Upper Body Strength Day', 2: 'Lower Body Builder', 3: 'Core Focus Day', 4: 'Cardio Burn Day', 5: 'Glute & Stability Day', 6: 'Full Body Conditioning', 0: 'Rest Day' },
+            'Advanced': { 1: 'Upper Body Strength Day', 2: 'Lower Body Builder', 3: 'Core Focus Day', 4: 'Cardio Burn Day', 5: 'Glute & Stability Day', 6: 'Full Body Conditioning', 0: 'Rest Day' },
+          };
+          const todayWorkoutName = workoutDescriptions[experienceLevel]?.[dayOfWeek] || 'Rest Day';
+
+          ExerciseService.getProgressSummary(user.id).then(data => {
+            const hasCompletedMainProgram = data?.todayCompletedNames && data.todayCompletedNames.includes(todayWorkoutName);
+            const isRestDay = todayWorkoutName === 'Rest Day';
+
+            if (!hasCompletedMainProgram && !isRestDay) {
+              NotificationService.scheduleRepeatingReminders(); // Start reminders (9am, 1pm, 5pm, 9pm)
+            } else {
+              NotificationService.cancelWorkoutReminder();
             }
           });
         }

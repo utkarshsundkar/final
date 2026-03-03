@@ -27,6 +27,7 @@ export interface User {
     credits?: number;
     userType?: 'NORMAL' | 'FRIEND';
     friendOf?: any; // can be ID (string) or populated object
+    experienceLevel?: string;
 }
 
 class AuthService {
@@ -621,7 +622,8 @@ class AuthService {
                     isPaid: u.isPaid,
                     credits: (u.credits !== undefined && u.credits !== null) ? Number(u.credits) : 0,
                     userType: u.userType,
-                    friendOf: u.friendOf
+                    friendOf: u.friendOf,
+                    experienceLevel: u.experienceLevel
                 };
 
                 // Update local storage but reuse token
