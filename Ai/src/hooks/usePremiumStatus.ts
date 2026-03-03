@@ -38,8 +38,8 @@ export const usePremiumStatus = () => {
             const user = response.data.data;
 
             setPremiumStatus({
-                isPremium: user.isPremium || false,
-                isPaid: user.isPaid || false,
+                isPremium: user.isPremium || user.userType === 'FRIEND' || false,
+                isPaid: user.isPaid || user.userType === 'FRIEND' || false,
                 planType: user.premium?.planType,
                 endDate: user.premium?.endDate ? new Date(user.premium.endDate) : undefined,
                 loading: false,
@@ -72,8 +72,8 @@ export const checkIsPremium = async (): Promise<boolean> => {
         // This leverages the local cache which we updated in PostOnboardingScreen
         const user = await AuthService.getCurrentUser();
 
-        // Check if user is premium, paid, OR has active trial
-        const isPremium = !!(user?.isPremium || user?.isPaid || user?.trialActivated);
+        // Check if user is premium, paid, has active trial, OR is a FRIEND account
+        const isPremium = !!(user?.isPremium || user?.isPaid || user?.trialActivated || user?.userType === 'FRIEND');
 
         console.log('🔍 checkIsPremium Result:', {
             isPremium: user?.isPremium,

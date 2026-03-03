@@ -1125,7 +1125,7 @@ const MainTabScreen = ({ navigation }: any) => {
     // Initial fetch
     AuthService.getCurrentUser().then(u => {
       setUser(u);
-      setIsPremium(!!(u?.isPremium || u?.isPaid));
+      setIsPremium(!!(u?.isPremium || u?.isPaid || u?.userType === 'FRIEND'));
       // Fetch user rank and today stats
       if (u?.id) {
         fetchUserRank(u.id);
@@ -1140,7 +1140,7 @@ const MainTabScreen = ({ navigation }: any) => {
     const listener = (u: any) => {
       console.log('MainTabScreen: User updated', u);
       setUser(u);
-      setIsPremium(!!(u?.isPremium || u?.isPaid));
+      setIsPremium(!!(u?.isPremium || u?.isPaid || u?.userType === 'FRIEND'));
     };
 
     AuthService.addChangeListener(listener);
@@ -2822,6 +2822,22 @@ const MainTabScreen = ({ navigation }: any) => {
                   ))}
                 </View>
 
+                <TouchableOpacity
+                  onPress={() => NotificationService.testNotification()}
+                  activeOpacity={0.7}
+                  style={{
+                    backgroundColor: 'rgba(255,107,53,0.1)',
+                    borderWidth: 1,
+                    borderColor: '#FF6B35',
+                    borderRadius: 16,
+                    paddingVertical: 14,
+                    alignItems: 'center',
+                    marginBottom: 24
+                  }}
+                >
+                  <Text style={{ color: '#FF6B35', fontSize: 15, fontWeight: '700', fontFamily: 'Lexend' }}>🔔 TEST NOTIFICATION</Text>
+                </TouchableOpacity>
+
                 <View style={{ flexDirection: 'row', gap: 16 }}>
                   <TouchableOpacity onPress={() => setShowTestMenu(false)}
                     style={{ flex: 1, paddingVertical: 14, borderRadius: 16, backgroundColor: '#2C2C2E', alignItems: 'center' }}>
@@ -3968,7 +3984,8 @@ const App = () => {
         const user = await AuthService.getCurrentUser();
 
         // Use property from user or check via service helper
-        const onboardingCompleted = user?.onboardingCompleted === true;
+        // Bypass onboarding for FRIEND users
+        const onboardingCompleted = (user?.onboardingCompleted === true) || (user?.userType === 'FRIEND');
 
         if (!onboardingCompleted) {
           // Authenticated but needs onboarding
