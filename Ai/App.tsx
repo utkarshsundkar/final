@@ -1434,7 +1434,7 @@ const MainTabScreen = ({ navigation }: any) => {
 
               console.log(`Exercise: ${name}, Total: ${total}, Perfect: ${perfect}`);
 
-              if (total > 0) {
+              if (total >= 0 && name && name !== "Unknown") {
                 console.log(`Calling saveExercise for ${name}...`);
                 const result = await ExerciseService.saveExercise(user.id, name, total, perfect);
                 console.log('Save result:', result);

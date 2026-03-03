@@ -147,7 +147,8 @@ const ProgressScreen = () => {
                                     </View>
                                     <View style={{ gap: 12 }}>
                                         {filteredWorkouts.map((workout: any, index: number) => {
-                                            const isExpanded = expandedWorkoutId === workout._id;
+                                            const hasExercises = workout.exercises && workout.exercises.length > 0;
+                                            const isExpanded = hasExercises && expandedWorkoutId === workout._id;
                                             return (
                                                 <View key={workout._id || index} style={{
                                                     backgroundColor: '#F8F9FB',
@@ -162,8 +163,8 @@ const ProgressScreen = () => {
                                                     elevation: 1,
                                                 }}>
                                                     <TouchableOpacity
-                                                        onPress={() => setExpandedWorkoutId(isExpanded ? null : workout._id)}
-                                                        activeOpacity={0.7}
+                                                        onPress={() => hasExercises && setExpandedWorkoutId(isExpanded ? null : workout._id)}
+                                                        activeOpacity={hasExercises ? 0.7 : 1}
                                                         style={{
                                                             padding: 16,
                                                             flexDirection: 'row',
@@ -184,44 +185,37 @@ const ProgressScreen = () => {
                                                                 {workout.total_exercises} Exercises • {workout.is_perfect ? 'Perfect' : `${workout.perfect_exercises}/${workout.total_exercises} Perfect`}
                                                             </Text>
                                                         </View>
-                                                        <Image
-                                                            source={{ uri: isExpanded ? 'https://img.icons8.com/ios-filled/50/8E8E93/expand-arrow.png' : 'https://img.icons8.com/ios-filled/50/8E8E93/forward.png' }}
-                                                            style={{ width: 14, height: 14, transform: [{ rotate: isExpanded ? '180deg' : '0deg' }] }}
-                                                        />
+                                                        {hasExercises && (
+                                                            <Image
+                                                                source={{ uri: isExpanded ? 'https://img.icons8.com/ios-filled/50/8E8E93/expand-arrow.png' : 'https://img.icons8.com/ios-filled/50/8E8E93/forward.png' }}
+                                                                style={{ width: 14, height: 14, transform: [{ rotate: isExpanded ? '180deg' : '0deg' }] }}
+                                                            />
+                                                        )}
                                                     </TouchableOpacity>
 
-                                                    {isExpanded && (
+                                                    {isExpanded && workout.exercises && workout.exercises.length > 0 && (
                                                         <View style={{ paddingHorizontal: 16, paddingBottom: 16, paddingTop: 4 }}>
                                                             <View style={{ height: 1, backgroundColor: '#F2F2F7', marginBottom: 16 }} />
                                                             <View style={{ gap: 12 }}>
-                                                                {workout.exercises && workout.exercises.length > 0 ? (
-                                                                    workout.exercises.map((ex: any, idx: number) => {
-                                                                        // Check if it's already a populated object or still a raw ID string
-                                                                        const isPopulated = typeof ex === 'object' && ex !== null;
-                                                                        const name = isPopulated ? ex.exercise_name : `Exercise ${idx + 1}`;
-                                                                        const total = isPopulated ? ex.reps_performed : workout.total_exercises; // Fallback estimate
-                                                                        const perfect = isPopulated ? ex.reps_performed_perfect : workout.perfect_exercises;
+                                                                {workout.exercises.map((ex: any, idx: number) => {
+                                                                    const isPopulated = typeof ex === 'object' && ex !== null;
+                                                                    const name = isPopulated ? ex.exercise_name : `Exercise ${idx + 1}`;
+                                                                    const total = isPopulated ? ex.reps_performed : workout.total_exercises;
+                                                                    const perfect = isPopulated ? ex.reps_performed_perfect : workout.perfect_exercises;
 
-                                                                        return (
-                                                                            <View key={isPopulated ? (ex._id || idx) : idx} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                                                <View style={{ flex: 1 }}>
-                                                                                    <Text style={{ fontSize: 14, color: '#3A3A3C', fontFamily: 'Lexend', fontWeight: '500' }}>{name}</Text>
-                                                                                </View>
-                                                                                <View style={{ backgroundColor: (total > 0 && total === perfect) ? '#E8F5E9' : '#FFF3E0', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6 }}>
-                                                                                    <Text style={{ fontSize: 13, color: (total > 0 && total === perfect) ? '#2E7D32' : '#E65100', fontFamily: 'Lexend', fontWeight: '700' }}>
-                                                                                        {perfect}/{total} Reps
-                                                                                    </Text>
-                                                                                </View>
+                                                                    return (
+                                                                        <View key={isPopulated ? (ex._id || idx) : idx} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                                            <View style={{ flex: 1 }}>
+                                                                                <Text style={{ fontSize: 14, color: '#3A3A3C', fontFamily: 'Lexend', fontWeight: '500' }}>{name}</Text>
                                                                             </View>
-                                                                        );
-                                                                    })
-                                                                ) : (
-                                                                    <View style={{ alignItems: 'center', paddingVertical: 10 }}>
-                                                                        <Text style={{ fontSize: 12, color: '#8E8E93', fontFamily: 'Lexend', fontStyle: 'italic' }}>
-                                                                            Detailed logs not available for this session
-                                                                        </Text>
-                                                                    </View>
-                                                                )}
+                                                                            <View style={{ backgroundColor: (total > 0 && total === perfect) ? '#E8F5E9' : '#FFF3E0', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6 }}>
+                                                                                <Text style={{ fontSize: 13, color: (total > 0 && total === perfect) ? '#2E7D32' : '#E65100', fontFamily: 'Lexend', fontWeight: '700' }}>
+                                                                                    {perfect}/{total} Reps
+                                                                                </Text>
+                                                                            </View>
+                                                                        </View>
+                                                                    );
+                                                                })}
                                                             </View>
                                                         </View>
                                                     )}
@@ -233,7 +227,8 @@ const ProgressScreen = () => {
                             );
                         })()}
                     </View>
-                )}
+                )
+                }
 
 
                 {/* Activity Grid Card */}
@@ -420,8 +415,8 @@ const ProgressScreen = () => {
                 </View>
 
                 <View style={{ height: 100 }} />
-            </ScrollView>
-        </View>
+            </ScrollView >
+        </View >
     );
 };
 
