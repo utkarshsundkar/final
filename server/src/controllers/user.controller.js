@@ -465,12 +465,7 @@ const activateFreeTrial = asyncHandler(async (req, res) => {
 
   // Check if user already used their trial (but it expired)
   if (user.trialActivated) {
-    return res.status(200).json(
-      new ApiResponse(200, {
-        alreadyUsed: true,
-        trialExpired: true
-      }, "Free trial already used and expired")
-    );
+    throw new ApiError(400, "You have already used your 3-day free trial. Please choose a premium plan to continue.");
   }
 
   // Activate trial

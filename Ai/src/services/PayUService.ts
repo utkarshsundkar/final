@@ -1,4 +1,3 @@
-import PayUCheckoutPro from 'payu-non-seam-less-react';
 import axios from 'axios';
 import {
     Alert,
@@ -131,7 +130,7 @@ export const PayUService = {
                 android_surl: 'https://httpbin.org/post',
                 android_furl: 'https://httpbin.org/post',
 
-                environment: 0, // Test mode (number)
+                environment: 0, // Production mode (0 for Production, 1 for Test)
 
                 // UDF fields (Required)
                 udf1: "",

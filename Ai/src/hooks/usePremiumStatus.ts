@@ -72,8 +72,8 @@ export const checkIsPremium = async (): Promise<boolean> => {
         // This leverages the local cache which we updated in PostOnboardingScreen
         const user = await AuthService.getCurrentUser();
 
-        // Check if user is premium, paid, has active trial, OR is a FRIEND account
-        const isPremium = !!(user?.isPremium || user?.isPaid || user?.trialActivated || user?.userType === 'FRIEND');
+        // Check if user is premium, paid OR is a FRIEND account
+        const isPremium = !!(user?.isPremium || user?.isPaid || user?.userType === 'FRIEND');
 
         console.log('🔍 checkIsPremium Result:', {
             isPremium: user?.isPremium,

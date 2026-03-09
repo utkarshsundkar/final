@@ -124,7 +124,19 @@ const userSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-    toJSON: { virtuals: true },
+    toJSON: {
+      virtuals: true,
+      transform: function (doc, ret) {
+        const now = new Date();
+        // Mask trialActivated if trial is expired, so old app versions don't bypass the paywall
+        if (ret.trialActivated && !ret.isPremium && ret.trialEndDate && ret.trialEndDate < now) {
+          ret.trialActivated = false;
+        }
+        delete ret.password;
+        delete ret.refreshToken;
+        return ret;
+      }
+    },
     toObject: { virtuals: true },
   }
 );

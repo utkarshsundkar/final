@@ -4,6 +4,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <!-- Required for notifications on Android 13+ (API 33+) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <!-- 🚨 REQUIRED For Android 11+ (API 30) Package Visibility -->
     <queries>
@@ -34,6 +36,13 @@
       android:usesCleartextTraffic="true"
       android:extractNativeLibs="true"
       tools:replace="android:theme">
+      <!-- Default notification icon (white transparent drawable) and color -->
+      <meta-data
+          android:name="com.google.firebase.messaging.default_notification_icon"
+          android:resource="@drawable/ic_notification" />
+      <meta-data
+          android:name="com.google.firebase.messaging.default_notification_color"
+          android:resource="@color/notification_color" />
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"

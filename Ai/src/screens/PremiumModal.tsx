@@ -512,10 +512,17 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
                                     <Text style={styles.planSubtitle} numberOfLines={2}>Best value for committed users</Text>
                                 </View>
                                 <View style={styles.planPriceContainer}>
-                                    <Text style={styles.planPriceAmount}>
-                                        {pricing.symbol}{yearlyMonthlyCost / (pricing.currency === 'INR' ? 100 : 100)}
-                                    </Text>
-                                    <Text style={styles.planPricePeriod}>/mo</Text>
+                                    <View style={styles.priceRow}>
+                                        <Text style={styles.planPriceAmount}>
+                                            {pricing.symbol}{yearlyCost / (pricing.currency === 'INR' ? 100 : 100)}
+                                        </Text>
+                                        <Text style={styles.planPricePeriod}>/yr</Text>
+                                    </View>
+                                    <View style={styles.subordinatePriceContainer}>
+                                        <Text style={styles.subordinatePriceText}>
+                                            {pricing.symbol}{(yearlyMonthlyCost / (pricing.currency === 'INR' ? 100 : 100)).toFixed(2)}/mo
+                                        </Text>
+                                    </View>
                                 </View>
                             </View>
                         </TouchableOpacity>
@@ -539,14 +546,28 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
                                     )}
                                 </View>
                                 <View style={styles.planCardInfo}>
-                                    <Text style={styles.planTitle}>Monthly</Text>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 2 }}>
+                                        <Text style={styles.planTitle}>Monthly</Text>
+                                        {monthlyPlan.discount > 0 && (
+                                            <View style={styles.popularBadge}>
+                                                <Text style={styles.popularBadgeText}>Save {monthlyPlan.discount}%</Text>
+                                            </View>
+                                        )}
+                                    </View>
                                     <Text style={styles.planSubtitle} numberOfLines={2}>Flexible month-to-month billing</Text>
                                 </View>
                                 <View style={styles.planPriceContainer}>
-                                    <Text style={styles.planPriceAmount}>
-                                        {pricing.symbol}{monthlyCost / (pricing.currency === 'INR' ? 100 : 100)}
-                                    </Text>
-                                    <Text style={styles.planPricePeriod}>/mo</Text>
+                                    <View style={styles.priceRow}>
+                                        {monthlyPlan.discount > 0 && (
+                                            <Text style={styles.originalPriceText}>
+                                                {pricing.symbol}{monthlyPlan.originalAmount / (pricing.currency === 'INR' ? 100 : 100)}
+                                            </Text>
+                                        )}
+                                        <Text style={[styles.planPriceAmount, monthlyPlan.discount > 0 && { marginLeft: 6 }]}>
+                                            {pricing.symbol}{monthlyCost / (pricing.currency === 'INR' ? 100 : 100)}
+                                        </Text>
+                                        <Text style={styles.planPricePeriod}>/mo</Text>
+                                    </View>
                                 </View>
                             </View>
                         </TouchableOpacity>
@@ -599,26 +620,45 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ visible, onClose, onSuccess
 
                     {/* Restore Purchases Button (iOS Only - Required by App Store) */}
                     {Platform.OS === 'ios' && (
-                        <TouchableOpacity
-                            style={styles.restorePurchasesButton}
-                            onPress={async () => {
-                                await AppleIAPService.restorePurchases();
-                                // Refresh user profile after restore
-                                await AuthService.refreshUserProfile();
-                                const user = await AuthService.getCurrentUser();
-                                if (user?.isPremium) {
-                                    if (onSuccess) {
-                                        onSuccess();
-                                    } else {
-                                        onClose();
+                        <View style={{ marginTop: 8 }}>
+                            <TouchableOpacity
+                                style={styles.restorePurchasesButton}
+                                onPress={async () => {
+                                    await AppleIAPService.restorePurchases();
+                                    // Refresh user profile after restore
+                                    await AuthService.refreshUserProfile();
+                                    const user = await AuthService.getCurrentUser();
+                                    if (user?.isPremium) {
+                                        if (onSuccess) {
+                                            onSuccess();
+                                        } else {
+                                            onClose();
+                                        }
                                     }
-                                }
-                            }}
-                            activeOpacity={0.7}
-                        >
-                            <Text style={styles.restorePurchasesText}>Restore Purchases</Text>
-                        </TouchableOpacity>
+                                }}
+                                activeOpacity={0.7}
+                            >
+                                <Text style={styles.restorePurchasesText}>Restore Purchases</Text>
+                            </TouchableOpacity>
+
+                            {/* Apple IAP Specific Legal Disclaimer (Required by App Store Guideline 3.1.2) */}
+                            <View style={styles.iapLegalContainer}>
+                                <Text style={styles.iapLegalText}>
+                                    A subscription purchase will be applied to your App Store account at confirmation of purchase. Subscriptions will automatically renew unless canceled within 24-hours before the end of the current period. You can cancel anytime with your App Store account settings. For more information, see our <Text style={styles.legalLink} onPress={() => Linking.openURL('https://www.apple.com/legal/internet-services/itunes/dev/stdeula/')}>Terms of Use</Text> and <Text style={styles.legalLink} onPress={() => Linking.openURL('https://www.arthlete.fit/privacypolicy.html')}>Privacy Policy</Text>.
+                                </Text>
+                            </View>
+                        </View>
                     )}
+
+                    <View style={styles.footerLinksContainer}>
+                        <TouchableOpacity onPress={() => Linking.openURL('https://www.arthlete.fit/privacypolicy.html')}>
+                            <Text style={styles.footerLinkText}>Privacy Policy</Text>
+                        </TouchableOpacity>
+                        <View style={styles.footerSeparator} />
+                        <TouchableOpacity onPress={() => Linking.openURL('https://www.apple.com/legal/internet-services/itunes/dev/stdeula/')}>
+                            <Text style={styles.footerLinkText}>Terms of Use (EULA)</Text>
+                        </TouchableOpacity>
+                    </View>
 
 
                 </ScrollView>
@@ -770,6 +810,16 @@ const styles = StyleSheet.create({
     planPriceContainer: {
         alignItems: 'flex-end',
     },
+    priceRow: {
+        flexDirection: 'row',
+        alignItems: 'baseline',
+    },
+    originalPriceText: {
+        fontSize: 14,
+        color: '#999',
+        textDecorationLine: 'line-through',
+        fontFamily: 'Lexend',
+    },
     planPriceAmount: {
         fontSize: responsive.rf(24),
         fontWeight: '700',
@@ -778,6 +828,15 @@ const styles = StyleSheet.create({
     },
     planPricePeriod: {
         fontSize: 16,
+        color: '#666',
+        fontFamily: 'Lexend',
+    },
+    subordinatePriceContainer: {
+        marginTop: 4,
+        alignItems: 'flex-end',
+    },
+    subordinatePriceText: {
+        fontSize: 14,
         color: '#666',
         fontFamily: 'Lexend',
     },
@@ -898,6 +957,41 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         fontFamily: 'Lexend',
         textAlign: 'center',
+    },
+    iapLegalContainer: {
+        marginTop: 20,
+        paddingHorizontal: 10,
+    },
+    iapLegalText: {
+        fontSize: 11,
+        color: '#8E8E93',
+        textAlign: 'center',
+        lineHeight: 16,
+        fontFamily: 'Lexend',
+    },
+    legalLink: {
+        color: '#FF6B35',
+        fontWeight: '600',
+        textDecorationLine: 'underline',
+    },
+    footerLinksContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 32,
+        paddingBottom: 20,
+    },
+    footerLinkText: {
+        fontSize: 12,
+        color: '#8E8E93',
+        fontFamily: 'Lexend',
+        textDecorationLine: 'underline',
+    },
+    footerSeparator: {
+        width: 1,
+        height: 12,
+        backgroundColor: '#D1D1D6',
+        marginHorizontal: 12,
     },
 });
 

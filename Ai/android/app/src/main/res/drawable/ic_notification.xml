@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+    Notification icon: white silhouette on transparent background.
+    Android requires notification small icons to be white/transparent only.
+    This is a simple dumbbell/fitness icon in white.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Dumbbell shape: white on transparent -->
+    <!-- Left weight plate -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M2,9 L2,15 L4,15 L4,9 Z" />
+    <!-- Left inner bar -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M4,10.5 L10,10.5 L10,13.5 L4,13.5 Z" />
+    <!-- Center bar -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M10,11 L14,11 L14,13 L10,13 Z" />
+    <!-- Right inner bar -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M14,10.5 L20,10.5 L20,13.5 L14,13.5 Z" />
+    <!-- Right weight plate -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M20,9 L20,15 L22,15 L22,9 Z" />
+</vector>

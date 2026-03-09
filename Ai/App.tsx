@@ -97,7 +97,7 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     exercises: [
       { name: 'Jumping Jacks', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185529/Jumping_Jacks_fsd0tu.mp4' },
       { name: 'High Knees', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/High_Knees_b9raf7.mp4' },
-      { name: 'Mountain Climbers', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+      { name: 'Mountain Climbers', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/pushups_new_x4q4rv.mp4' },
       { name: 'Burpees', detail: '10 reps x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Burpees_yayn8x.mp4' },
       { name: 'Skater Hops', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
     ]
@@ -108,7 +108,7 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     description: 'Maximum calorie burn with explosive movements - 4 sets',
     exercises: [
       { name: 'Burpees', detail: '12 reps x 4 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Burpees_yayn8x.mp4' },
-      { name: 'Mountain Climbers', detail: '60s x 4 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+      { name: 'Mountain Climbers', detail: '60s x 4 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/pushups_new_x4q4rv.mp4' },
       { name: 'High Knees', detail: '45s x 4 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/High_Knees_b9raf7.mp4' },
       { name: 'Jumping Jacks', detail: '60s x 4 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185529/Jumping_Jacks_fsd0tu.mp4' },
     ]
@@ -129,8 +129,8 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Power Squad',
     description: 'Focus on explosive power and leg strength.',
     exercises: [
-      { name: 'Squats', detail: '20 reps', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
-      { name: 'Lunges', detail: '15 reps each', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
+      { name: 'Squats', detail: '20 reps', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529532/squats_new_c7tyt0.mp4' },
+      { name: 'Lunges', detail: '15 reps each', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/lunges_new_usiur1.mp4' },
       { name: 'Burpees', detail: '10 reps', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Burpees_yayn8x.mp4' },
     ]
   },
@@ -139,7 +139,7 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Upper Body Strength',
     description: 'Focus on Upper Body strength - 3 sets',
     exercises: [
-      { name: 'Push-ups', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+      { name: 'Push-ups', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/pushups_new_x4q4rv.mp4' },
       { name: 'Shoulder Press', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
       { name: 'Shoulder Taps Plank', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
     ]
@@ -149,8 +149,8 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Full-Body Builder',
     description: 'Complete full body workout - 3 sets',
     exercises: [
-      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
-      { name: 'Push-ups', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
+      { name: 'Push-ups', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/pushups_new_x4q4rv.mp4' },
       { name: 'Overhead Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
     ]
   },
@@ -162,7 +162,7 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
       { name: 'High Knees', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/High_Knees_b9raf7.mp4' },
       { name: 'Skater Hops', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
       { name: 'Shoulder Taps Plank', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
-      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
     ]
   },
   'SweatCircuit': {
@@ -182,7 +182,7 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     description: 'Ultimate cardio challenge for experts - 5 sets',
     exercises: [
       { name: 'Burpees', detail: '15 reps x 5 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Burpees_yayn8x.mp4' },
-      { name: 'Mountain Climbers', detail: '60s x 5 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+      { name: 'Mountain Climbers', detail: '60s x 5 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/pushups_new_x4q4rv.mp4' },
       { name: 'High Knees', detail: '60s x 5 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/High_Knees_b9raf7.mp4' },
       { name: 'Jumping Jacks', detail: '90s x 5 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185529/Jumping_Jacks_fsd0tu.mp4' },
       { name: 'Plank butt kicks', detail: '60s x 5 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/plank_butt_kicks_wcnxid.mp4' },
@@ -259,8 +259,8 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
       { name: 'Glutes Bridge', detail: '30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185516/Glute_Bridge_nphtwp.mp4' },
       { name: 'Side Lunge Left', detail: '30s', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
       { name: 'Side Lunge Right', detail: '30s', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
-      { name: 'Lunge', detail: '30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
-      { name: 'Air Squat', detail: '30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+      { name: 'Lunge', detail: '30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/lunges_new_usiur1.mp4' },
+      { name: 'Air Squat', detail: '30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
     ]
   },
   'SideToSideBurner': {
@@ -296,8 +296,8 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
       { name: 'Glutes Bridge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185516/Glute_Bridge_nphtwp.mp4' },
       { name: 'Side Lunge Left', detail: '60s x 3 sets' },
       { name: 'Side Lunge Right', detail: '60s x 3 sets' },
-      { name: 'Lunge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
-      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+      { name: 'Lunge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/lunges_new_usiur1.mp4' },
+      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
       { name: 'Skater Hops', detail: '60s x 3 sets' },
       { name: 'Standing Knee Raise Left', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185582/warm_up-_standing_knee_raise_iodwnw.mp4' },
       { name: 'Standing Knee Raise Right', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185582/warm_up-_standing_knee_raise_iodwnw.mp4' },
@@ -311,7 +311,7 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Chest Program',
     description: 'Focus on proper form and chest development - 3 sets',
     exercises: [
-      { name: 'Push-ups', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+      { name: 'Push-ups', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/pushups_new_x4q4rv.mp4' },
       { name: 'Shoulder Press', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
       { name: 'Shoulder Taps Plank', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
     ]
@@ -322,7 +322,7 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     description: 'Increase weights gradually for arm strength - 3 sets',
     exercises: [
       { name: 'Shoulder Press', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
-      { name: 'Push-ups', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+      { name: 'Push-ups', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/pushups_new_x4q4rv.mp4' },
       { name: 'Shoulder Taps Plank', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
     ]
   },
@@ -331,7 +331,7 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Legs Program',
     description: 'Build strength and endurance in your legs - 3 sets',
     exercises: [
-      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
       { name: 'Bulgarian Split Squats', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185512/Bulgarian_Split_Squats_sohzay.mp4' },
       { name: 'Lunge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
       { name: 'Glutes Bridge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
@@ -344,8 +344,8 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Leg Day Special',
     description: 'The ultimate leg day blast - 3 sets',
     exercises: [
-      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
-      { name: 'Lunge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
+      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
+      { name: 'Lunge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/lunges_new_usiur1.mp4' },
       { name: 'Side Lunge Left', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
       { name: 'Side Lunge Right', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
       { name: 'Glutes Bridge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185516/Glute_Bridge_nphtwp.mp4' },
@@ -368,9 +368,9 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
     title: 'Upper Body Power',
     description: 'Elite strength circuit for upper body dominance - 3 sets',
     exercises: [
-      { name: 'Pushups', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+      { name: 'Pushups', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/pushups_new_x4q4rv.mp4' },
       { name: 'Shoulder Press', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
-      { name: 'Pushups', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+      { name: 'Pushups', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/pushups_new_x4q4rv.mp4' },
     ]
   },
 };
@@ -378,67 +378,67 @@ const WORKOUT_DETAILS_DATA: Record<string, any> = {
 const WORKOUT_PROGRAMS = [
   {
     id: 'UpperBodyStrength', title: 'Upper Body Strength', desc: 'Focus on Upper Body.',
-    time: '18 min', tag: '3 x 3 sets', category: 'Strength',
+    time: '23 min', tag: '3 x 3 sets', category: 'Strength',
     image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'FullBodyBuilder', title: 'Full-Body Builder', desc: 'Focus on Full Body.',
-    time: '18 min', tag: '3 x 3 sets', category: 'Strength',
+    time: '23 min', tag: '3 x 3 sets', category: 'Strength',
     image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'HIITExpress', title: 'HIIT Express', desc: 'Fast paced cardio.',
-    time: '24 min', tag: '4 x 3 sets', category: 'Cardio',
+    time: '30 min', tag: '4 x 3 sets', category: 'Cardio',
     image: 'https://images.unsplash.com/photo-1601422407692-ec4eeec1d9b3?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'SweatCircuit', title: 'Sweat Circuit', desc: 'Circuit training.',
-    time: '24 min', tag: '4 x 3 sets', category: 'Cardio',
+    time: '30 min', tag: '4 x 3 sets', category: 'Cardio',
     image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'ChestProgram', title: 'Chest Program', desc: 'Focus on proper form...',
-    time: '18 min', tag: '3 x 3 sets', category: 'Strength',
+    time: '23 min', tag: '3 x 3 sets', category: 'Strength',
     image: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'ArmsProgram', title: 'Arms Program', desc: 'Increase weights grad...',
-    time: '18 min', tag: '3 x 3 sets', category: 'Strength',
+    time: '23 min', tag: '3 x 3 sets', category: 'Strength',
     image: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'LegsProgram', title: 'Legs Program', desc: 'Build strength and...',
-    time: '33 min', tag: '5 x 3 sets', category: 'Lower',
+    time: '40 min', tag: '5 x 3 sets', category: 'Lower',
     image: 'https://images.unsplash.com/photo-1434682881908-b43d0467b798?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'CardioCrusher', title: 'Cardio Crusher', desc: 'High intensity cardio...',
-    time: '24 min', tag: '4 x 3 sets', category: 'Cardio',
+    time: '30 min', tag: '4 x 3 sets', category: 'Cardio',
     image: 'https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'CardioMax', title: 'Cardio Max', desc: 'All-in-one cardio.',
-    time: '30 min', tag: '5 x 3 sets', category: 'Cardio',
+    time: '38 min', tag: '5 x 3 sets', category: 'Cardio',
     image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'CoreCrusher', title: 'Core Crusher', desc: 'Crush your core.',
-    time: '24 min', tag: '4 x 3 sets', category: 'Core',
+    time: '30 min', tag: '4 x 3 sets', category: 'Core',
     image: 'https://ik.imagekit.io/an85p0bgo/icons/core-crusher-2.jpg'
   },
   {
     id: 'AbsReloaded', title: 'Abs Reloaded', desc: 'Core focused routine.',
-    time: '24 min', tag: '4 x 3 sets', category: 'Core',
+    time: '30 min', tag: '4 x 3 sets', category: 'Core',
     image: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'MobilityFlow', title: 'Mobility Flow', desc: 'Smooth sequence.',
-    time: '30 min', tag: '5 x 3 sets', category: 'Mobility',
+    time: '38 min', tag: '5 x 3 sets', category: 'Mobility',
     image: 'https://images.unsplash.com/photo-1552196563-55cd4e45efb3?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'DynamicMobility', title: 'Dynamic Mobility', desc: 'Active range.',
-    time: '30 min', tag: '5 x 3 sets', category: 'Mobility',
+    time: '38 min', tag: '5 x 3 sets', category: 'Mobility',
     image: 'https://images.unsplash.com/photo-1571019613576-2b22c76fd955?w=400'
   },
   {
@@ -453,7 +453,7 @@ const WORKOUT_PROGRAMS = [
   },
   {
     id: 'GluteBlaster', title: 'Glute Blaster', desc: 'Sculpt your glutes.',
-    time: '24 min', tag: '4 x 3 sets', category: 'Lower',
+    time: '30 min', tag: '4 x 3 sets', category: 'Lower',
     image: 'https://ik.imagekit.io/an85p0bgo/icons/glute-blaster.jpg'
   },
   {
@@ -473,7 +473,7 @@ const WORKOUT_PROGRAMS = [
   },
   {
     id: 'EliteYoga', title: 'Elite Yoga', desc: 'Advanced yoga flow.',
-    time: '12 min', tag: '4 x 3 sets', category: 'Yoga',
+    time: '18 min', tag: '4 x 3 sets', category: 'Yoga',
     image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80'
   }
 ];
@@ -494,7 +494,7 @@ const BODY_FOCUS_DETAILS: Record<string, any> = {
     title: 'Chest Chisel',
     description: 'Sculpt a powerful chest - 3 sets',
     exercises: [
-      { name: 'Push-ups', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+      { name: 'Push-ups', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/pushups_new_x4q4rv.mp4' },
       { name: 'Shoulder Taps Plank', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
       { name: 'High Plank Hold', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
     ]
@@ -504,8 +504,8 @@ const BODY_FOCUS_DETAILS: Record<string, any> = {
     title: 'Thunder Thighs',
     description: 'Strengthen your quads and hamstrings - 3 sets',
     exercises: [
-      { name: 'Lunge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
-      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+      { name: 'Lunge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/lunges_new_usiur1.mp4' },
+      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
       { name: 'Ski Jumps', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
       { name: 'Jumps', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
     ]
@@ -566,10 +566,10 @@ const BODY_FOCUS_DETAILS: Record<string, any> = {
     title: 'Upper Body Circuit',
     description: 'Comprehensive strength circuit - 3 sets',
     exercises: [
-      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
       { name: 'Side Lunge (Left)', detail: '60s x 3 sets' },
       { name: 'Side Lunge (Right)', detail: '60s x 3 sets' },
-      { name: 'Lunge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
+      { name: 'Lunge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/lunges_new_usiur1.mp4' },
       { name: 'Glutes Bridge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
     ]
   },
@@ -591,7 +591,7 @@ const BODY_FOCUS_DETAILS: Record<string, any> = {
       { name: 'High Knees', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/High_Knees_b9raf7.mp4' },
       { name: 'Skater Hops', detail: '60s x 3 sets' },
       { name: 'Shoulder Taps Plank', detail: '60s x 3 sets' },
-      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+      { name: 'Air Squat', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
     ]
   },
   'Featured_MobilityFlow': {
@@ -615,7 +615,7 @@ const BODY_FOCUS_DETAILS: Record<string, any> = {
       { name: 'Glutes Bridge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/djmbrbq7t/video/upload/v1772183064/4117854-sd_540_960_25fps_x64xfx.mp4' },
       { name: 'Side Lunge Left', detail: '60s x 3 sets' },
       { name: 'Side Lunge Right', detail: '60s x 3 sets' },
-      { name: 'Lunge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
+      { name: 'Lunge', detail: '60s x 3 sets', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/lunges_new_usiur1.mp4' },
     ]
   },
   'Featured_PowerPlyo': {
@@ -681,7 +681,7 @@ const BottomNavBar = React.memo(({ activeNav, setActiveNav, userType }: { active
   ].filter(item => userType === 'FRIEND' ? (item.id === 'Progress' || item.id === 'Profile') : true);
 
   return (
-    <View style={{
+    <View style={[{
       position: 'absolute',
       bottom: 0,
       left: 0,
@@ -696,7 +696,7 @@ const BottomNavBar = React.memo(({ activeNav, setActiveNav, userType }: { active
       elevation: 12,
       paddingBottom: 24,
       paddingTop: 10,
-    }}>
+    }, responsive.isIPad && { maxWidth: 850, alignSelf: 'center', marginHorizontal: (width - 850) / 2 }]}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
         {navItems.map((item) => {
           const isActive = activeNav === item.id;
@@ -730,20 +730,29 @@ const BottomNavBar = React.memo(({ activeNav, setActiveNav, userType }: { active
 
 const VideoWorkoutScreen = ({ navigation, route }: any) => {
   const workout = route?.params?.workout;
-  const exercises = workout?.exercises?.filter((ex: any) => !ex.isHeader) || [
-    { name: 'Squats', detail: '1:36', videoUrl: '' }
-  ];
+  const exercises = workout?.exercises?.filter((ex: any) => !ex.isHeader) || [];
+
+  // Return early if no exercises to avoid crashes
+  useEffect(() => {
+    if (!exercises || exercises.length === 0) {
+      console.log('No exercises found, navigating back');
+      navigation.goBack();
+    }
+  }, [exercises, navigation]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isResting, setIsResting] = useState(false);
   const [isDemoPhase, setIsDemoPhase] = useState(true); // New state for demo phase
+  const [isPaused, setIsPaused] = useState(false); // Timer pause
+  const [isVideoPaused, setIsVideoPaused] = useState(false); // Video pause
   const [videoRate, setVideoRate] = useState(1.0); // State to control video speed
   const exerciseTime = workout?.exerciseDuration || 90;
-  const restTime = workout?.restDuration || 20; // Default to 20 if not specified
+  const restTime = workout?.restDuration || 60; // Default to 60 if not specified
   const [timer, setTimer] = useState(exerciseTime);
   const currentExercise = exercises[currentIndex];
   const nextExercise = exercises[currentIndex + 1];
 
+  const videoRef = useRef<any>(null);
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
@@ -817,8 +826,8 @@ const VideoWorkoutScreen = ({ navigation, route }: any) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      // Pause timer during demo phase
-      if (isDemoPhase && !isResting) return;
+      // Pause timer ONLY if timer is specifically paused or during demo phase
+      if (isPaused || (isDemoPhase && !isResting)) return;
 
       setTimer((prev: number) => {
         if (prev > 0) return prev - 1;
@@ -826,19 +835,25 @@ const VideoWorkoutScreen = ({ navigation, route }: any) => {
         // When timer hits 0
         if (isResting) {
           setIsResting(false);
+          setIsPaused(false);
+          setIsVideoPaused(false);
           setCurrentIndex(c => c + 1);
           return exerciseTime; // Next exercise duration
         } else if (currentIndex < exercises.length - 1) {
           setIsResting(true);
+          setIsPaused(false);
+          setIsVideoPaused(false);
           return restTime; // Rest duration
         }
         return 0;
       });
     }, 1000);
     return () => clearInterval(interval);
-  }, [currentIndex, isResting, exerciseTime, restTime, isDemoPhase]);
+  }, [currentIndex, isResting, exerciseTime, restTime, isDemoPhase, isPaused]);
 
   const handleNext = () => {
+    setIsPaused(false);
+    setIsVideoPaused(false);
     if (isResting) {
       setIsResting(false);
       setCurrentIndex(currentIndex + 1);
@@ -853,6 +868,8 @@ const VideoWorkoutScreen = ({ navigation, route }: any) => {
   };
 
   const handlePrev = () => {
+    setIsPaused(false);
+    setIsVideoPaused(false);
     if (isResting) {
       setIsResting(false);
       setTimer(exerciseTime);
@@ -860,6 +877,13 @@ const VideoWorkoutScreen = ({ navigation, route }: any) => {
       setCurrentIndex(currentIndex - 1);
       setIsResting(false);
       setTimer(exerciseTime);
+    }
+  };
+
+  const handleRestartVideo = () => {
+    if (videoRef.current) {
+      videoRef.current.seek(0);
+      setIsVideoPaused(false);
     }
   };
 
@@ -915,11 +939,13 @@ const VideoWorkoutScreen = ({ navigation, route }: any) => {
         ) : currentExercise.videoUrl ? (
           /* VIDEO */
           <Video
+            ref={videoRef}
             source={{ uri: currentExercise.videoUrl }}
             style={StyleSheet.absoluteFillObject}
             resizeMode="cover"
             repeat={!isDemoPhase}
             rate={videoRate}
+            paused={isVideoPaused}
             onLoad={onVideoLoad}
             onEnd={() => {
               if (isDemoPhase) setIsDemoPhase(false);
@@ -930,12 +956,9 @@ const VideoWorkoutScreen = ({ navigation, route }: any) => {
           />
         ) : (
           /* NO VIDEO FALLBACK */
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{ flex: 1, backgroundColor: '#000', justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ color: 'white', fontSize: 24, fontWeight: '800', fontFamily: 'Lexend' }}>
               {currentExercise.name}
-            </Text>
-            <Text style={{ color: '#8E8E93', fontSize: 16, fontFamily: 'Lexend', marginTop: 8 }}>
-              Keep going! You're doing great.
             </Text>
           </View>
         )}
@@ -960,9 +983,10 @@ const VideoWorkoutScreen = ({ navigation, route }: any) => {
               color: isResting ? '#FF8C42' : (isDemoPhase ? '#FF6B35' : '#1C1C1E'), fontSize: 12,
               fontWeight: '700', fontFamily: 'Lexend', textTransform: 'uppercase', letterSpacing: 1.5
             }}>
-              {isResting ? '🔥  REST' : (isDemoPhase ? '📺  TUTORIAL' : `${currentIndex + 1}  /  ${exercises.length}`)}
+              {isResting ? 'REST' : (isDemoPhase ? 'TUTORIAL' : `${currentIndex + 1} / ${exercises.length}`)}
             </Text>
           </View>
+
 
           {isDemoPhase && !isResting && (
             <TouchableOpacity
@@ -990,6 +1014,40 @@ const VideoWorkoutScreen = ({ navigation, route }: any) => {
             </TouchableOpacity>
           )}
         </View>
+
+        {!isResting && (
+          <View style={{
+            position: 'absolute', bottom: 16, left: 0, right: 0,
+            flexDirection: 'row', justifyContent: 'center', alignItems: 'center'
+          }}>
+            <View style={{
+              flexDirection: 'row', backgroundColor: 'rgba(255,255,255,0.85)',
+              borderRadius: 25, padding: 4, borderWidth: 1, borderColor: '#F2F2F7',
+              shadowColor: '#000', shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.1, shadowRadius: 8, elevation: 5
+            }}>
+              <TouchableOpacity
+                onPress={handleRestartVideo}
+                style={{
+                  flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16,
+                  paddingVertical: 8, borderRightWidth: 1, borderRightColor: '#F2F2F7'
+                }}>
+                <Text style={{ fontSize: 18, marginRight: 8 }}>↻</Text>
+                <Text style={{ color: '#1C1C1E', fontSize: 12, fontWeight: '800', fontFamily: 'Lexend' }}>RESTART VIDEO</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => setIsVideoPaused(!isVideoPaused)}
+                style={{
+                  flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16,
+                  paddingVertical: 8
+                }}>
+                <Text style={{ fontSize: 14, marginRight: 8, color: '#FF6B35' }}>{isVideoPaused ? '►' : '||'}</Text>
+                <Text style={{ color: '#FF6B35', fontSize: 12, fontWeight: '800', fontFamily: 'Lexend' }}>{isVideoPaused ? 'PLAY VIDEO' : 'PAUSE VIDEO'}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
       </View>
 
       {/* ── BOTTOM PANEL ── */}
@@ -1001,14 +1059,14 @@ const VideoWorkoutScreen = ({ navigation, route }: any) => {
 
           {/* Exercise name */}
           {!isResting && (
-            <View style={{ marginBottom: 10 }}>
+            <View style={{ marginBottom: 16 }}>
               <Text style={{
                 color: 'rgba(28,28,30,0.40)', fontSize: 10, fontWeight: '700',
                 fontFamily: 'Lexend', textTransform: 'uppercase', letterSpacing: 3, marginBottom: 2
               }}>
                 Now Performing
               </Text>
-              <Text style={{ color: '#1C1C1E', fontSize: 18, fontWeight: '900', fontFamily: 'Lexend' }}>
+              <Text style={{ color: '#1C1C1E', fontSize: 22, fontWeight: '900', fontFamily: 'Lexend' }}>
                 {currentExercise.name}
               </Text>
             </View>
@@ -1030,43 +1088,51 @@ const VideoWorkoutScreen = ({ navigation, route }: any) => {
             <TouchableOpacity onPress={handlePrev}
               disabled={currentIndex === 0 && !isResting}
               style={{
-                width: 52, height: 52, borderRadius: 26,
+                width: 56, height: 56, borderRadius: 28,
                 backgroundColor: '#F8F9FB', borderWidth: 1,
                 borderColor: '#F2F2F7', justifyContent: 'center', alignItems: 'center',
                 opacity: currentIndex === 0 && !isResting ? 0.25 : 1
               }}>
-              <Text style={{ color: '#1C1C1E', fontSize: 24 }}>‹</Text>
+              <Text style={{ color: '#1C1C1E', fontSize: 28 }}>‹</Text>
             </TouchableOpacity>
 
-            <View style={{ alignItems: 'center' }}>
-              <Text style={{
-                color: isResting ? '#FF8C42' : '#1C1C1E',
-                fontSize: responsive.rf(50), fontWeight: '900', fontFamily: 'Lexend', letterSpacing: -1
-              }}>
-                {formatTime(timer)}
-              </Text>
-              <Text style={{
-                color: 'rgba(28,28,30,0.30)', fontSize: 10,
-                fontFamily: 'Lexend', textTransform: 'uppercase', letterSpacing: 2.5
-              }}>
-                {isResting ? 'Rest' : 'Work'}
-              </Text>
+            <View style={{ alignItems: 'center', flex: 1 }}>
+              <TouchableOpacity
+                onPress={() => setIsPaused(!isPaused)}
+                style={{ alignItems: 'center' }}
+              >
+                <Text style={{
+                  color: isResting ? '#FF8C42' : (isPaused ? '#8E8E93' : '#1C1C1E'),
+                  fontSize: responsive.rf(56), fontWeight: '900', fontFamily: 'Lexend', letterSpacing: -2
+                }}>
+                  {formatTime(timer)}
+                </Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ fontSize: 12, marginRight: 6 }}>{isPaused ? '►' : '||'}</Text>
+                  <Text style={{
+                    color: 'rgba(28,28,30,0.30)', fontSize: 11,
+                    fontFamily: 'Lexend', textTransform: 'uppercase', letterSpacing: 3
+                  }}>
+                    {isPaused ? 'TIMER PAUSED' : (isResting ? 'Recovery Mode' : 'Training Time')}
+                  </Text>
+                </View>
+              </TouchableOpacity>
             </View>
 
             <TouchableOpacity onPress={handleNext}
               style={{
-                width: 52, height: 52, borderRadius: 26,
+                width: 56, height: 56, borderRadius: 28,
                 backgroundColor: (currentIndex === exercises.length - 1 && !isResting) ? '#FF6B35' : '#F8F9FB',
                 borderWidth: 1,
                 borderColor: (currentIndex === exercises.length - 1 && !isResting) ? '#FF6B35' : '#F2F2F7',
                 justifyContent: 'center', alignItems: 'center',
                 shadowColor: '#FF6B35',
-                shadowOpacity: (currentIndex === exercises.length - 1 && !isResting) ? 0.5 : 0,
-                shadowRadius: 12, elevation: 5
+                shadowOpacity: (currentIndex === exercises.length - 1 && !isResting) ? 0.3 : 0,
+                shadowRadius: 10, elevation: 4
               }}>
               {currentIndex === exercises.length - 1 && !isResting
-                ? <Text style={{ color: '#FFF', fontSize: 22 }}>✓</Text>
-                : <Text style={{ color: '#FF6B35', fontSize: 24 }}>›</Text>}
+                ? <Text style={{ color: '#FFF', fontSize: 24 }}>✓</Text>
+                : <Text style={{ color: '#FF6B35', fontSize: 28 }}>›</Text>}
             </TouchableOpacity>
           </View>
 
@@ -1097,9 +1163,6 @@ const MainTabScreen = ({ navigation }: any) => {
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('Active');
   const [showPremiumModal, setShowPremiumModal] = useState(false);
-  const [showTestMenu, setShowTestMenu] = useState(false);
-  const [testLevelTarget, setTestLevelTarget] = useState('beginner');
-  const [testDayTarget, setTestDayTarget] = useState(1);
   const [isPremium, setIsPremium] = useState(false);
   const [user, setUser] = useState<any>(null); // Store full user if needed
   const [userRank, setUserRank] = useState<number | null>(null); // User's leaderboard rank
@@ -1152,7 +1215,7 @@ const MainTabScreen = ({ navigation }: any) => {
       AuthService.getCurrentUser().then(u => {
         console.log('MainTabScreen: Focus refreshed user', { isPremium: u?.isPremium });
         setUser(u);
-        setIsPremium(!!(u?.isPremium || u?.isPaid));
+        setIsPremium(!!(u?.isPremium || u?.isPaid || u?.userType === 'FRIEND'));
         if (u?.id) {
           fetchTodayStats(u.id);
         }
@@ -1507,12 +1570,12 @@ const MainTabScreen = ({ navigation }: any) => {
 
   // --- Workout Logic ---
 
-  const showDailyKickstartDetails = async (testLevel?: string, testDay?: number) => {
+  const showDailyKickstartDetails = async () => {
     try {
       const onboardingData = await OnboardingService.getOnboardingData();
-      let level = testLevel || onboardingData?.experience || 'beginner';
+      let level = onboardingData?.experience || 'beginner';
       level = level.toLowerCase();
-      const day = testDay !== undefined ? testDay : new Date().getDay();
+      const day = new Date().getDay();
 
       let uiExercises: any[] = [];
       let description = "";
@@ -1527,9 +1590,9 @@ const MainTabScreen = ({ navigation }: any) => {
             description = "Day 1 - Upper Body Strength Day";
             uiExercises = [
               { isHeader: true, title: 'Main Workout' },
-              { name: 'Pushups', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
-              { name: 'Pushups', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
-              { name: 'Pushups', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+              { name: 'Pushups', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/pushups_new_x4q4rv.mp4' },
+              { name: 'Pushups', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/pushups_new_x4q4rv.mp4' },
+              { name: 'Pushups', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/pushups_new_x4q4rv.mp4' },
 
               { name: 'Tricep Dips', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Tricep_Dips_qywkn3.mp4' },
               { name: 'Tricep Dips', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Tricep_Dips_qywkn3.mp4' },
@@ -1548,10 +1611,10 @@ const MainTabScreen = ({ navigation }: any) => {
             description = "Day 1 - Upper Body Strength Day";
             uiExercises = [
               { isHeader: true, title: 'Main Workout' },
-              { name: 'Pushups', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
-              { name: 'Pushups', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
-              { name: 'Pushups', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
-              { name: 'Pushups', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+              { name: 'Pushups', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/pushups_new_x4q4rv.mp4' },
+              { name: 'Pushups', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/pushups_new_x4q4rv.mp4' },
+              { name: 'Pushups', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/pushups_new_x4q4rv.mp4' },
+              { name: 'Pushups', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/pushups_new_x4q4rv.mp4' },
 
               { name: 'Tricep Dips', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Tricep_Dips_qywkn3.mp4' },
               { name: 'Tricep Dips', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Tricep_Dips_qywkn3.mp4' },
@@ -1573,8 +1636,8 @@ const MainTabScreen = ({ navigation }: any) => {
             description = "Day 1 - Upper Body Strength Day";
             uiExercises = [
               { isHeader: true, title: 'Main Workout' },
-              { name: 'Push-up', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
-              { name: 'Push-up', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+              { name: 'Push-up', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/pushups_new_x4q4rv.mp4' },
+              { name: 'Push-up', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/pushups_new_x4q4rv.mp4' },
 
               { name: 'Tricep Dips', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Tricep_Dips_qywkn3.mp4' },
               { name: 'Tricep Dips', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185530/Tricep_Dips_qywkn3.mp4' },
@@ -1591,13 +1654,13 @@ const MainTabScreen = ({ navigation }: any) => {
           description = "Day 2 - Lower Body Builder";
           uiExercises = [
             { isHeader: true, title: 'Main Workout' },
-            { name: 'Air Squats', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
-            { name: 'Air Squats', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
-            { name: 'Air Squats', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+            { name: 'Air Squats', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
+            { name: 'Air Squats', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
+            { name: 'Air Squats', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
 
-            { name: 'Lunges', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
-            { name: 'Lunges', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
-            { name: 'Lunges', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
+            { name: 'Lunges', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/lunges_new_usiur1.mp4' },
+            { name: 'Lunges', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/lunges_new_usiur1.mp4' },
+            { name: 'Lunges', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/lunges_new_usiur1.mp4' },
 
             { name: 'Calf Raises', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185515/Calf_Raises_mcimrt.mp4' },
             { name: 'Calf Raises', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185515/Calf_Raises_mcimrt.mp4' },
@@ -1607,15 +1670,15 @@ const MainTabScreen = ({ navigation }: any) => {
           description = "Day 2 - Lower Body Builder";
           uiExercises = [
             { isHeader: true, title: 'Main Workout' },
-            { name: 'Air Squats', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
-            { name: 'Air Squats', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
-            { name: 'Air Squats', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
-            { name: 'Air Squats', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+            { name: 'Air Squats', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
+            { name: 'Air Squats', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
+            { name: 'Air Squats', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
+            { name: 'Air Squats', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
 
-            { name: 'Lunges', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
-            { name: 'Lunges', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
-            { name: 'Lunges', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
-            { name: 'Lunges', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
+            { name: 'Lunges', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/lunges_new_usiur1.mp4' },
+            { name: 'Lunges', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/lunges_new_usiur1.mp4' },
+            { name: 'Lunges', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/lunges_new_usiur1.mp4' },
+            { name: 'Lunges', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/lunges_new_usiur1.mp4' },
 
             { name: 'Calf Raises', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185515/Calf_Raises_mcimrt.mp4' },
             { name: 'Calf Raises', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185515/Calf_Raises_mcimrt.mp4' },
@@ -1627,11 +1690,11 @@ const MainTabScreen = ({ navigation }: any) => {
           description = "Day 2 - Lower Body Builder";
           uiExercises = [
             { isHeader: true, title: 'Main Workout' },
-            { name: 'Air Squats', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
-            { name: 'Air Squats', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+            { name: 'Air Squats', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
+            { name: 'Air Squats', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
 
-            { name: 'Lunges', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
-            { name: 'Lunges', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185525/Lunges_cihekd.mp4' },
+            { name: 'Lunges', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/lunges_new_usiur1.mp4' },
+            { name: 'Lunges', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/lunges_new_usiur1.mp4' },
 
             { name: 'Calf Raises', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185515/Calf_Raises_mcimrt.mp4' },
             { name: 'Calf Raises', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185515/Calf_Raises_mcimrt.mp4' },
@@ -1781,10 +1844,10 @@ const MainTabScreen = ({ navigation }: any) => {
             { name: 'Side Plank', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185518/Side_Plank_bmz6wk.mp4' },
             { name: 'Side Plank', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185518/Side_Plank_bmz6wk.mp4' },
 
-            { name: 'Pushups', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
-            { name: 'Pushups', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
-            { name: 'Pushups', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
-            { name: 'Pushups', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+            { name: 'Pushups', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/pushups_new_x4q4rv.mp4' },
+            { name: 'Pushups', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/pushups_new_x4q4rv.mp4' },
+            { name: 'Pushups', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/pushups_new_x4q4rv.mp4' },
+            { name: 'Pushups', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/pushups_new_x4q4rv.mp4' },
           ];
         } else {
           // Beginner
@@ -1800,8 +1863,8 @@ const MainTabScreen = ({ navigation }: any) => {
             { name: 'Side Plank', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185518/Side_Plank_bmz6wk.mp4' },
             { name: 'Side Plank', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185518/Side_Plank_bmz6wk.mp4' },
 
-            { name: 'Pushups', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
-            { name: 'Pushups', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271652/Pushups_jwsp7a.mp4' },
+            { name: 'Pushups', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/pushups_new_x4q4rv.mp4' },
+            { name: 'Pushups', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/pushups_new_x4q4rv.mp4' },
           ];
         }
       }
@@ -1811,8 +1874,8 @@ const MainTabScreen = ({ navigation }: any) => {
           description = "Day 6 - Full Body Conditioning";
           uiExercises = [
             { isHeader: true, title: 'Main Workout' },
-            { name: 'Air Squats', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
-            { name: 'Air Squats', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+            { name: 'Air Squats', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
+            { name: 'Air Squats', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
 
             { name: 'Plank', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185533/Plank_riua2q.mp4' },
             { name: 'Plank', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185533/Plank_riua2q.mp4' },
@@ -1823,16 +1886,16 @@ const MainTabScreen = ({ navigation }: any) => {
             { name: 'Hip Rotation', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/Hip_Rotation_pdrbi2.mp4' },
             { name: 'Hip Rotation', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/Hip_Rotation_pdrbi2.mp4' },
 
-            { name: 'Light Air Squats', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
-            { name: 'Light Air Squats', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+            { name: 'Light Air Squats', detail: 'Set 1 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
+            { name: 'Light Air Squats', detail: 'Set 2 • 30s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
           ];
         } else if (level === 'intermediate') {
           description = "Day 6 - Full Body Conditioning";
           uiExercises = [
             { isHeader: true, title: 'Main Workout' },
-            { name: 'Air Squats', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
-            { name: 'Air Squats', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
-            { name: 'Air Squats', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+            { name: 'Air Squats', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
+            { name: 'Air Squats', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
+            { name: 'Air Squats', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
 
             { name: 'Plank', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185533/Plank_riua2q.mp4' },
             { name: 'Plank', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185533/Plank_riua2q.mp4' },
@@ -1846,18 +1909,18 @@ const MainTabScreen = ({ navigation }: any) => {
             { name: 'Hip Rotation', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/Hip_Rotation_pdrbi2.mp4' },
             { name: 'Hip Rotation', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/Hip_Rotation_pdrbi2.mp4' },
 
-            { name: 'Light Air Squats', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
-            { name: 'Light Air Squats', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
-            { name: 'Light Air Squats', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+            { name: 'Light Air Squats', detail: 'Set 1 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
+            { name: 'Light Air Squats', detail: 'Set 2 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
+            { name: 'Light Air Squats', detail: 'Set 3 • 40s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
           ];
         } else if (level === 'advanced' || level === 'expert') {
           description = "Day 6 - Full Body Conditioning";
           uiExercises = [
             { isHeader: true, title: 'Main Workout' },
-            { name: 'Air Squats', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
-            { name: 'Air Squats', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
-            { name: 'Air Squats', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
-            { name: 'Air Squats', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+            { name: 'Air Squats', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
+            { name: 'Air Squats', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
+            { name: 'Air Squats', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
+            { name: 'Air Squats', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
 
             { name: 'Plank', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185533/Plank_riua2q.mp4' },
             { name: 'Plank', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185533/Plank_riua2q.mp4' },
@@ -1874,10 +1937,10 @@ const MainTabScreen = ({ navigation }: any) => {
             { name: 'Hip Rotation', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/Hip_Rotation_pdrbi2.mp4' },
             { name: 'Hip Rotation', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772185521/Hip_Rotation_pdrbi2.mp4' },
 
-            { name: 'Light Air Squats', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
-            { name: 'Light Air Squats', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
-            { name: 'Light Air Squats', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
-            { name: 'Light Air Squats', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772271653/Squats_cgdiao.mp4' },
+            { name: 'Light Air Squats', detail: 'Set 1 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
+            { name: 'Light Air Squats', detail: 'Set 2 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
+            { name: 'Light Air Squats', detail: 'Set 3 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
+            { name: 'Light Air Squats', detail: 'Set 4 • 50s', videoUrl: 'https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4' },
           ];
         }
       }
@@ -1901,8 +1964,8 @@ const MainTabScreen = ({ navigation }: any) => {
         exerciseDuration: (level === 'beginner' && (day === 1 || day === 0 || day === 2 || day === 3 || day === 4 || day === 5 || day === 6)) ? 30 :
           ((level === 'intermediate' && (day === 1 || day === 2 || day === 3 || day === 4 || day === 5 || day === 6)) ? 40 :
             ((level === 'advanced' || level === 'expert') && (day === 1 || day === 2 || day === 3 || day === 4 || day === 5 || day === 6)) ? 50 : 90),
-        restDuration: (level === 'beginner' && (day === 1 || day === 0 || day === 2 || day === 3 || day === 4 || day === 5 || day === 6)) ? 30 :
-          ((level === 'advanced' || level === 'expert') && (day === 1 || day === 2 || day === 3 || day === 4 || day === 5 || day === 6)) ? 15 : 20,
+        restDuration: 60,
+        isRestDay: uiExercises.length === 0,
       });
 
     } catch (e) {
@@ -1910,9 +1973,7 @@ const MainTabScreen = ({ navigation }: any) => {
     }
   };
 
-  const openTestMenu = () => {
-    setShowTestMenu(true);
-  };
+
 
   // startDailyKickstart removed (Sency SDK)
 
@@ -2176,13 +2237,13 @@ const MainTabScreen = ({ navigation }: any) => {
             {(activeNav === 'Home' && user?.userType !== 'FRIEND') ? (
               <View style={{ flex: 1, backgroundColor: '#FF6B35' }}>
                 {/* ── Header sits on the colored background ── */}
-                <View style={{ paddingHorizontal: 20, paddingTop: 10, paddingBottom: 16 }}>
-                  <Text style={{ fontSize: responsive.rf(32), fontWeight: '900', color: '#FFFFFF', fontFamily: 'Arthlete', letterSpacing: 1.5, textTransform: 'uppercase' }}>Arthlete</Text>
+                <View style={[{ paddingHorizontal: 20, paddingTop: 10, paddingBottom: 16 }, responsive.isIPad && { maxWidth: 850, alignSelf: 'center', width: '100%' }]}>
+                  <Text style={{ fontSize: responsive.rf(32), fontWeight: '900', color: '#FFFFFF', fontFamily: 'Arthlete', letterSpacing: 1.5, textTransform: 'uppercase', textAlign: responsive.isIPad ? 'center' : 'left' }}>Arthlete</Text>
                 </View>
 
                 {/* ── White content card ── */}
                 <ScrollView
-                  style={{ flex: 1, backgroundColor: '#FFFFFF', borderTopLeftRadius: 28, borderTopRightRadius: 28 }}
+                  style={[{ flex: 1, backgroundColor: '#FFFFFF', borderTopLeftRadius: 28, borderTopRightRadius: 28 }, responsive.isIPad && { maxWidth: 850, alignSelf: 'center', width: '100%', borderBottomLeftRadius: 28, borderBottomRightRadius: 28, marginTop: 10 }]}
                   contentContainerStyle={{ paddingTop: 10, paddingBottom: 110 }}
                   showsVerticalScrollIndicator={false}
                 >
@@ -2224,7 +2285,7 @@ const MainTabScreen = ({ navigation }: any) => {
                           fontWeight: Platform.OS === 'android' ? '900' : '800',
                           color: '#1C1C1E',
                           fontFamily: 'Lexend',
-                          lineHeight: 30,
+                          lineHeight: responsive.rf(responsive.isIPad ? 42 : 32),
                           textTransform: 'uppercase',
                           letterSpacing: -0.5,
                         }}>
@@ -2337,7 +2398,7 @@ const MainTabScreen = ({ navigation }: any) => {
                     }}
                     style={{
                       marginHorizontal: 16,
-                      backgroundColor: '#F8FBFF', // Subtle blue tint like screenshot
+                      backgroundColor: '#F8FBFF',
                       borderRadius: 18,
                       shadowColor: '#000',
                       shadowOffset: { width: 0, height: 2 },
@@ -2345,7 +2406,7 @@ const MainTabScreen = ({ navigation }: any) => {
                       shadowRadius: 6,
                       elevation: 2,
                       marginBottom: 24,
-                      padding: 24, // More padding like screenshot
+                      padding: 24,
                       flexDirection: 'row',
                       alignItems: 'center',
                       justifyContent: 'space-between',
@@ -2417,14 +2478,6 @@ const MainTabScreen = ({ navigation }: any) => {
                     </View>
                   </TouchableOpacity>
 
-                  {/* ── Test Mode / Preview ── */}
-                  <TouchableOpacity
-                    onPress={openTestMenu}
-                    style={{ backgroundColor: '#2C2C2E', paddingHorizontal: 16, paddingVertical: 10, borderRadius: 12, alignItems: 'center' }}
-                  >
-                    <Text style={{ color: 'white', fontFamily: 'Lexend', fontSize: 13, fontWeight: '700' }}>TEST WORKOUTS</Text>
-                  </TouchableOpacity>
-
                   {/* ── Motivational Quote ── */}
                   <View style={{ marginHorizontal: 16, marginBottom: 40, backgroundColor: '#F8F9FA', padding: 16, borderRadius: 14, borderLeftWidth: 4, borderLeftColor: '#FF6B35' }}>
                     <Text style={{ fontSize: 14, color: '#1C1C1E', fontFamily: 'Lexend', lineHeight: 20, fontStyle: 'italic' }}>
@@ -2436,13 +2489,13 @@ const MainTabScreen = ({ navigation }: any) => {
             ) : (activeNav === 'Workout' && user?.userType !== 'FRIEND') ? (
               <View style={{ flex: 1, backgroundColor: '#FF6B35' }}>
                 {/* ── Header sits on the colored background ── */}
-                <View style={{ paddingHorizontal: 20, paddingTop: 10, paddingBottom: 16 }}>
-                  <Text style={{ fontSize: responsive.rf(26), fontWeight: '800', color: '#FFFFFF', fontFamily: 'Lexend', letterSpacing: -0.5 }}>Workouts</Text>
+                <View style={[{ paddingHorizontal: 20, paddingTop: 10, paddingBottom: 16 }, responsive.isIPad && { maxWidth: 850, alignSelf: 'center', width: '100%' }]}>
+                  <Text style={{ fontSize: responsive.rf(26), fontWeight: '800', color: '#FFFFFF', fontFamily: 'Lexend', letterSpacing: -0.5, textAlign: responsive.isIPad ? 'center' : 'left' }}>Workouts</Text>
                 </View>
 
                 {/* ── White content card ── */}
                 <ScrollView
-                  style={{ flex: 1, backgroundColor: '#FFFFFF', borderTopLeftRadius: 28, borderTopRightRadius: 28 }}
+                  style={[{ flex: 1, backgroundColor: '#FFFFFF', borderTopLeftRadius: 28, borderTopRightRadius: 28 }, responsive.isIPad && { maxWidth: 850, alignSelf: 'center', width: '100%', borderBottomLeftRadius: 28, borderBottomRightRadius: 28, marginTop: 10 }]}
                   contentContainerStyle={{ paddingTop: 10, paddingBottom: 110 }}
                   showsVerticalScrollIndicator={false}
                 >
@@ -2657,22 +2710,22 @@ const MainTabScreen = ({ navigation }: any) => {
             ) : (activeNav === 'Progress' || (user?.userType === 'FRIEND' && activeNav !== 'Profile')) ? (
               <View style={{ flex: 1, backgroundColor: '#FF6B35' }}>
                 {/* ── Header sits on the colored background ── */}
-                <View style={{ paddingHorizontal: 20, paddingTop: 10, paddingBottom: 16 }}>
-                  <Text style={{ fontSize: responsive.rf(32), fontWeight: '900', color: '#FFFFFF', fontFamily: 'Arthlete', letterSpacing: 1.5, textTransform: 'uppercase' }}>Progress</Text>
+                <View style={[{ paddingHorizontal: 20, paddingTop: 10, paddingBottom: 16 }, responsive.isIPad && { maxWidth: 850, alignSelf: 'center', width: '100%' }]}>
+                  <Text style={{ fontSize: responsive.rf(32), fontWeight: '900', color: '#FFFFFF', fontFamily: 'Arthlete', letterSpacing: 1.5, textTransform: 'uppercase', textAlign: responsive.isIPad ? 'center' : 'left' }}>Progress</Text>
                 </View>
                 {/* ── White content card ── */}
-                <View style={{ flex: 1, backgroundColor: '#FFFFFF', borderTopLeftRadius: 28, borderTopRightRadius: 28, overflow: 'hidden' }}>
+                <View style={[{ flex: 1, backgroundColor: '#FFFFFF', borderTopLeftRadius: 28, borderTopRightRadius: 28, overflow: 'hidden' }, responsive.isIPad && { maxWidth: 850, alignSelf: 'center', width: '100%', borderBottomLeftRadius: 28, borderBottomRightRadius: 28, marginTop: 10 }]}>
                   <ProgressScreen />
                 </View>
               </View>
             ) : (
               <View style={{ flex: 1, backgroundColor: '#FF6B35' }}>
                 {/* ── Header sits on the colored background ── */}
-                <View style={{ paddingHorizontal: 20, paddingTop: 10, paddingBottom: 16 }}>
-                  <Text style={{ fontSize: responsive.rf(32), fontWeight: '900', color: '#FFFFFF', fontFamily: 'Arthlete', letterSpacing: 1.5, textTransform: 'uppercase' }}>Profile</Text>
+                <View style={[{ paddingHorizontal: 20, paddingTop: 10, paddingBottom: 16 }, responsive.isIPad && { maxWidth: 850, alignSelf: 'center', width: '100%' }]}>
+                  <Text style={{ fontSize: responsive.rf(32), fontWeight: '900', color: '#FFFFFF', fontFamily: 'Arthlete', letterSpacing: 1.5, textTransform: 'uppercase', textAlign: responsive.isIPad ? 'center' : 'left' }}>Profile</Text>
                 </View>
                 {/* ── White content card ── */}
-                <View style={{ flex: 1, backgroundColor: '#FFFFFF', borderTopLeftRadius: 28, borderTopRightRadius: 28, overflow: 'hidden' }}>
+                <View style={[{ flex: 1, backgroundColor: '#FFFFFF', borderTopLeftRadius: 28, borderTopRightRadius: 28, overflow: 'hidden' }, responsive.isIPad && { maxWidth: 850, alignSelf: 'center', width: '100%', borderBottomLeftRadius: 28, borderBottomRightRadius: 28, marginTop: 10 }]}>
                   <ProfileScreen navigation={navigation} />
                 </View>
               </View>
@@ -2796,79 +2849,7 @@ const MainTabScreen = ({ navigation }: any) => {
           </Modal>
 
           {/* Challenge Creation Modal */}
-          {/* TEST MENU MODAL */}
-          <Modal visible={showTestMenu} animationType="fade" transparent={true}>
-            <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.85)', justifyContent: 'center', alignItems: 'center', padding: 20 }}>
-              <View style={{ backgroundColor: '#1C1C1E', borderRadius: 24, padding: 24, width: '100%' }}>
-                <Text style={{ color: 'white', fontSize: 22, fontWeight: '800', fontFamily: 'Lexend', marginBottom: 24, textAlign: 'center' }}>Test Mode</Text>
 
-                <Text style={{ color: '#8E8E93', fontSize: 14, fontFamily: 'Lexend', marginBottom: 12 }}>Select Level</Text>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24 }}>
-                  {['Beginner', 'Intermediate', 'Advanced'].map(l => (
-                    <TouchableOpacity key={l} onPress={() => setTestLevelTarget(l.toLowerCase())}
-                      style={{ paddingVertical: 10, paddingHorizontal: 12, borderRadius: 12, backgroundColor: testLevelTarget === l.toLowerCase() ? '#FF6B35' : '#2C2C2E' }}>
-                      <Text style={{ color: 'white', fontSize: 12, fontFamily: 'Lexend', fontWeight: testLevelTarget === l.toLowerCase() ? '700' : '400' }}>{l}</Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-
-                <Text style={{ color: '#8E8E93', fontSize: 14, fontFamily: 'Lexend', marginBottom: 12 }}>Select Day</Text>
-                <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 32 }}>
-                  {[1, 2, 3, 4, 5, 6, 7].map(d => (
-                    <TouchableOpacity key={d} onPress={() => setTestDayTarget(d)}
-                      style={{ height: 44, width: 44, borderRadius: 22, justifyContent: 'center', alignItems: 'center', backgroundColor: testDayTarget === d ? '#FF6B35' : '#2C2C2E' }}>
-                      <Text style={{ color: 'white', fontSize: 15, fontFamily: 'Lexend', fontWeight: testDayTarget === d ? '700' : '400' }}>{d}</Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-
-                <View style={{ flexDirection: 'row', gap: 10, marginBottom: 24 }}>
-                  <TouchableOpacity
-                    onPress={() => NotificationService.testNotification()}
-                    activeOpacity={0.7}
-                    style={{
-                      flex: 1,
-                      backgroundColor: 'rgba(255,107,53,0.1)',
-                      borderWidth: 1,
-                      borderColor: '#FF6B35',
-                      borderRadius: 16,
-                      paddingVertical: 14,
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Text style={{ color: '#FF6B35', fontSize: 13, fontWeight: '700', fontFamily: 'Lexend' }}>🔔 TEST NOTIF</Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    onPress={() => NotificationService.testFriendNotification()}
-                    activeOpacity={0.7}
-                    style={{
-                      flex: 1,
-                      backgroundColor: 'rgba(58,134,255,0.1)',
-                      borderWidth: 1,
-                      borderColor: '#3A86FF',
-                      borderRadius: 16,
-                      paddingVertical: 14,
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Text style={{ color: '#3A86FF', fontSize: 13, fontWeight: '700', fontFamily: 'Lexend' }}>🤝 FRIEND NOTIF</Text>
-                  </TouchableOpacity>
-                </View>
-
-                <View style={{ flexDirection: 'row', gap: 16 }}>
-                  <TouchableOpacity onPress={() => setShowTestMenu(false)}
-                    style={{ flex: 1, paddingVertical: 14, borderRadius: 16, backgroundColor: '#2C2C2E', alignItems: 'center' }}>
-                    <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Lexend', fontWeight: '600' }}>Cancel</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => { setShowTestMenu(false); showDailyKickstartDetails(testLevelTarget, testDayTarget); }}
-                    style={{ flex: 1, paddingVertical: 14, borderRadius: 16, backgroundColor: '#FF6B35', alignItems: 'center' }}>
-                    <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Lexend', fontWeight: '800' }}>Load</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-          </Modal>
 
           <Modal visible={showChallengeModal} animationType="slide" transparent={true}>
             <View style={styles.bottomModalOverlay}>
@@ -3126,102 +3107,137 @@ const MainTabScreen = ({ navigation }: any) => {
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 180 }}>
                   <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
                     <View style={{ width: 4, height: 20, backgroundColor: '#FF6B35', borderRadius: 2, marginRight: 10 }} />
-                    <Text style={{ fontSize: responsive.rf(20), fontWeight: '800', fontFamily: 'Lexend', color: '#1C1C1E' }}>Exercises</Text>
+                    <Text style={{ fontSize: responsive.rf(20), fontWeight: '800', fontFamily: 'Lexend', color: '#1C1C1E' }}>
+                      {selectedWorkout?.isRestDay ? 'Schedule' : 'Exercises'}
+                    </Text>
                   </View>
 
-                  {selectedWorkout?.exercises.map((ex: any, idx: number) => {
-                    if (ex.isHeader) {
-                      let iconUrl = '';
-                      let cleanTitle = ex.title;
-                      if (ex.title.includes('Warm-up')) {
-                        iconUrl = 'https://img.icons8.com/ios-filled/50/ffffff/fire-element.png';
-                        cleanTitle = 'Warm-up';
-                      } else if (ex.title.includes('Main Workout')) {
-                        iconUrl = 'https://img.icons8.com/ios-filled/50/ffffff/trophy.png';
-                        cleanTitle = 'Main Workout';
+                  {selectedWorkout?.isRestDay ? (
+                    <View style={{
+                      backgroundColor: '#FFF8F5',
+                      borderRadius: 24,
+                      padding: 30,
+                      alignItems: 'center',
+                      marginTop: 10,
+                      borderWidth: 1,
+                      borderColor: '#FFEFEA'
+                    }}>
+                      <Text style={{ fontSize: 40, marginBottom: 16 }}>🧘‍♂️</Text>
+                      <Text style={{
+                        fontSize: 18,
+                        fontWeight: '700',
+                        color: '#1C1C1E',
+                        fontFamily: 'Lexend',
+                        textAlign: 'center',
+                        marginBottom: 8
+                      }}>
+                        It's Your Rest Day!
+                      </Text>
+                      <Text style={{
+                        fontSize: 14,
+                        color: '#8E8E93',
+                        fontFamily: 'Lexend',
+                        textAlign: 'center',
+                        lineHeight: 20
+                      }}>
+                        Recovery is just as important as the workout. Use today to recharge, stretch, and get ready for a strong week ahead!
+                      </Text>
+                    </View>
+                  ) : (
+                    selectedWorkout?.exercises.map((ex: any, idx: number) => {
+                      if (ex.isHeader) {
+                        let iconUrl = '';
+                        let cleanTitle = ex.title;
+                        if (ex.title.includes('Warm-up')) {
+                          iconUrl = 'https://img.icons8.com/ios-filled/50/ffffff/fire-element.png';
+                          cleanTitle = 'Warm-up';
+                        } else if (ex.title.includes('Main Workout')) {
+                          iconUrl = 'https://img.icons8.com/ios-filled/50/ffffff/trophy.png';
+                          cleanTitle = 'Main Workout';
+                        }
+
+                        return (
+                          <View key={idx} style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            marginTop: 24,
+                            marginBottom: 16,
+                            backgroundColor: '#FFF8F5',
+                            paddingVertical: 10,
+                            paddingHorizontal: 16,
+                            borderRadius: 14,
+                            alignSelf: 'flex-start'
+                          }}>
+                            {iconUrl ? (
+                              <Image source={{ uri: iconUrl }} style={{ width: 18, height: 18, marginRight: 8, tintColor: '#FF6B35' }} resizeMode="contain" />
+                            ) : null}
+                            <Text style={{ fontSize: 13, fontWeight: '800', fontFamily: 'Lexend', color: '#FF6B35', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                              {cleanTitle.replace(/🔥|🏆/g, '').trim()}
+                            </Text>
+                          </View>
+                        );
                       }
 
                       return (
-                        <View key={idx} style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          marginTop: 24,
-                          marginBottom: 16,
-                          backgroundColor: '#FFF8F5',
-                          paddingVertical: 10,
-                          paddingHorizontal: 16,
-                          borderRadius: 14,
-                          alignSelf: 'flex-start'
-                        }}>
-                          {iconUrl ? (
-                            <Image source={{ uri: iconUrl }} style={{ width: 18, height: 18, marginRight: 8, tintColor: '#FF6B35' }} resizeMode="contain" />
-                          ) : null}
-                          <Text style={{ fontSize: 13, fontWeight: '800', fontFamily: 'Lexend', color: '#FF6B35', textTransform: 'uppercase', letterSpacing: 0.5 }}>
-                            {cleanTitle.replace(/🔥|🏆/g, '').trim()}
-                          </Text>
+                        <View
+                          key={idx}
+                          style={{
+                            backgroundColor: '#FFFFFF',
+                            borderRadius: 20,
+                            padding: 18,
+                            marginBottom: 12,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            borderWidth: 1,
+                            borderColor: '#F2F2F7',
+                            shadowColor: '#000',
+                            shadowOffset: { width: 0, height: 2 },
+                            shadowOpacity: 0.03,
+                            shadowRadius: 10,
+                            elevation: 1
+                          }}
+                        >
+                          <View style={{
+                            width: 38,
+                            height: 38,
+                            borderRadius: 12,
+                            backgroundColor: '#F8F7F4',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginRight: 16,
+                            borderWidth: 1,
+                            borderColor: '#EFECE7'
+                          }}>
+                            <Text style={{ fontSize: 16, fontWeight: '800', color: '#FF6B35', fontFamily: 'Lexend' }}>{ex.displayIndex || idx + 1}</Text>
+                          </View>
+                          <View style={{ flex: 1 }}>
+                            <Text style={{ fontSize: 17, fontWeight: '700', color: '#1C1C1E', fontFamily: 'Lexend', marginBottom: 4 }}>{ex.name}</Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                              <Text style={{ fontSize: 14, color: '#8E8E93', fontFamily: 'Lexend', fontWeight: '500' }}>{ex.detail}</Text>
+                            </View>
+                          </View>
+                          {ex.videoUrl && (
+                            <View style={{
+                              width: 32,
+                              height: 32,
+                              borderRadius: 16,
+                              backgroundColor: '#E8F2FF',
+                              justifyContent: 'center',
+                              alignItems: 'center'
+                            }}>
+                              <Text style={{ fontSize: 14 }}>▶️</Text>
+                            </View>
+                          )}
                         </View>
                       );
-                    }
-
-                    return (
-                      <View
-                        key={idx}
-                        style={{
-                          backgroundColor: '#FFFFFF',
-                          borderRadius: 20,
-                          padding: 18,
-                          marginBottom: 12,
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          borderWidth: 1,
-                          borderColor: '#F2F2F7',
-                          shadowColor: '#000',
-                          shadowOffset: { width: 0, height: 2 },
-                          shadowOpacity: 0.03,
-                          shadowRadius: 10,
-                          elevation: 1
-                        }}
-                      >
-                        <View style={{
-                          width: 38,
-                          height: 38,
-                          borderRadius: 12,
-                          backgroundColor: '#F8F7F4',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          marginRight: 16,
-                          borderWidth: 1,
-                          borderColor: '#EFECE7'
-                        }}>
-                          <Text style={{ fontSize: 16, fontWeight: '800', color: '#FF6B35', fontFamily: 'Lexend' }}>{ex.displayIndex || idx + 1}</Text>
-                        </View>
-                        <View style={{ flex: 1 }}>
-                          <Text style={{ fontSize: 17, fontWeight: '700', color: '#1C1C1E', fontFamily: 'Lexend', marginBottom: 4 }}>{ex.name}</Text>
-                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={{ fontSize: 14, color: '#8E8E93', fontFamily: 'Lexend', fontWeight: '500' }}>{ex.detail}</Text>
-                          </View>
-                        </View>
-                        {ex.videoUrl && (
-                          <View style={{
-                            width: 32,
-                            height: 32,
-                            borderRadius: 16,
-                            backgroundColor: '#E8F2FF',
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                          }}>
-                            <Text style={{ fontSize: 14 }}>▶️</Text>
-                          </View>
-                        )}
-                      </View>
-                    )
-                  })}
+                    })
+                  )}
 
                   <View style={{ height: 100 }} />
                 </ScrollView>
 
                 <View style={{ position: 'absolute', bottom: 40, left: 24, right: 24 }}>
-                  {selectedWorkout ? (
+                  {selectedWorkout && !selectedWorkout.isRestDay ? (
                     <TouchableOpacity
                       style={{
                         backgroundColor: '#FF6B35',
@@ -3248,6 +3264,20 @@ const MainTabScreen = ({ navigation }: any) => {
                       }}
                     >
                       <Text style={{ color: 'white', fontSize: responsive.rf(20), fontWeight: '800', fontFamily: 'Lexend', letterSpacing: 0.5 }}>START WORKOUT</Text>
+                    </TouchableOpacity>
+                  ) : selectedWorkout?.isRestDay ? (
+                    <TouchableOpacity
+                      style={{
+                        backgroundColor: '#1C1C1E',
+                        height: 64,
+                        borderRadius: 24,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      activeOpacity={0.85}
+                      onPress={() => setSelectedWorkout(null)}
+                    >
+                      <Text style={{ color: 'white', fontSize: responsive.rf(20), fontWeight: '800', fontFamily: 'Lexend', letterSpacing: 0.5 }}>CLOSE</Text>
                     </TouchableOpacity>
                   ) : (
                     <View style={{
@@ -4010,8 +4040,15 @@ const App = () => {
           // Authenticated but needs onboarding
           setInitialRoute('OnboardingGender');
         } else {
-          // Fully set up - go to Home
-          setInitialRoute('Home');
+          // Check if we should show paywall (normal users only)
+          const isPremium = !!(user?.isPremium || user?.isPaid || user?.userType === 'FRIEND');
+          if (!isPremium && user?.userType !== 'FRIEND') {
+            // Normal user without premium - show paywall screen
+            setInitialRoute('PostOnboarding');
+          } else {
+            // Fully set up or FRIEND - go to Home
+            setInitialRoute('Home');
+          }
         }
       }
 
@@ -4053,18 +4090,8 @@ const App = () => {
               if (!hasCompletedMainProgram && !isRestDay) {
                 if (isFriend) {
                   NotificationService.scheduleFriendRepeatingReminders(friendName);
-                  // Immediate nudge if it's already between 10am and 10pm
-                  const nowHour = new Date().getHours();
-                  if (nowHour >= 10 && nowHour < 22) {
-                    NotificationService.testFriendNotification();
-                  }
                 } else {
                   NotificationService.scheduleRepeatingReminders();
-                  // Immediate nudge if it's already between 9am and 9pm
-                  const nowHour = new Date().getHours();
-                  if (nowHour >= 9 && nowHour < 21) {
-                    NotificationService.testNotification();
-                  }
                 }
               } else {
                 NotificationService.cancelWorkoutReminder();

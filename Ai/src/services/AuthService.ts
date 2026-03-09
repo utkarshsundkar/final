@@ -76,8 +76,8 @@ class AuthService {
         }
 
         try {
-            // Use standard endpoint without query params
-            const url = AUTH_ENDPOINTS.sendOTP.split('?')[0] + '?env=test';
+            // Use standard endpoint
+            const url = AUTH_ENDPOINTS.sendOTP.split('?')[0];
 
             const response = await axios.post(url, {
                 email,
@@ -150,7 +150,7 @@ class AuthService {
 
         try {
             // 1. Verify with MojoAuth
-            const url = `${AUTH_ENDPOINTS.verifyOTP.split('?')[0]}?env=test&apikey=${MOJOAUTH_CONFIG.apiKey}`;
+            const url = `${AUTH_ENDPOINTS.verifyOTP.split('?')[0]}`;
             const cleanOtp = otp.trim();
 
             const payload = {
@@ -230,7 +230,7 @@ class AuthService {
             console.error('Verify OTP Error:', error);
             const serverCode = error.response?.status;
             const serverMsg = error.response?.data?.description || error.response?.data?.message || error.message;
-            const debugInfo = `\nDebug: State=${this.stateId?.substring(0, 8)}... | OTP=${otp} | Code=${serverCode}`;
+            const debugInfo = `\n(Code=${serverCode})`;
 
             return {
                 success: false,

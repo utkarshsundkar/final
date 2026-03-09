@@ -1,5 +1,5 @@
-import notifee, { TimestampTrigger, TriggerType, RepeatFrequency } from '@notifee/react-native';
-import { Platform } from 'react-native';
+import notifee, { TimestampTrigger, TriggerType, RepeatFrequency, AuthorizationStatus } from '@notifee/react-native';
+import { Platform, Alert } from 'react-native';
 
 class NotificationService {
     async requestPermission() {
@@ -55,6 +55,9 @@ class NotificationService {
                     body: rem.message,
                     android: {
                         channelId,
+                        smallIcon: 'ic_notification',
+                        largeIcon: 'ic_launcher',
+                        color: '#FF6B35',
                         sound: 'workout_reminder',
                         pressAction: { id: 'default' },
                     },
@@ -112,6 +115,9 @@ class NotificationService {
                     body: rem.message,
                     android: {
                         channelId,
+                        smallIcon: 'ic_notification',
+                        largeIcon: 'ic_launcher',
+                        color: '#FF6B35',
                         sound: 'workout_reminder',
                         pressAction: { id: 'default' },
                     },
@@ -135,62 +141,6 @@ class NotificationService {
         ];
         await Promise.all(ids.map(id => notifee.cancelNotification(id)));
         console.log('All workout reminders cancelled');
-    }
-
-    async testNotification() {
-        const channelId = await notifee.createChannel({
-            id: 'test',
-            name: 'Test Channel',
-            sound: 'workout_reminder',
-        });
-
-        const messages = [
-            "U missed your workout! Let's get moving!",
-            "Time to crush those goals! 💪",
-            "Don't break the streak! 🏋️‍♂️"
-        ];
-        const randomMsg = messages[Math.floor(Math.random() * messages.length)];
-
-        await notifee.displayNotification({
-            title: 'Test Workout Notification',
-            body: randomMsg,
-            android: {
-                channelId,
-                sound: 'workout_reminder',
-            },
-            ios: {
-                sound: 'workout_reminder.aiff',
-            }
-        });
-    }
-
-    async testFriendNotification() {
-        const channelId = await notifee.createChannel({
-            id: 'friend-test',
-            name: 'Friend Test Channel',
-            sound: 'workout_reminder',
-        });
-
-        const messages = [
-            "Your friend hasn't started their day yet. Maybe a quick nudge? ☀️",
-            "Your friend missed their afternoon workout. Give them a push! 💪",
-            "Time to motivate your partner! 🏋️‍♂️"
-        ];
-        const randomMsg = messages[Math.floor(Math.random() * messages.length)];
-
-        await notifee.displayNotification({
-            title: '🤝 Friend Accountability',
-            body: randomMsg,
-            android: {
-                channelId,
-                sound: 'workout_reminder',
-                pressAction: { id: 'default' },
-            },
-            ios: {
-                critical: true,
-                sound: 'workout_reminder.aiff',
-            }
-        });
     }
 }
 

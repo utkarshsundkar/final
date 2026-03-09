@@ -5,14 +5,14 @@ export interface Exercise {
 }
 
 export const EXERCISE_MASTER_LIST: Exercise[] = [
-    { name: "Pushups", videoLink: "Mac", category: "Strength" },
+    { name: "Pushups", videoLink: "https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/pushups_new_x4q4rv.mp4", category: "Strength" },
     { name: "Burpees", videoLink: "Mac", category: "Cardio" },
-    { name: "Air squats", videoLink: "Mac", category: "Lower" },
+    { name: "Air squats", videoLink: "https://res.cloudinary.com/dzszfujpk/video/upload/v1772529391/air_squats_new_mdcbet.mp4", category: "Lower" },
     { name: "Plank", videoLink: "https://www.pexels.com/video/a-one-legged-man-planking-on-the-gym-floor-4117854/", category: "Core" },
     { name: "Side Plank", videoLink: "https://www.pexels.com/video/woman-doing-an-exercise-position-6437947/", category: "Core" },
     { name: "Crunches", videoLink: "https://www.pexels.com/video/man-working-out-8026545/", category: "Core" },
     { name: "Jumping Jacks", videoLink: "https://www.pexels.com/video/woman-doing-jumping-jacks-5025960/", category: "Cardio" },
-    { name: "Lunges", videoLink: "https://www.pexels.com/video/woman-exercising-outdoors-5025761/", category: "Lower" },
+    { name: "Lunges", videoLink: "https://res.cloudinary.com/dzszfujpk/video/upload/v1772529390/lunges_new_usiur1.mp4", category: "Lower" },
     { name: "Alternate toe touch", videoLink: "https://www.pexels.com/video/a-woman-doing-warm-up-exercise-5510139/", category: "Core" },
     { name: "Side bend", videoLink: "https://www.pexels.com/video/woman-in-black-activewear-stretching-her-arms-5510103/", category: "Mobility" },
     { name: "High Knees", videoLink: "https://www.pexels.com/video/woman-doing-high-knees-exercise-5025964/", category: "Cardio" },
@@ -54,25 +54,25 @@ export const EXERCISE_MASTER_LIST: Exercise[] = [
 export const WORKOUT_PLANS = {
     beginner: {
         Monday: [
-            { exercise: "Pushups", sets: 3, workTime: 35, restTime: 25 },
-            { exercise: "Tricep Dips", sets: 3, workTime: 35, restTime: 25 },
-            { exercise: "Plank", sets: 3, workTime: 35, restTime: 25 },
+            { exercise: "Pushups", sets: 3, workTime: 35, restTime: 60 },
+            { exercise: "Tricep Dips", sets: 3, workTime: 35, restTime: 60 },
+            { exercise: "Plank", sets: 3, workTime: 35, restTime: 60 },
         ],
         // Add other days if needed
     },
     advanced: {
         Monday: [
-            { exercise: "Pushups", sets: 4, workTime: 50, restTime: 15 },
-            { exercise: "Tricep Dips", sets: 4, workTime: 50, restTime: 15 },
-            { exercise: "Plank", sets: 4, workTime: 50, restTime: 15 },
+            { exercise: "Pushups", sets: 4, workTime: 50, restTime: 60 },
+            { exercise: "Tricep Dips", sets: 4, workTime: 50, restTime: 60 },
+            { exercise: "Plank", sets: 4, workTime: 50, restTime: 60 },
         ],
     },
     mobility: {
         Daily: [
-            { exercise: "Yoga - Downward Facing Dog", sets: 1, workTime: 60, restTime: 15 },
-            { exercise: "Yoga - Ustrasana", sets: 1, workTime: 45, restTime: 15 },
-            { exercise: "Yoga - Janu Shirshasana", sets: 1, workTime: 60, restTime: 15 },
-            { exercise: "Yoga - Baddha Konasana", sets: 1, workTime: 60, restTime: 15 },
+            { exercise: "Yoga - Downward Facing Dog", sets: 1, workTime: 60, restTime: 60 },
+            { exercise: "Yoga - Ustrasana", sets: 1, workTime: 45, restTime: 60 },
+            { exercise: "Yoga - Janu Shirshasana", sets: 1, workTime: 60, restTime: 60 },
+            { exercise: "Yoga - Baddha Konasana", sets: 1, workTime: 60, restTime: 60 },
         ]
     }
 };

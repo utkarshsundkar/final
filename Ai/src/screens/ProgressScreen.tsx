@@ -383,7 +383,13 @@ const ProgressScreen = () => {
                     <View style={styles.gridCard}>
                         <Text style={styles.cardLabel}>Miss Rate</Text>
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ fontSize: responsive.rf(responsive.isTablet ? 64 : 48), fontWeight: '600', fontFamily: 'Lexend', color: '#FF5252' }}>{100 - completionRate}%</Text>
+                            <Text
+                                adjustsFontSizeToFit
+                                numberOfLines={1}
+                                style={{ fontSize: responsive.rf(responsive.isTablet ? 48 : 38), fontWeight: '700', fontFamily: 'Lexend', color: '#FF5252' }}
+                            >
+                                {100 - completionRate}%
+                            </Text>
                             <Text style={{ fontSize: 12, color: '#888', fontFamily: 'Lexend' }}>Last 30 days</Text>
                         </View>
                     </View>
