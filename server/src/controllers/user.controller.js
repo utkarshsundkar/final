@@ -4,6 +4,7 @@ import { User } from "../models/user.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import mongoose from "mongoose";
 
 const generateAccessandRefreshTokens = async (userId) => {
   try {
@@ -136,9 +137,32 @@ const loginUser = asyncHandler(async (req, res) => {
     user._id
   );
 
-  const loggedInUser = await User.findById(user._id).select(
+  let loggedInUser = await User.findById(user._id).select(
     "-password -refreshToken"
-  );
+  ).populate('premium');
+
+  // Perform expiration check on login
+  const now = new Date();
+  let statusChanged = false;
+
+  if (loggedInUser.premiumType === 'trial' && loggedInUser.trialEndDate && loggedInUser.trialEndDate < now) {
+    loggedInUser.isPremium = false;
+    loggedInUser.premiumType = null;
+    statusChanged = true;
+  }
+
+  if (loggedInUser.premium && loggedInUser.premium.endDate < now && loggedInUser.premium.active) {
+    await mongoose.model('Premium').findByIdAndUpdate(loggedInUser.premium._id, { active: false });
+    loggedInUser.isPremium = false;
+    loggedInUser.isPaid = false;
+    loggedInUser.premium = null;
+    loggedInUser.premiumType = null;
+    statusChanged = true;
+  }
+
+  if (statusChanged) {
+    await loggedInUser.save();
+  }
 
   const options = {
     httpOnly: true,
@@ -361,6 +385,30 @@ const mojoAuthLogin = asyncHandler(async (req, res) => {
       userType: userType || 'NORMAL',
       friendOf,
     });
+  }
+
+  // Expiration check for mojoAuth login
+  user = await User.findById(user._id).populate('premium');
+  const now = new Date();
+  let statusChanged = false;
+
+  if (user.premiumType === 'trial' && user.trialEndDate && user.trialEndDate < now) {
+    user.isPremium = false;
+    user.premiumType = null;
+    statusChanged = true;
+  }
+
+  if (user.premium && user.premium.endDate < now && user.premium.active) {
+    await mongoose.model('Premium').findByIdAndUpdate(user.premium._id, { active: false });
+    user.isPremium = false;
+    user.isPaid = false;
+    user.premium = null;
+    user.premiumType = null;
+    statusChanged = true;
+  }
+
+  if (statusChanged) {
+    await user.save();
   }
 
   // 3. Generate Backend Tokens (So your backend recognizes them)
