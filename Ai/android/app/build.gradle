@@ -79,8 +79,8 @@ android {
         applicationId "com.rnsmkituidemoapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 39
-        versionName "1.1.2"
+        versionCode 40
+        versionName "1.1.3"
         manifestPlaceholders = [
             appAuthRedirectScheme: "com.rnsmkituidemoapp"
         ]
