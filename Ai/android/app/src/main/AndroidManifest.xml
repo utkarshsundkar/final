@@ -34,7 +34,7 @@
       android:allowBackup="false"
       android:theme="@style/AppTheme"
       android:usesCleartextTraffic="true"
-      android:extractNativeLibs="true"
+      android:extractNativeLibs="false"
       tools:replace="android:theme">
       <!-- Default notification icon (white transparent drawable) and color -->
       <meta-data
