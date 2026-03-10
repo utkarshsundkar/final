@@ -691,7 +691,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     },
     scrollContent: {
-        paddingTop: 10,
+        paddingTop: 20,
         paddingHorizontal: 20,
         paddingBottom: 40,
     },
@@ -704,12 +704,13 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     headerSubtitle: {
-        fontSize: responsive.rf(16),
+        fontSize: responsive.rf(15),
         color: '#666',
         fontFamily: 'Lexend',
         textAlign: 'center',
-        lineHeight: 24,
+        lineHeight: responsive.rf(15) * 1.6,
         marginBottom: 20,
+        overflow: 'visible',
     },
     toggleContainer: {
         flexDirection: 'row',
